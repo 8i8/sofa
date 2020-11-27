@@ -4,13 +4,11 @@ package sofa
 // #include <sofam.h>
 import "C"
 
-// D2tf Decompose days to hours, minutes, seconds, fraction.
+//  D2tf Decompose days to hours, minutes, seconds, fraction.
 //
 //  - - - - -
 //   D 2 t f
 //  - - - - -
-//
-//  Decompose days to hours, minutes, seconds, fraction.
 //
 //  This function is part of the International Astronomical Union's
 //  SOFA (Standards Of Fundamental Astronomy) software collection.

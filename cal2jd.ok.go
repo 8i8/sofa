@@ -3,7 +3,7 @@ package sofa
 // #include <sofa.h>
 import "C"
 
-// Cal2jd returns the MJD, Modified Julian Date of the given date.
+//  Cal2jd returns the MJD, Modified Julian Date of the given date.
 //
 //  - - - - - - - - - -
 //   i a u C a l 2 j d

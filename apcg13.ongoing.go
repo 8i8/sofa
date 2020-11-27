@@ -4,15 +4,14 @@ package sofa
 import "C"
 import "fmt"
 
+//  Apcg13 For a geocentric observer, prepare star-independent astrometry
+//  parameters for transformations between ICRS and GCRS coordinates.  The
+//  caller supplies the date, and SOFA models are used to predict the
+//  Earth ephemeris.
 //
 //  - - - - - - -
 //   A p c g 1 3
 //  - - - - - - -
-//
-//  For a geocentric observer, prepare star-independent astrometry
-//  parameters for transformations between ICRS and GCRS coordinates.
-//  The caller supplies the date, and SOFA models are used to predict
-//  the Earth ephemeris.
 //
 //  The parameters produced by this function are required in the
 //  parallax, light deflection and aberration parts of the astrometric
@@ -117,7 +116,7 @@ import "fmt"
 //  SOFA release 2020-07-21
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
-///
+//
 func Apcg13(date1, date2 float64) (astrom ASTROM, err error) {
 
 	var (
@@ -125,6 +124,7 @@ func Apcg13(date1, date2 float64) (astrom ASTROM, err error) {
 		astr       C.iauASTROM
 	)
 
+	// Go into c types.
 	d1 := C.double(date1)
 	d2 := C.double(date2)
 

@@ -5,13 +5,11 @@ package sofa
 // #include <sofam.h>
 import "C"
 
-// A2af Decompose radians into degrees, arcminutes, arcseconds, fraction.
+//  A2af Decompose radians into degrees, arcminutes, arcseconds, fraction.
 //
 //  - - - - -
 //   A 2 a f
 //  - - - - -
-//
-//  Decompose radians into degrees, arcminutes, arcseconds, fraction.
 //
 //  This function is part of the International Astronomical Union's
 //  SOFA (Standards Of Fundamental Astronomy) software collection.
