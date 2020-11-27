@@ -109,9 +109,7 @@ import "fmt"
 //
 func Epv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
 
-	var (
-		h, b [2][3]C.double
-	)
+	var h, b [2][3]C.double
 
 	//  Earth position and velocity, heliocentric and barycentric,
 	//  with respect to the Barycentric Celestial Reference System.
