@@ -17,8 +17,6 @@ func TestApcg13(t *testing.T) {
 		log.Printf("%s passed: error %s", fname, err)
 	}
 	vvd(t, astrom.pmt, 12.65133794027378508, 1e-11, fname, "pmt")
-	//              C    0.90131087473406645838
-	//              go   0.90335854413043015221
 	vvd(t, astrom.eb[0], 0.9013108747340644755, 1e-12, fname, "eb(1)")
 	vvd(t, astrom.eb[1], -0.4174026640406119957, 1e-12, fname, "eb(2)")
 	vvd(t, astrom.eb[2], -0.1809822877867817771, 1e-12, fname, "eb(3)")
