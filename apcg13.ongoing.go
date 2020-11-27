@@ -128,7 +128,7 @@ func Apcg13(date1, date2 float64) (astrom ASTROM, err error) {
 	d1 := C.double(date1)
 	d2 := C.double(date2)
 
-	/* Earth barycentric & heliocentric position/velocity (au, au/d). */
+	// Earth barycentric & heliocentric position/velocity (au, au/d).
 	i := C.iauEpv00(d1, d2, &ehpv[0], &ebpv[0])
 	if i > 0 {
 		err = fmt.Errorf(
@@ -136,8 +136,8 @@ func Apcg13(date1, date2 float64) (astrom ASTROM, err error) {
 			ErrWarning)
 	}
 
-	/* Compute the star-independent astrometry parameters. */
-	C.iauApcg(d1, d2, &ehpv[0], &ebpv[0][0], &astr)
+	// Compute the star-independent astrometry parameters.
+	C.iauApcg(d1, d2, &ebpv[0], &ehpv[0][0], &astr)
 
 	// C into go types.
 	astrom = aC2Go(astr)
