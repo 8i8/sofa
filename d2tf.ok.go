@@ -61,13 +61,9 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//}
 func D2tf(ndp int, days float64) (sign byte, ihmsf [4]int) {
-	var (
-		s C.char
-		i [4]C.int
-	)
+	var s C.char
+	var i [4]C.int
 	C.iauD2tf(C.int(ndp), C.double(days), &s, &i[0])
-	return byte(s), [4]int{int(i[0]), int(i[1]),
-		int(i[2]), int(i[3])}
+	return byte(s), v4sIntC2Go(i)
 }

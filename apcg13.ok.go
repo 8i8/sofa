@@ -2,7 +2,6 @@ package sofa
 
 // #include <sofa.h>
 import "C"
-import "fmt"
 
 //  Apcg13 For a geocentric observer, prepare star-independent astrometry
 //  parameters for transformations between ICRS and GCRS coordinates.  The
@@ -117,7 +116,14 @@ import "fmt"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Apcg13(date1, date2 float64) (astrom ASTROM, err error) {
+// void iauApcg13(double date1, double date2, iauASTROM *astrom)
+func Apcg13(date1, date2 float64) (astrom ASTROM) {
+	var astr C.iauASTROM
+	C.iauApcg13(C.double(date1), C.double(date2), &astr)
+	return astrC2Go(astr)
+}
+
+func goApcg13(date1, date2 float64) (astrom ASTROM) {
 
 	var (
 		ehpv, ebpv [2][3]C.double
@@ -129,18 +135,13 @@ func Apcg13(date1, date2 float64) (astrom ASTROM, err error) {
 	d2 := C.double(date2)
 
 	// Earth barycentric & heliocentric position/velocity (au, au/d).
-	i := C.iauEpv00(d1, d2, &ehpv[0], &ebpv[0])
-	if i > 0 {
-		err = fmt.Errorf(
-			"date outside the range 1900-2100 AD: %w",
-			ErrWarning)
-	}
+	_ = C.iauEpv00(d1, d2, &ehpv[0], &ebpv[0])
 
 	// Compute the star-independent astrometry parameters.
 	C.iauApcg(d1, d2, &ebpv[0], &ehpv[0][0], &astr)
 
 	// C into go types.
-	astrom = aC2Go(astr)
+	astrom = astrC2Go(astr)
 
 	return
 }

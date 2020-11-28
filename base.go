@@ -69,8 +69,26 @@ func v3tGo2C(in [3][3]float64) (out [3][3]C.double) {
 	return
 }
 
-// aGo2C translates an ASTROM from go into cgo.
-func aGo2C(in ASTROM) (out C.iauASTROM) {
+// v4sIntC2Go translates a 1d 3d vector from cgo into go.
+func v4sIntC2Go(in [4]C.int) (out [4]int) {
+	out[0] = int(in[0])
+	out[1] = int(in[1])
+	out[2] = int(in[2])
+	out[3] = int(in[3])
+	return
+}
+
+// v4sIntGo2C translates a 1d 3d vector from go into cgo.
+func v4sIntGo2C(in [4]int) (out [4]C.int) {
+	out[0] = C.int(in[0])
+	out[0] = C.int(in[0])
+	out[0] = C.int(in[0])
+	out[0] = C.int(in[0])
+	return
+}
+
+// astrGo2C translates an ASTROM from go into cgo.
+func astrGo2C(in ASTROM) (out C.iauASTROM) {
 
 	out.pmt = C.double(in.pmt)
 	out.eb = v3sGo2C(in.eb)
@@ -92,8 +110,8 @@ func aGo2C(in ASTROM) (out C.iauASTROM) {
 	return
 }
 
-// aC2Go translates an iauASTROM from cgo into go.
-func aC2Go(in C.iauASTROM) (out ASTROM) {
+// astrC2Go translates an iauASTROM from cgo into go.
+func astrC2Go(in C.iauASTROM) (out ASTROM) {
 
 	out.pmt = float64(in.pmt)
 	out.eb = v3sC2Go(in.eb)
@@ -113,4 +131,12 @@ func aC2Go(in C.iauASTROM) (out ASTROM) {
 	out.refb = float64(in.refb)
 
 	return
+}
+
+// Abs returns the absolute value of x.
+func Abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }

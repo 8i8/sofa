@@ -1,40 +1,84 @@
 #include "sofa.h"
 
-double iauPdp(double a[3], double b[3])
+void iauAb(double pnat[3], double v[3], double s, double bm1,
+           double ppr[3])
 /*
-**  - - - - - - -
-**   i a u P d p
-**  - - - - - - -
+**  - - - - - -
+**   i a u A b
+**  - - - - - -
 **
-**  p-vector inner (=scalar=dot) product.
+**  Apply aberration to transform natural direction into proper
+**  direction.
 **
 **  This function is part of the International Astronomical Union's
-**  SOFA (Standards Of Fundamental Astronomy) software collection.
+**  SOFA (Standards of Fundamental Astronomy) software collection.
 **
-**  Status:  vector/matrix support function.
+**  Status:  support function.
 **
 **  Given:
-**     a      double[3]     first p-vector
-**     b      double[3]     second p-vector
+**    pnat    double[3]   natural direction to the source (unit vector)
+**    v       double[3]   observer barycentric velocity in units of c
+**    s       double      distance between the Sun and the observer (au)
+**    bm1     double      sqrt(1-|v|^2): reciprocal of Lorenz factor
 **
-**  Returned (function value):
-**            double        a . b
+**  Returned:
+**    ppr     double[3]   proper direction to source (unit vector)
 **
-**  This revision:  2013 June 18
+**  Notes:
 **
-**  SOFA release 2021-07-21
+**  1) The algorithm is based on Expr. (7.40) in the Explanatory
+**     Supplement (Urban & Seidelmann 2013), but with the following
+**     changes:
+**
+**     o  Rigorous rather than approximate normalization is applied.
+**
+**     o  The gravitational potential term from Expr. (7) in
+**        Klioner (2003) is added, taking into account only the Sun's
+**        contribution.  This has a maximum effect of about
+**        0.4 microarcsecond.
+**
+**  2) In almost all cases, the maximum accuracy will be limited by the
+**     supplied velocity.  For example, if the SOFA iauEpv00 function is
+**     used, errors of up to 5 microarcseconds could occur.
+**
+**  References:
+**
+**     Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
+**     the Astronomical Almanac, 3rd ed., University Science Books
+**     (2013).
+**
+**     Klioner, Sergei A., "A practical relativistic model for micro-
+**     arcsecond astrometry in space", Astr. J. 125, 1580-1597 (2003).
+**
+**  Called:
+**     iauPdp       scalar product of two p-vectors
+**
+**  This revision:   2013 October 9
+**
+**  SOFA release 2020-07-21
 **
 **  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 */
 {
-   double w;
+   int i;
+   double pdv, w1, w2, r2, w, p[3], r;
 
 
-   w  = a[0] * b[0]
-      + a[1] * b[1]
-      + a[2] * b[2];
+   pdv = iauPdp(pnat, v);
+   w1 = 1.0 + pdv/(1.0 + bm1);
+   w2 = SRS/s;
+   r2 = 0.0;
+   for (i = 0; i < 3; i++) {
+      w = pnat[i]*bm1 + w1*v[i] + w2*(v[i] - pdv*pnat[i]);
+      p[i] = w;
+      r2 = r2 + w*w;
+   }
+   r = sqrt(r2);
+   for (i = 0; i < 3; i++) {
+      ppr[i] = p[i]/r;
+   }
 
-   return w;
+/* Finished. */
 
 /*----------------------------------------------------------------------
 **

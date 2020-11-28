@@ -22,7 +22,7 @@ double iauPdp(double a[3], double b[3])
 **
 **  This revision:  2013 June 18
 **
-**  SOFA release 2021-07-21
+**  SOFA release 2020-07-21
 **
 **  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 */

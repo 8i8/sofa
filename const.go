@@ -23,4 +23,11 @@ type ASTROM struct {
 const (
 	// D2PI 2Pi
 	D2PI = 6.283185307179586476925287
+
+	// Schwarzschild radius of the Sun (au)
+	// = 2 * 1.32712440041e20 / (2.99792458e8)^2 / 1.49597870700e11
+	SRS = 1.97412574336e-8
+
+	/* Arcseconds to radians */
+	DAS2R = 4.848136811095359935899141e-6
 )

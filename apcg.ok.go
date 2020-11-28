@@ -113,6 +113,14 @@ import "C"
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
 func Apcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
+	var astr C.iauASTROM
+	cebpv := v3dGo2C(ebpv)
+	cehp := v3sGo2C(ehp)
+	C.iauApcg(C.double(date1), C.double(date2), &cebpv[0], &cehp[0], &astr)
+	return astrC2Go(astr)
+}
+
+func goApcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
 	var (
 		// Geocentric observer {{0,0,0},{0,0,0}}
 		pv [2][3]C.double
@@ -129,7 +137,7 @@ func Apcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTR
 		&pv[0], &eb[0], &eh[0], &astr)
 
 	// C into go types.
-	astrom = aC2Go(astr)
+	astrom = astrC2Go(astr)
 
 	return
 }

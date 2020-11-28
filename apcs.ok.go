@@ -134,10 +134,8 @@ import "C"
 func Apcs(date1, date2 float64, pv [2][3]float64,
 	ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
 
-	var (
-		// Output data.
-		astr C.iauASTROM
-	)
+	// Output data.
+	var astr C.iauASTROM
 
 	// Go into c types.
 	p := v3dGo2C(pv)
@@ -149,7 +147,5 @@ func Apcs(date1, date2 float64, pv [2][3]float64,
 		&p[0], &eb[0], &eh[0], &astr)
 
 	// C into go types.
-	astrom = aC2Go(astr)
-
-	return
+	return astrC2Go(astr)
 }

@@ -1,7 +1,6 @@
 package sofa
 
 import (
-	"log"
 	"testing"
 )
 
@@ -10,12 +9,7 @@ func TestApcg13(t *testing.T) {
 	date1 := 2456165.5
 	date2 := 0.401182685
 
-	astrom, err := Apcg13(date1, date2)
-	if err != nil {
-		t.Errorf("%s failed: error %s", fname, err)
-	} else if verbose {
-		log.Printf("%s passed: error %s", fname, err)
-	}
+	astrom := Apcg13(date1, date2)
 	vvd(t, astrom.pmt, 12.65133794027378508, 1e-11, fname, "pmt")
 	vvd(t, astrom.eb[0], 0.9013108747340644755, 1e-12, fname, "eb(1)")
 	vvd(t, astrom.eb[1], -0.4174026640406119957, 1e-12, fname, "eb(2)")

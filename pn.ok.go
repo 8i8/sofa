@@ -41,7 +41,16 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
+// void iauPn(double p[3], double *r, double u[3])
 func Pn(p [3]float64) (u [3]float64, r float64) {
+	var cu [3]C.double
+	var cr C.double
+	cp := v3sGo2C(p)
+	C.iauPn(&cp[0], &cr, &cu[0])
+	return v3sC2Go(cu), float64(cr)
+}
+
+func goPn(p [3]float64) (u [3]float64, r float64) {
 
 	// Obtain the modulus and test for zero.
 	r = Pm(p)
