@@ -2,24 +2,26 @@ package sofa
 
 import "testing"
 
-/*
-**  - - - - - - - -
-**   t _ e p v 0 0
-**  - - - - - - - -
-**
-**  Test iauEpv00 function.
-**
-**  Returned:
-**     status    int         FALSE = success, TRUE = fail
-**
-**  Called: iauEpv00, vvd, viv
-**
-**  This revision:  2013 August 7
- */
+//
+//  - - - - - - - -
+//   t _ e p v 0 0
+//  - - - - - - - -
+//
+//  Test Epv00 function.
+//
+//  Returned:
+//     status    int         FALSE = success, TRUE = fail
+//
+//  Called: iauEpv00, vvd
+//
+//  This revision:  2013 August 7
+//
 func TestEpv00(t *testing.T) {
 	const fname = "Epv00"
 	pvh, pvb, err := Epv00(2400000.5, 53411.52501161)
-
+	if err != nil {
+		t.Errorf("%s error: %s", fname, err)
+	}
 	vvd(t, pvh[0][0], -0.7757238809297706813, 1e-14, fname, "ph(x)")
 	vvd(t, pvh[0][1], 0.5598052241363340596, 1e-14, fname, "ph(y)")
 	vvd(t, pvh[0][2], 0.2426998466481686993, 1e-14, fname, "ph(z)")
@@ -35,10 +37,6 @@ func TestEpv00(t *testing.T) {
 	vvd(t, pvb[1][0], -0.1091874268116823295e-1, 1e-15, fname, "vb(x)")
 	vvd(t, pvb[1][1], -0.1246525461732861538e-1, 1e-15, fname, "vb(y)")
 	vvd(t, pvb[1][2], -0.5404773180966231279e-2, 1e-15, fname, "vb(z)")
-
-	if err != nil {
-		t.Errorf("%s error: %s", fname, err)
-	}
 }
 
 // static void t_epv00(int *status)

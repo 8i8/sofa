@@ -2,20 +2,20 @@ package sofa
 
 import "testing"
 
-/*
-**  - - - - -
-**   t _ i r
-**  - - - - -
-**
-**  Test iauIr function.
-**
-**  Returned:
-**     status    int         FALSE = success, TRUE = fail
-**
-**  Called:  iauIr, vvd
-**
-**  This revision:  2013 August 7
- */
+//
+//  - - - - -
+//   t _ i r
+//  - - - - -
+//
+//  Test iauIr function.
+//
+//  Returned:
+//     status    int         FALSE = success, TRUE = fail
+//
+//  Called:  iauIr, vvd
+//
+//  This revision:  2013 August 7
+//
 func TestIr(t *testing.T) {
 	const fname = "Ir"
 	var r [3][3]float64

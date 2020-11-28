@@ -2,20 +2,20 @@ package sofa
 
 import "testing"
 
-/*
-**  - - - - - - -
-**   t _ a p c s
-**  - - - - - - -
-**
-**  Test Apcs function.
-**
-**  Returned:
-**     status    int         FALSE = success, TRUE = fail
-**
-**  Called:  Apcs, vvd
-**
-**  This revision:  2017 March 15
- */
+//
+//  - - - - - - -
+//   t _ a p c s
+//  - - - - - - -
+//
+//  Test Apcs function.
+//
+//  Returned:
+//     status    int         FALSE = success, TRUE = fail
+//
+//  Called:  Apcs, vvd
+//
+//  This revision:  2017 March 15
+//
 func TestApcs(t *testing.T) {
 	const fname = "Apcs"
 

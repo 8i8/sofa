@@ -2,20 +2,20 @@ package sofa
 
 import "testing"
 
-/*
-**  - - - - - - -
-**   t _ a p c g
-**  - - - - - - -
-**
-**  Test Apcg function.
-**
-**  Returned:
-**     status    int         FALSE = success, TRUE = fail
-**
-**  Called:  iauApcg, vvd
-**
-**  This revision:  2017 March 15
- */
+//
+//  - - - - - - -
+//   t _ a p c g
+//  - - - - - - -
+//
+//  Test Apcg function.
+//
+//  Returned:
+//     status    int         FALSE = success, TRUE = fail
+//
+//  Called:  iauApcg, vvd
+//
+//  This revision:  2017 March 15
+//
 func TestApcg(t *testing.T) {
 	const fname = "Apcg"
 

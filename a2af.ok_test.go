@@ -5,6 +5,20 @@ import (
 	"testing"
 )
 
+//
+//  - - - - - - -
+//   t _ a 2 a f
+//  - - - - - - -
+//
+//  Test iauA2af function.
+//
+//  Returned:
+//     status    int         FALSE = success, TRUE = fail
+//
+//  Called:  iauA2af, viv
+//
+//  This revision:  2013 August 7
+//
 func TestA2af(t *testing.T) {
 	const fname = "A2af"
 	sign, idmsf := A2af(4, 2.345)

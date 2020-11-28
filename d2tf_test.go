@@ -2,6 +2,20 @@ package sofa
 
 import "testing"
 
+//
+//  - - - - - - -
+//   t _ d 2 t f
+//  - - - - - - -
+//
+//  Test D2tf function.
+//
+//  Returned:
+//     status    int         FALSE = success, TRUE = fail
+//
+//  Called:  D2tf, viv
+//
+//  This revision:  2013 August 7
+//
 func TestD2tf(t *testing.T) {
 	const fname = "D2tf"
 	sign, idmsf := D2tf(4, -0.987654321)

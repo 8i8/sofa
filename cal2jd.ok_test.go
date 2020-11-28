@@ -5,20 +5,20 @@ import (
 	"testing"
 )
 
-/*
-**  - - - - - - - - -
-**   t _ c a l 2 j d
-**  - - - - - - - - -
-**
-**  Test iauCal2jd function.
-**
-**  Returned:
-**     status    int         FALSE = success, TRUE = fail
-**
-**  Called:  iauCal2jd, vvd, viv
-**
-**  This revision:  2014 August 7
- */
+//
+//  - - - - - - - - - - -
+//   T e s t C a l 2 j d
+//  - - - - - - - - - - -
+//
+//  Test iauCal2jd function.
+//
+//  Returned:
+//     status    int         FALSE = success, TRUE = fail
+//
+//  Called:  iauCal2jd, vvd, viv
+//
+//  This revision:  2014 August 7
+//
 func TestCal2jd(t *testing.T) {
 	const fname = "Cal2jd"
 
