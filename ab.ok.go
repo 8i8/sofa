@@ -68,14 +68,6 @@ func Ab(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
 	return v3sC2Go(cPpr)
 }
 
-func AbNoFuncCall(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
-	var cPpr [3]C.double
-	cPnat := v3sGo2C(pnat)
-	cV := v3sGo2C(v)
-	C.iauAb(&cPnat[0], &cV[0], C.double(s), C.double(bm1), &cPpr[0])
-	return [3]float64{float64(cPpr[0]), float64(cPpr[0]), float64(cPpr[0])}
-}
-
 func goAb(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
 	var pdv, w1, w2, r2, w, r float64
 	var p [3]float64
