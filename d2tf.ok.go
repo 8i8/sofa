@@ -3,6 +3,7 @@ package sofa
 // #include <sofa.h>
 // #include <sofam.h>
 import "C"
+import "math"
 
 //  D2tf Decompose days to hours, minutes, seconds, fraction.
 //
@@ -66,4 +67,64 @@ func D2tf(ndp int, days float64) (sign byte, ihmsf [4]int) {
 	var cIhmsf [4]C.int
 	C.iauD2tf(C.int(ndp), C.double(days), &cSign, &cIhmsf[0])
 	return byte(cSign), v4sIntC2Go(cIhmsf)
+}
+
+// goD2tf Decompose days to hours, minutes, seconds, fraction.
+func goD2tf(ndp int, days float64) (sign byte, ihmsf [4]int) {
+	var nrs, n int
+	var rs, rm, rh, a, w, ah, am, as, af float64
+
+	// Handle sign.
+	sign = '+'
+	if days < 0.0 {
+		sign = '-'
+	}
+
+	// Interval in seconds.
+	a = DAYSEC * math.Abs(days)
+
+	// Pre-round if resolution coarser than 1s (then pretend ndp=1).
+	if ndp < 0 {
+		nrs = 1
+		for n = 1; n <= -ndp; n++ {
+			if n == 2 || n == 4 {
+				nrs *= 6
+			} else {
+				nrs *= 10
+			}
+		}
+		rs = float64(nrs)
+		w = a / rs
+		a = rs * dnint(w)
+	}
+
+	// Express the unit of each field in resolution units.
+	nrs = 1
+	for n = 1; n <= ndp; n++ {
+		nrs *= 10
+	}
+	rs = float64(nrs)
+	rm = rs * 60.0
+	rh = rm * 60.0
+
+	// Round the interval and express in resolution units.
+	a = dnint(rs * a)
+
+	// Break into fields.
+	ah = a / rh
+	ah = dint(ah)
+	a -= ah * rh
+	am = a / rm
+	am = dint(am)
+	a -= am * rm
+	as = a / rs
+	as = dint(as)
+	af = a - as*rs
+
+	// Return results.
+	ihmsf[0] = int(ah)
+	ihmsf[1] = int(am)
+	ihmsf[2] = int(as)
+	ihmsf[3] = int(af)
+	return
 }

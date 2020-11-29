@@ -149,3 +149,26 @@ func dsign(a, b float64) float64 {
 	}
 	return math.Abs(a)
 }
+
+// dnint round to nearest whole number (double).
+func dnint(a float64) (res float64) {
+	if math.Abs(a) < 0.5 {
+		res = 0.0
+	} else if a < 0.0 {
+		res = math.Ceil(a - 0.5)
+	} else {
+		res = math.Floor(a + 0.5)
+	}
+	return
+}
+
+/* dint(A) - truncate to nearest whole number towards zero (double) */
+//#define dint(A) ((A)<0.0?ceil(A):floor(A))
+func dint(a float64) (res float64) {
+	if a < 0.0 {
+		res = math.Ceil(a)
+	} else {
+		res = math.Floor(a)
+	}
+	return
+}

@@ -32,4 +32,7 @@ const (
 
 	/* Arcseconds to radians */
 	DAS2R = 4.848136811095359935899141e-6
+
+	// Seconds per day.
+	DAYSEC = 86400.0
 )

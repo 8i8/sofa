@@ -77,5 +77,5 @@ func goA2af(ndp int, angle float64) (sign byte, idmsf [4]int) {
 	const F = 15.0 / D2PI
 
 	/* Scale then use days to h,m,s function. */
-	return D2tf(ndp, angle*F)
+	return goD2tf(ndp, angle*F)
 }
