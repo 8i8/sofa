@@ -2,6 +2,7 @@ package sofa
 
 // #include "sofa.h"
 import "C"
+import "math"
 
 // v3sC2GO translates a 3d vector from cgo into go.
 func v3sC2Go(in [3]C.double) (out [3]float64) {
@@ -139,4 +140,12 @@ func Abs(x int) int {
 		return -x
 	}
 	return x
+}
+
+// dsign gives the magnitude of 'a' with sign of 'b' (double).
+func dsign(a, b float64) float64 {
+	if b < 0.0 {
+		return -math.Abs(a)
+	}
+	return math.Abs(a)
 }
