@@ -43,11 +43,11 @@ import "C"
 //
 // void iauPn(double p[3], double *r, double u[3])
 func Pn(p [3]float64) (u [3]float64, r float64) {
-	var cu [3]C.double
-	var cr C.double
-	cp := v3sGo2C(p)
-	C.iauPn(&cp[0], &cr, &cu[0])
-	return v3sC2Go(cu), float64(cr)
+	var cU [3]C.double
+	var cR C.double
+	cP := v3sGo2C(p)
+	C.iauPn(&cP[0], &cR, &cU[0])
+	return v3sC2Go(cU), float64(cR)
 }
 
 func goPn(p [3]float64) (u [3]float64, r float64) {

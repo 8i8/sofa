@@ -109,17 +109,17 @@ import "fmt"
 //
 func Epv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
 
-	var h, b [2][3]C.double
+	var cPvh, cPvb [2][3]C.double
 
 	//  Earth position and velocity, heliocentric and barycentric,
 	//  with respect to the Barycentric Celestial Reference System.
-	i := C.iauEpv00(C.double(date1), C.double(date2), &h[0], &b[0])
+	i := C.iauEpv00(C.double(date1), C.double(date2), &cPvh[0], &cPvb[0])
 
 	// C into go types.
-	pvh = v3dC2Go(h)
-	pvb = v3dC2Go(b)
+	pvh = v3dC2Go(cPvh)
+	pvb = v3dC2Go(cPvb)
 
-	if i > 0 {
+	if int(i) > 0 {
 		err = fmt.Errorf(
 			"date outside the range 1900-2100 AD: %w",
 			ErrWarning)

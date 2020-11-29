@@ -118,30 +118,26 @@ import "C"
 //
 // void iauApcg13(double date1, double date2, iauASTROM *astrom)
 func Apcg13(date1, date2 float64) (astrom ASTROM) {
-	var astr C.iauASTROM
-	C.iauApcg13(C.double(date1), C.double(date2), &astr)
-	return astrC2Go(astr)
+	var cAstrom C.iauASTROM
+	C.iauApcg13(C.double(date1), C.double(date2), &cAstrom)
+	return astrC2Go(cAstrom)
 }
 
 func goApcg13(date1, date2 float64) (astrom ASTROM) {
 
-	var (
-		ehpv, ebpv [2][3]C.double
-		astr       C.iauASTROM
-	)
+	var ehpv, ebpv [2][3]C.double
+	var cAstrom C.iauASTROM
 
 	// Go into c types.
-	d1 := C.double(date1)
-	d2 := C.double(date2)
+	cDate1 := C.double(date1)
+	cDate2 := C.double(date2)
 
 	// Earth barycentric & heliocentric position/velocity (au, au/d).
-	_ = C.iauEpv00(d1, d2, &ehpv[0], &ebpv[0])
+	_ = C.iauEpv00(cDate1, cDate2, &ehpv[0], &ebpv[0])
 
 	// Compute the star-independent astrometry parameters.
-	C.iauApcg(d1, d2, &ebpv[0], &ehpv[0][0], &astr)
+	C.iauApcg(cDate1, cDate2, &ebpv[0], &ehpv[0][0], &cAstrom)
 
 	// C into go types.
-	astrom = astrC2Go(astr)
-
-	return
+	return astrC2Go(cAstrom)
 }

@@ -61,19 +61,19 @@ import "math"
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
 func Ab(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
-	var cppr [3]C.double
-	cpnat := v3sGo2C(pnat)
+	var cPpr [3]C.double
+	cPnat := v3sGo2C(pnat)
 	cv := v3sGo2C(v)
-	C.iauAb(&cpnat[0], &cv[0], C.double(s), C.double(bm1), &cppr[0])
-	return v3sC2Go(cppr)
+	C.iauAb(&cPnat[0], &cv[0], C.double(s), C.double(bm1), &cPpr[0])
+	return v3sC2Go(cPpr)
 }
 
-func AbTest(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
-	var cppr [3]C.double
-	cpnat := v3sGo2C(pnat)
-	cv := v3sGo2C(v)
-	C.iauAb(&cpnat[0], &cv[0], C.double(s), C.double(bm1), &cppr[0])
-	return [3]float64{float64(cppr[0]), float64(cppr[0]), float64(cppr[0])}
+func AbNoFuncCall(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
+	var cPpr [3]C.double
+	cPnat := v3sGo2C(pnat)
+	cV := v3sGo2C(v)
+	C.iauAb(&cPnat[0], &cV[0], C.double(s), C.double(bm1), &cPpr[0])
+	return [3]float64{float64(cPpr[0]), float64(cPpr[0]), float64(cPpr[0])}
 }
 
 func goAb(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {

@@ -65,10 +65,10 @@ import "C"
 //
 // void iauA2tf(int ndp, double angle, char *sign, int ihmsf[4])
 func A2tf(ndp int, angle float64) (sign byte, ihmsf [4]int) {
-	var s C.char
-	var i [4]C.int
-	C.iauA2tf(C.int(ndp), C.double(angle), &s, &i[0])
-	return byte(s), v4sIntC2Go(i)
+	var cSign C.char
+	var cIhmsf [4]C.int
+	C.iauA2tf(C.int(ndp), C.double(angle), &cSign, &cIhmsf[0])
+	return byte(cSign), v4sIntC2Go(cIhmsf)
 }
 
 func goA2tf(ndp int, angle float64) (sign byte, ihmsf [4]int) {

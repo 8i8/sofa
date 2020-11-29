@@ -65,9 +65,9 @@ import "math"
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
 func Ae2hd(az, el, phi float64) (ha, dec float64) {
-	var cha, cdec C.double
-	C.iauAe2hd(C.double(az), C.double(el), C.double(phi), &cha, &cdec)
-	return float64(cha), float64(cdec)
+	var cHa, cDec C.double
+	C.iauAe2hd(C.double(az), C.double(el), C.double(phi), &cHa, &cDec)
+	return float64(cHa), float64(cDec)
 }
 
 func goAe2hd(az, el, phi float64) (ha, dec float64) {

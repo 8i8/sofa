@@ -69,9 +69,10 @@ func viv(t *testing.T, ival, ivalok int, fname, test string) {
 //  This revision:  2016 April 21
 //
 func vvd(t *testing.T, val, valok, dval float64, fname, test string) {
-	a := val - valok
+	var a, f float64 // Absolute and fractional error.
+	a = val - valok
 	if a != 0.0 && math.Abs(a) > math.Abs(dval) {
-		f := math.Abs(valok / a)
+		f = math.Abs(valok / a)
 		log.Output(2, fmt.Sprintf(
 			"%s failed: %s want %.20f got %.20f (1/%.3f)",
 			fname, test, valok, val, f))

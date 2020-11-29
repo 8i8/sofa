@@ -135,17 +135,17 @@ func Apcs(date1, date2 float64, pv [2][3]float64,
 	ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
 
 	// Output data.
-	var astr C.iauASTROM
+	var cAstrom C.iauASTROM
 
 	// Go into c types.
-	p := v3dGo2C(pv)
-	eb := v3dGo2C(ebpv)
-	eh := v3sGo2C(ehp)
+	cPv := v3dGo2C(pv)
+	cEbpv := v3dGo2C(ebpv)
+	cEhp := v3sGo2C(ehp)
 
 	// Compute the star-independent astrometry parameters.
 	C.iauApcs(C.double(date1), C.double(date2),
-		&p[0], &eb[0], &eh[0], &astr)
+		&cPv[0], &cEbpv[0], &cEhp[0], &cAstrom)
 
 	// C into go types.
-	return astrC2Go(astr)
+	return astrC2Go(cAstrom)
 }

@@ -121,23 +121,22 @@ func Apcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTR
 }
 
 func goApcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
-	var (
-		// Geocentric observer {{0,0,0},{0,0,0}}
-		pv [2][3]C.double
-		// Output data.
-		astr C.iauASTROM
-	)
+
+	// Geocentric observer {{0,0,0},{0,0,0}}
+	var pv [2][3]C.double
+	// Output data.
+	var cAstrom C.iauASTROM
 
 	// Go into c types.
-	eb := v3dGo2C(ebpv)
-	eh := v3sGo2C(ehp)
+	cEbpv := v3dGo2C(ebpv)
+	cEhp := v3sGo2C(ehp)
 
 	// Compute the star-independent astrometry parameters.
 	C.iauApcs(C.double(date1), C.double(date2),
-		&pv[0], &eb[0], &eh[0], &astr)
+		&pv[0], &cEbpv[0], &cEhp[0], &cAstrom)
 
 	// C into go types.
-	astrom = astrC2Go(astr)
+	astrom = astrC2Go(cAstrom)
 
 	return
 }

@@ -58,8 +58,8 @@ import "C"
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
 func Cal2jd(iy, im, id int) (djm0, djm float64, err error) {
-	var cdjm0, cdjm C.double
-	i := C.iauCal2jd(C.int(iy), C.int(im), C.int(id), &cdjm0, &cdjm)
+	var cDjm0, cDjm C.double
+	i := C.iauCal2jd(C.int(iy), C.int(im), C.int(id), &cDjm0, &cDjm)
 	switch i {
 	case -1:
 		err = ErrYear
@@ -68,5 +68,5 @@ func Cal2jd(iy, im, id int) (djm0, djm float64, err error) {
 	case -3:
 		err = ErrDay
 	}
-	return float64(cdjm0), float64(cdjm), err
+	return float64(cDjm0), float64(cDjm), err
 }
