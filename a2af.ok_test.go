@@ -12,13 +12,12 @@ import (
 //
 //  Test A2af function.
 //
-//  Called:  iauA2af, viv
+//  Called:  A2af, viv
 //
 //  This revision:  2013 August 7
 //
 func TestA2af(t *testing.T) {
 	const fname = "A2af"
-
 	tests := []struct {
 		ref string
 		fn  func(int, float64) (byte, [4]int)
@@ -32,9 +31,11 @@ func TestA2af(t *testing.T) {
 		sign, idmsf := test.fn(4, 2.345)
 
 		if sign != '+' {
-			t.Errorf("%s failed: want \"+\" got %q", tname, sign)
+			t.Errorf("%s failed: want \"+\" got %q",
+				tname, sign)
 		} else if verbose {
-			log.Printf("%s passed: want \"+\" got %q", tname, sign)
+			log.Printf("%s passed: want \"+\" got %q",
+				tname, sign)
 		}
 		viv(t, idmsf[0], 134, tname, "0")
 		viv(t, idmsf[1], 21, tname, "1")

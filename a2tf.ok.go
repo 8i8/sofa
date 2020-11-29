@@ -73,6 +73,6 @@ func A2tf(ndp int, angle float64) (sign byte, ihmsf [4]int) {
 
 func goA2tf(ndp int, angle float64) (sign byte, ihmsf [4]int) {
 	// Scale then use days to h,m,s function.
-	sign, ihmsf = D2tf(ndp, angle/D2PI)
+	sign, ihmsf = goD2tf(ndp, angle/D2PI)
 	return
 }
