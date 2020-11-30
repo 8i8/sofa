@@ -120,23 +120,14 @@ func Apcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTR
 	return astrC2Go(astr)
 }
 
+//  Apcg For a geocentric observer, prepare star-independent astrometry
+//  parameters for transformations between ICRS and GCRS coordinates.  The
+//  Earth ephemeris is supplied by the caller.
 func goApcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
 
-	// Geocentric observer {{0,0,0},{0,0,0}}
-	var pv [2][3]C.double
-	// Output data.
-	var cAstrom C.iauASTROM
-
-	// Go into c types.
-	cEbpv := v3dGo2C(ebpv)
-	cEhp := v3sGo2C(ehp)
+	// Geocentric observer {{0,0,0},{0,0,0},{0,0,0}}
+	var pv [2][3]float64
 
 	// Compute the star-independent astrometry parameters.
-	C.iauApcs(C.double(date1), C.double(date2),
-		&pv[0], &cEbpv[0], &cEhp[0], &cAstrom)
-
-	// C into go types.
-	astrom = astrC2Go(cAstrom)
-
-	return
+	return Apcs(date1, date2, pv, ebpv, ehp)
 }

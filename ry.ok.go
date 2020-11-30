@@ -1,5 +1,7 @@
 package sofa
 
+// #include "sofa.h"
+import "C"
 import "math"
 
 //  Ry Rotate an r-matrix about the y-axis.
@@ -39,8 +41,14 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//void iauRy(double theta, double r[3][3])
-func Ry(theta float64, r [3][3]float64) (res [3][3]float64) {
+func Ry(theta float64, r [3][3]float64) (rotated [3][3]float64) {
+	cR := v3tGo2C(r)
+	C.iauRy(C.double(theta), &cR[0])
+	return v3tC2Go(cR)
+}
+
+//  Ry Rotate an r-matrix about the y-axis.
+func goRy(theta float64, r [3][3]float64) (rotated [3][3]float64) {
 	var s, c, a00, a01, a02, a20, a21, a22 float64
 
 	s = math.Sin(theta)

@@ -4,13 +4,12 @@ package sofa
 import "C"
 import "math"
 
+//  C2ixys Form the celestial to intermediate-frame-of-date matrix given
+//  the CIP X,Y and the CIO locator s.
 //
-//  - - - - - - - - - -
-//   i a u C 2 i x y s
-//  - - - - - - - - - -
-//
-//  Form the celestial to intermediate-frame-of-date matrix given the CIP
-//  X,Y and the CIO locator s.
+//  - - - - - - -
+//   C 2 i x y s
+//  - - - - - - -
 //
 //  This function is part of the International Astronomical Union's
 //  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -67,6 +66,8 @@ func C2ixys(x, y, s float64) (rc2i [3][3]float64) {
 	return v3tC2Go(cRc2i)
 }
 
+// goC2ixys Form the celestial to intermediate-frame-of-date matrix given
+// the CIP X,Y and the CIO locator s.
 func goC2ixys(x, y, s float64) (rc2i [3][3]float64) {
 	var r2, e, d float64
 
@@ -81,8 +82,8 @@ func goC2ixys(x, y, s float64) (rc2i [3][3]float64) {
 
 	// Form the matrix.
 	rc2i = Ir()
-	rc2i = Rz(e, rc2i)
-	rc2i = Ry(d, rc2i)
-	rc2i = Rz(-(e + s), rc2i)
+	rc2i = goRz(e, rc2i)
+	rc2i = goRy(d, rc2i)
+	rc2i = goRz(-(e + s), rc2i)
 	return
 }

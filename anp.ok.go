@@ -29,13 +29,13 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  double iauAnp(double a)
 func Anp(a float64) float64 {
 
 	cA := C.iauAnp(C.double(a))
 	return float64(cA)
 }
 
+// Anp Normalize angle into the range 0 <= a < 2pi.
 func goAnp(a float64) float64 {
 
 	a = math.Mod(a, D2PI)

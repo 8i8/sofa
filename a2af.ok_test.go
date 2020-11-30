@@ -33,7 +33,7 @@ func TestA2af(t *testing.T) {
 		if sign != '+' {
 			t.Errorf("%s failed: want \"+\" got %q",
 				tname, sign)
-		} else if verbose {
+		} else if *verbose {
 			log.Printf("%s passed: want \"+\" got %q",
 				tname, sign)
 		}

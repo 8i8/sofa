@@ -15,10 +15,32 @@ import "testing"
 //
 func TestAnpm(t *testing.T) {
 	const fname = "Anpm"
-	vvd(t, Anpm(-4.0), 2.283185307179586477, 1e-12, fname, "")
+	tests := []struct {
+		ref string
+		fn  func(float64) float64
+	}{
+		{"cgo", Anpm},
+		{"go", goAnpm},
+	}
+	for _, test := range tests {
+		tname := fname + " " + test.ref
+		vvd(t, test.fn(-4.0), 2.283185307179586477, 1e-12, tname, "")
+	}
 }
 
-func TestGoAnpm(t *testing.T) {
-	const fname = "Anpm"
-	vvd(t, goAnpm(-4.0), 2.283185307179586477, 1e-12, fname, "")
+func BenchmarkAnpm(b *testing.B) {
+	tests := []struct {
+		ref string
+		fn  func(float64) float64
+	}{
+		{"cgo", Anpm},
+		{"go", goAnpm},
+	}
+	for _, test := range tests {
+		b.Run(test.ref, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = test.fn(-4.0)
+			}
+		})
+	}
 }

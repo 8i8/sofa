@@ -1,13 +1,15 @@
 package sofa
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"math"
 	"testing"
 )
 
-var verbose = false
+// verbose shows the output of all tests.
+var verbose = flag.Bool("V", false, "show tests output")
 
 func init() {
 	log.SetFlags(log.Lshortfile)
@@ -40,7 +42,7 @@ func viv(t *testing.T, ival, ivalok int, fname, test string) {
 			"%s failed: %s: want %d got %d",
 			fname, test, ival, ivalok))
 		t.Fail()
-	} else if verbose {
+	} else if *verbose {
 		log.Output(2, fmt.Sprintf(
 			"%s passed: %s: want %d got %d",
 			fname, test, ival, ivalok))
@@ -77,7 +79,7 @@ func vvd(t *testing.T, val, valok, dval float64, fname, test string) {
 			"%s failed: %s want %.20f got %.20f (1/%.3f)",
 			fname, test, valok, val, f))
 		t.Fail()
-	} else if verbose {
+	} else if *verbose {
 		f := math.Abs(valok / a)
 		log.Output(2, fmt.Sprintf(
 			"%s passed: %s want %.20f got %.20f (1/%.3f)",

@@ -3,16 +3,13 @@ package sofa
 import "testing"
 
 //
-//  - - - - -
-//   t _ i r
-//  - - - - -
+//  - - - - - - -
+//   T e s t I r
+//  - - - - - - -
 //
-//  Test iauIr function.
+//  Test Ir function.
 //
-//  Returned:
-//     status    int         FALSE = success, TRUE = fail
-//
-//  Called:  iauIr, vvd
+//  Called:  Ir, vvd
 //
 //  This revision:  2013 August 7
 //

@@ -18,26 +18,22 @@ func TestC2ixys(t *testing.T) {
 	var x, y, s float64
 	var rc2i [3][3]float64
 
-	tests := []struct {
-		ref string
-		fn  func(a, b, c float64) [3][3]float64
-	}{{
-		ref: "cgo",
-		fn:  C2ixys,
-	}, {
-		ref: "go",
-		fn:  goC2ixys,
-	}}
-
 	x = 0.5791308486706011000e-3
 	y = 0.4020579816732961219e-4
 	s = -0.1220040848472271978e-7
 
+	tests := []struct {
+		ref string
+		fn  func(a, b, c float64) [3][3]float64
+	}{
+		{"cgo", C2ixys},
+		{"go", goC2ixys},
+	}
+
 	for _, test := range tests {
 
-		rc2i = test.fn(x, y, s)
-
 		tname := fname + " " + test.ref
+		rc2i = test.fn(x, y, s)
 
 		vvd(t, rc2i[0][0], 0.9999998323037157138, 1e-12, tname, "11")
 		vvd(t, rc2i[0][1], 0.5581984869168499149e-9, 1e-12, tname, "12")
@@ -53,7 +49,7 @@ func TestC2ixys(t *testing.T) {
 	}
 }
 
-func BenchmarkC2izys(b *testing.B) {
+func BenchmarkC2ixys(b *testing.B) {
 	var x, y, s float64
 	x = 0.5791308486706011000e-3
 	y = 0.4020579816732961219e-4
@@ -62,13 +58,10 @@ func BenchmarkC2izys(b *testing.B) {
 	tests := []struct {
 		ref string
 		fn  func(a, b, c float64) [3][3]float64
-	}{{
-		ref: "cgo",
-		fn:  C2ixys,
-	}, {
-		ref: "go",
-		fn:  goC2ixys,
-	}}
+	}{
+		{"cgo", C2ixys},
+		{"go", goC2ixys},
+	}
 
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {

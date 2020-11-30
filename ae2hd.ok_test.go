@@ -21,8 +21,41 @@ func TestAe2hd(t *testing.T) {
 	e = 1.1
 	p = 0.7
 
-	h, d = Ae2hd(a, e, p)
+	tests := []struct {
+		ref string
+		fn  func(a, b, c float64) (e, f float64)
+	}{
+		{"cgo", Ae2hd},
+		{"go", goAe2hd},
+	}
 
-	vvd(t, h, 0.5933291115507309663, 1e-14, fname, "h")
-	vvd(t, d, 0.9613934761647817620, 1e-14, fname, "d")
+	for _, test := range tests {
+		tname := fname + " " + test.ref
+		h, d = test.fn(a, e, p)
+
+		vvd(t, h, 0.5933291115507309663, 1e-14, tname, "h")
+		vvd(t, d, 0.9613934761647817620, 1e-14, tname, "d")
+	}
+}
+
+func BenchmarkAe2hd(b *testing.B) {
+	var a, e, p float64
+	a = 5.5
+	e = 1.1
+	p = 0.7
+	tests := []struct {
+		ref string
+		fn  func(a, b, c float64) (e, f float64)
+	}{
+		{"cgo", Ae2hd},
+		{"go", goAe2hd},
+	}
+
+	for _, test := range tests {
+		b.Run(test.ref, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _ = test.fn(a, e, p)
+			}
+		})
+	}
 }

@@ -116,28 +116,22 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-// void iauApcg13(double date1, double date2, iauASTROM *astrom)
 func Apcg13(date1, date2 float64) (astrom ASTROM) {
 	var cAstrom C.iauASTROM
 	C.iauApcg13(C.double(date1), C.double(date2), &cAstrom)
 	return astrC2Go(cAstrom)
 }
 
+//  Apcg13 For a geocentric observer, prepare star-independent astrometry
+//  parameters for transformations between ICRS and GCRS coordinates.  The
+//  caller supplies the date, and SOFA models are used to predict the
+//  Earth ephemeris.
+// TODO gocode
 func goApcg13(date1, date2 float64) (astrom ASTROM) {
 
-	var ehpv, ebpv [2][3]C.double
-	var cAstrom C.iauASTROM
-
-	// Go into c types.
-	cDate1 := C.double(date1)
-	cDate2 := C.double(date2)
-
 	// Earth barycentric & heliocentric position/velocity (au, au/d).
-	_ = C.iauEpv00(cDate1, cDate2, &ehpv[0], &ebpv[0])
+	pvh, pvb, _ := Epv00(date1, date2)
 
 	// Compute the star-independent astrometry parameters.
-	C.iauApcg(cDate1, cDate2, &ebpv[0], &ehpv[0][0], &cAstrom)
-
-	// C into go types.
-	return astrC2Go(cAstrom)
+	return goApcg(date1, date2, pvb, pvh[0])
 }

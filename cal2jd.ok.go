@@ -2,12 +2,13 @@ package sofa
 
 // #include <sofa.h>
 import "C"
+import "errors"
 
 //  Cal2jd returns the MJD, Modified Julian Date of the given date.
 //
-//  - - - - - - - - - -
-//   i a u C a l 2 j d
-//  - - - - - - - - - -
+//  - - - - - - -
+//   C a l 2 j d
+//  - - - - - - -
 //
 //  Gregorian Calendar to Julian Date.
 //
@@ -69,4 +70,52 @@ func Cal2jd(iy, im, id int) (djm0, djm float64, err error) {
 		err = ErrDay
 	}
 	return float64(cDjm0), float64(cDjm), err
+}
+
+var errCal2jdOne = errors.New("-1")
+var errCal2jdTwo = errors.New("-2")
+var errCal2jdThree = errors.New("-3")
+
+// goCal2jd returns the MJD, Modified Julian Date of the given date.
+func goCal2jd(iy, im, id int) (djm0, djm float64, err error) {
+	var ly, my int
+	var iypmy int // was a long in c code
+
+	// Earliest year allowed (4800BC)
+	const IYMIN = -4799
+
+	// Month lengths in days
+	var mtab = [...]int{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+
+	// Validate year and month.
+	if iy < IYMIN {
+		err = errCal2jdOne
+		return
+	}
+	if im < 1 || im > 12 {
+		err = errCal2jdTwo
+		return
+	}
+
+	// If February in a leap year, 1, otherwise 0.
+	if (im == 2) && ((iy % 4) == 0) && ((iy%100 != 0) || ((iy % 400) != 0)) {
+		ly = 1
+	}
+
+	// Validate day, taking into account leap years.
+	if (id < 1) || (id > (mtab[im-1] + ly)) {
+		err = errCal2jdThree
+		return
+	}
+
+	// Return result.
+	my = (im - 14) / 12
+	iypmy = iy + my
+	djm0 = DJM0
+	djm = float64(((1461*(iypmy+4800))/4 +
+		(367*(im-2-12*my))/12 -
+		(3*((iypmy+4900)/100))/4 +
+		id - 2432076))
+
+	return
 }

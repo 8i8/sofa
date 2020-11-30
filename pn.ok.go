@@ -3,12 +3,11 @@ package sofa
 // #include "sofa.h"
 import "C"
 
+//  Pn Convert a p-vector into modulus and unit vector.
 //
-//  - - - - - -
-//   i a u P n
-//  - - - - - -
-//
-//  Convert a p-vector into modulus and unit vector.
+//  - - -
+//   P n
+//  - - -
 //
 //  This function is part of the International Astronomical Union's
 //  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -41,16 +40,16 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-// void iauPn(double p[3], double *r, double u[3])
-func Pn(p [3]float64) (u [3]float64, r float64) {
+func Pn(p [3]float64) (r float64, u [3]float64) {
 	var cU [3]C.double
 	var cR C.double
 	cP := v3sGo2C(p)
 	C.iauPn(&cP[0], &cR, &cU[0])
-	return v3sC2Go(cU), float64(cR)
+	return float64(cR), v3sC2Go(cU)
 }
 
-func goPn(p [3]float64) (u [3]float64, r float64) {
+// goPn Convert a p-vector into modulus and unit vector.
+func goPn(p [3]float64) (r float64, u [3]float64) {
 
 	// Obtain the modulus and test for zero.
 	r = Pm(p)

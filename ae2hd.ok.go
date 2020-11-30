@@ -70,6 +70,8 @@ func Ae2hd(az, el, phi float64) (ha, dec float64) {
 	return float64(cHa), float64(cDec)
 }
 
+// goAe2hd Horizon to equatorial coordinates:  transform azimuth and
+// altitude to hour angle and declination.
 func goAe2hd(az, el, phi float64) (ha, dec float64) {
 	var sa, ca, se, ce, sp, cp, x, y, z, r float64
 

@@ -32,6 +32,7 @@ func Anpm(a float64) float64 {
 	return float64(cA)
 }
 
+// Anpm Normalize angle into the range -pi <= a < +pi.
 func goAnpm(a float64) float64 {
 	var w float64
 
