@@ -127,7 +127,6 @@ func goBp00(date1, date2 float64) (rb, rp, rbp [3][3]float64) {
 	rp = goRz(chia, rp)
 
 	// Bias-precession matrix: GCRS to mean of date.
-	rbp = Rxr(rp, rb)
-
+	rbp = goRxr(rp, rb)
 	return
 }

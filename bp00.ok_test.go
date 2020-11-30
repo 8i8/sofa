@@ -20,7 +20,7 @@ func TestBp00(t *testing.T) {
 		fn  func(a, b float64) (c, d, e [3][3]float64)
 	}{
 		{"cgo", Bp00},
-		//{"go", goBp00},
+		{"go", goBp00},
 	}
 
 	for _, test := range tests {
@@ -83,5 +83,23 @@ func TestBp00(t *testing.T) {
 			tname, "rbp32")
 		vvd(t, rbp[2][2], 0.9999999285680153377, 1e-12,
 			tname, "rbp33")
+	}
+}
+
+func BenchmarkBp00(b *testing.B) {
+	tests := []struct {
+		ref string
+		fn  func(a, b float64) (c, d, e [3][3]float64)
+	}{
+		{"cgo", Bp00},
+		{"go", goBp00},
+	}
+
+	for _, test := range tests {
+		b.Run(test.ref, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _, _ = test.fn(2400000.5, 50123.9999)
+			}
+		})
 	}
 }
