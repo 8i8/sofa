@@ -3,17 +3,23 @@ package sofa
 // #include "sofa.h"
 import "C"
 
-//  Apcg For a geocentric observer, prepare star-independent astrometry
-//  parameters for transformations between ICRS and GCRS coordinates.  The
-//  Earth ephemeris is supplied by the caller.
+//  Apci For a terrestrial observer, prepare star-independent astrometry
+//  parameters for transformations between ICRS and geocentric CIRS
+//  coordinates.  The Earth ephemeris and CIP/CIO are supplied by the
+//  caller.
 //
 //  - - - - -
-//   A p c g
+//   A p c i
 //  - - - - -
+//
+//  For a terrestrial observer, prepare star-independent astrometry
+//  parameters for transformations between ICRS and geocentric CIRS
+//  coordinates.  The Earth ephemeris and CIP/CIO are supplied by the
+//  caller.
 //
 //  The parameters produced by this function are required in the
-//  parallax, light deflection and aberration parts of the astrometric
-//  transformation chain.
+//  parallax, light deflection, aberration, and bias-precession-nutation
+//  parts of the astrometric transformation chain.
 //
 //  This function is part of the International Astronomical Union's
 //  SOFA (Standards of Fundamental Astronomy) software collection.
@@ -23,8 +29,10 @@ import "C"
 //  Given:
 //     date1  double       TDB as a 2-part...
 //     date2  double       ...Julian Date (Note 1)
-//     ebpv   double[2][3] Earth barycentric pos/vel (au, au/day)
+//     ebpv   double[2][3] Earth barycentric position/velocity (au, au/day)
 //     ehp    double[3]    Earth heliocentric position (au)
+//     x,y    double       CIP X,Y (components of unit vector)
+//     s      double       the CIO locator s (radians)
 //
 //  Returned:
 //     astrom iauASTROM*   star-independent astrometry parameters:
@@ -73,7 +81,12 @@ import "C"
 //
 //  2) All the vectors are with respect to BCRS axes.
 //
-//  3) This is one of several functions that inserts into the astrom
+//  3) In cases where the caller does not wish to provide the Earth
+//     ephemeris and CIP/CIO, the function iauApci13 can be used instead
+//     of the present function.  This computes the required quantities
+//     using other SOFA functions.
+//
+//  4) This is one of several functions that inserts into the astrom
 //     structure star-independent parameters needed for the chain of
 //     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
 //
@@ -100,34 +113,41 @@ import "C"
 //     aberration and parallax (unless subsumed into the ICRS <-> GCRS
 //     transformation), and atmospheric refraction.
 //
-//  4) The context structure astrom produced by this function is used by
+//  5) The context structure astrom produced by this function is used by
 //     iauAtciq* and iauAticq*.
 //
 //  Called:
-//     iauApcs      astrometry parameters, ICRS-GCRS, space observer
+//     iauApcg      astrometry parameters, ICRS-GCRS, geocenter
+//     iauC2ixys    celestial-to-intermediate matrix, given X,Y and s
 //
-//  This revision:   2013 October 9
+//  This revision:   2013 September 25
 //
 //  SOFA release 2020-07-21
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Apcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
-	var astr C.iauASTROM
-	cebpv := v3dGo2C(ebpv)
-	cehp := v3sGo2C(ehp)
-	C.iauApcg(C.double(date1), C.double(date2), &cebpv[0], &cehp[0], &astr)
-	return astrC2Go(astr)
+func Apci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
+	x, y, s float64) (astrom ASTROM) {
+	var cASTROM C.iauASTROM
+	// Go into c.
+	cEbpv := v3dGo2C(ebpv)
+	cEhp := v3sGo2C(ehp)
+	C.iauApci(C.double(date1), C.double(date2), &cEbpv[0], &cEhp[0],
+		C.double(x), C.double(y), C.double(s), &cASTROM)
+	return astrC2Go(cASTROM)
 }
 
-//  Apcg For a geocentric observer, prepare star-independent astrometry
-//  parameters for transformations between ICRS and GCRS coordinates.  The
-//  Earth ephemeris is supplied by the caller.
-func goApcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
+// goApci For a terrestrial observer, prepare star-independent astrometry
+// parameters for transformations between ICRS and geocentric CIRS
+// coordinates.  The Earth ephemeris and CIP/CIO are supplied by the
+// caller.
+func goApci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
+	x, y, s float64) (astrom ASTROM) {
 
-	// Geocentric observer {{0,0,0},{0,0,0},{0,0,0}}
-	var pv [2][3]float64
+	// Star-independent astrometry parameters for geocenter.
+	astrom = goApcg(date1, date2, ebpv, ehp)
 
-	// Compute the star-independent astrometry parameters.
-	return goApcs(date1, date2, pv, ebpv, ehp)
+	// CIO based BPN matrix.
+	astrom.bpn = goC2ixys(x, y, s)
+	return
 }
