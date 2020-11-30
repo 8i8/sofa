@@ -148,7 +148,11 @@ func Apci13(date1, date2 float64) (astrom ASTROM, eo float64) {
 	return
 }
 
-// func goApci13() {
+// goApci13 For a terrestrial observer, prepare star-independent
+// astrometry parameters for transformations between ICRS and geocentric
+// CIRS coordinates.  The caller supplies the date, and SOFA models are
+// used to predict the Earth ephemeris and CIP/CIO.
+//func goApci13(date1, date2 float64) (astrom ASTROM, eo float64) {
 //     var r [3][3]float64
 //     var ehpv, ebpv [2][3]float64
 //     var x, y, s float64

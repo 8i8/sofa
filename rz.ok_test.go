@@ -7,7 +7,7 @@ import "testing"
 //   T e s t R z
 //  - - - - - - -
 //
-//  Test iauRz function.
+//  Test Rz function.
 //
 //  Called:  Rz, vvd
 //

@@ -4,6 +4,26 @@ package sofa
 import "C"
 import "math"
 
+type ASTROM struct {
+	pmt    float64       /* PM time interval (SSB, Julian years) */
+	eb     [3]float64    /* SSB to observer (vector, au) */
+	eh     [3]float64    /* Sun to observer (unit vector) */
+	em     float64       /* distance from Sun to observer (au) */
+	v      [3]float64    /* barycentric observer velocity (vector, c) */
+	bm1    float64       /* sqrt(1-|v|^2): reciprocal of Lorenz factor */
+	bpn    [3][3]float64 /* bias-precession-nutation matrix */
+	along  float64       /* longitude + s' + dERA(DUT) (radians) */
+	phi    float64       /* geodetic latitude (radians) */
+	xpl    float64       /* polar motion xp wrt local meridian (radians) */
+	ypl    float64       /* polar motion yp wrt local meridian (radians) */
+	sphi   float64       /* sine of geodetic latitude */
+	cphi   float64       /* cosine of geodetic latitude */
+	diurab float64       /* magnitude of diurnal aberration vector */
+	eral   float64       /* "local" Earth rotation angle (radians) */
+	refa   float64       /* refraction constant A (radians) */
+	refb   float64       /* refraction constant B (radians) */
+}
+
 // v3sC2GO translates a 3d vector from cgo into go.
 func v3sC2Go(in [3]C.double) (out [3]float64) {
 	out[0] = float64(in[0])

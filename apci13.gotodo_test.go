@@ -9,15 +9,13 @@ import "testing"
 //
 //  Test Apci13 function.
 //
-//  Called:  iauApci13, vvd
+//  Called:  Apci13, vvd
 //
 //  This revision:  2017 March 15
 //
 func TestApci13(t *testing.T) {
 	const fname = "Apci13"
-
 	var date1, date2 float64
-
 	date1 = 2456165.5
 	date2 = 0.401182685
 
@@ -77,5 +75,27 @@ func TestApci13(t *testing.T) {
 			tname, "bpn(3,3)")
 		vvd(t, eo, -0.2900618712657375647e-2, 1e-12,
 			tname, "eo")
+	}
+}
+
+func benchmarkApci13(b *testing.B) {
+	var date1, date2 float64
+	date1 = 2456165.5
+	date2 = 0.401182685
+
+	tests := []struct {
+		ref string
+		fn  func(a, b float64) (ASTROM, float64)
+	}{
+		//{"cgo", Apci13},
+		//{"go", goApci13},
+	}
+
+	for _, test := range tests {
+		b.Run(test.ref, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _ = test.fn(date1, date2)
+			}
+		})
 	}
 }

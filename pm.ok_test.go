@@ -3,14 +3,11 @@ package sofa
 import "testing"
 
 //
-//  - - - - -
-//   t _ p m
-//  - - - - -
+//  - - - - - - -
+//   T e s t P m
+//  - - - - - - -
 //
 //  Test Pm function.
-//
-//  Returned:
-//     status    int         FALSE = success, TRUE = fail
 //
 //  Called:  iauPm, vvd
 //
