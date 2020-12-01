@@ -4,7 +4,7 @@ package sofa
 import "C"
 import "math"
 
-//  Bp00 Frame bias and precession, IAU 2000.
+//  CgoBp00 Frame bias and precession, IAU 2000.
 //
 //  - - - - -
 //   B p 0 0
@@ -82,15 +82,16 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Bp00(date1, date2 float64) (rb, rp, rbp [3][3]float64) {
+//  CgoBp00 Frame bias and precession, IAU 2000.
+func CgoBp00(date1, date2 float64) (rb, rp, rbp [3][3]float64) {
 	var cRb, cRp, cRbp [3][3]C.double
 	C.iauBp00(C.double(date1), C.double(date2),
 		&cRb[0], &cRp[0], &cRbp[0])
 	return v3tC2Go(cRb), v3tC2Go(cRp), v3tC2Go(cRbp)
 }
 
-//  Bp00 Frame bias and precession, IAU 2000.
-func goBp00(date1, date2 float64) (rb, rp, rbp [3][3]float64) {
+//  GoBp00 Frame bias and precession, IAU 2000.
+func GoBp00(date1, date2 float64) (rb, rp, rbp [3][3]float64) {
 	// J2000.0 obliquity (Lieske et al. 1977)
 	const EPS0 = 84381.448 * DAS2R
 
@@ -101,7 +102,7 @@ func goBp00(date1, date2 float64) (rb, rp, rbp [3][3]float64) {
 	t = ((date1 - DJ00) + date2) / DJC
 
 	// Frame bias.
-	dpsibi, depsbi, dra0 = Bi00(dpsibi, depsbi, dra0)
+	dpsibi, depsbi, dra0 = GoBi00(dpsibi, depsbi, dra0)
 
 	// Precession angles (Lieske et al. 1977)
 	psia77 = (5038.7784 + (-1.07259+(-0.001147)*t)*t) * t * DAS2R

@@ -1,6 +1,9 @@
 package sofa
 
-//  Bi00 Frame bias components of IAU 2000 precession-nutation models
+// #include "sofa.h"
+import "C"
+
+//  CgoBi00 Frame bias components of IAU 2000 precession-nutation models
 //  (part of MHB2000 with additions).
 //
 //  - - - - -
@@ -50,7 +53,19 @@ package sofa
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Bi00(dpsibi, depsbi, dra float64) (a, b, c float64) {
+//  Bi00 Frame bias components of IAU 2000 precession-nutation models
+//  (part of MHB2000 with additions).
+func CgoBi00(dpsibi, depsbi, dra float64) (a, b, c float64) {
+	cA := C.double(dpsibi)
+	cB := C.double(depsbi)
+	cC := C.double(dra)
+	C.iauBi00(&cA, &cB, &cC)
+	return float64(cA), float64(cB), float64(cC)
+}
+
+//  Bi00 Frame bias components of IAU 2000 precession-nutation models
+//  (part of MHB2000 with additions).
+func GoBi00(dpsibi, depsbi, dra float64) (a, b, c float64) {
 	// The frame bias corrections in longitude and obliquity.
 	const DPBIAS = -0.041775 * DAS2R
 	const DEBIAS = -0.0068192 * DAS2R

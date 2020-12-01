@@ -19,8 +19,8 @@ func TestBp00(t *testing.T) {
 		ref string
 		fn  func(a, b float64) (c, d, e [3][3]float64)
 	}{
-		{"cgo", Bp00},
-		{"go", goBp00},
+		{"cgo", CgoBp00},
+		{"go", GoBp00},
 	}
 
 	for _, test := range tests {
@@ -91,8 +91,8 @@ func BenchmarkBp00(b *testing.B) {
 		ref string
 		fn  func(a, b float64) (c, d, e [3][3]float64)
 	}{
-		{"cgo", Bp00},
-		{"go", goBp00},
+		{"cgo", CgoBp00},
+		{"go", GoBp00},
 	}
 
 	for _, test := range tests {
