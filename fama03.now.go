@@ -4,11 +4,11 @@ package sofa
 import "C"
 import "math"
 
-//  CgoFae03 Mean longitude of Earth (IERS Conventions 2003).
+//  CgoFama03 Mean longitude of Mars (IERS Conventions 2003).
 //
-//  - - - - - -
-//   F a e 0 3
-//  - - - - - -
+//  - - - - - - -
+//   F a m a 0 3
+//  - - - - - - -
 //
 //  This function is part of the International Astronomical Union's
 //  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -19,7 +19,7 @@ import "math"
 //     t     double    TDB, Julian centuries since J2000.0 (Note 1)
 //
 //  Returned (function value):
-//           double    mean longitude of Earth, radians (Note 2)
+//           double    mean longitude of Mars, radians (Note 2)
 //
 //  Notes:
 //
@@ -46,16 +46,14 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  Mean longitude of Earth (IERS Conventions 2003).
-func Fae03(t float64) float64 {
+//  Mean longitude of Mars (IERS Conventions 2003).
+func CgoFama03(t float64) float64 {
 	var cF C.double
-	cF = C.iauFae03(C.double(t))
+	cF = C.iauFama03(C.double(t))
 	return float64(cF)
 }
 
-// goFae03 Fundamental argument, IERS Conventions (2003): mean longitude
-// of Earth.
-func goFae03(t float64) float64 {
-	// Mean longitude of Earth (IERS Conventions 2003).
-	return math.Mod(1.753470314+628.3075849991*t, D2PI)
+// GoFama03 Mean longitude of Mars (IERS Conventions 2003).
+func GoFama03(t float64) float64 {
+	return math.Mod(6.203480913+334.0612426700*t, D2PI)
 }
