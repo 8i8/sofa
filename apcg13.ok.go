@@ -3,10 +3,10 @@ package sofa
 // #include <sofa.h>
 import "C"
 
-//  Apcg13 For a geocentric observer, prepare star-independent astrometry
-//  parameters for transformations between ICRS and GCRS coordinates.  The
-//  caller supplies the date, and SOFA models are used to predict the
-//  Earth ephemeris.
+//  CgoApcg13 For a geocentric observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and GCRS
+//  coordinates.  The caller supplies the date, and SOFA models are used
+//  to predict the Earth ephemeris.
 //
 //  - - - - - - -
 //   A p c g 1 3
@@ -116,22 +116,25 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Apcg13(date1, date2 float64) (astrom ASTROM) {
+//  CgoApcg13 For a geocentric observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and GCRS
+//  coordinates.  The caller supplies the date, and SOFA models are used
+//  to predict the Earth ephemeris.
+func CgoApcg13(date1, date2 float64) (astrom ASTROM) {
 	var cAstrom C.iauASTROM
 	C.iauApcg13(C.double(date1), C.double(date2), &cAstrom)
 	return astrC2Go(cAstrom)
 }
 
-//  Apcg13 For a geocentric observer, prepare star-independent astrometry
-//  parameters for transformations between ICRS and GCRS coordinates.  The
-//  caller supplies the date, and SOFA models are used to predict the
-//  Earth ephemeris.
-// TODO gocode
-func goApcg13(date1, date2 float64) (astrom ASTROM) {
+//  GoApcg13 For a geocentric observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and GCRS
+//  coordinates.  The caller supplies the date, and SOFA models are used
+//  to predict the Earth ephemeris.
+func GoApcg13(date1, date2 float64) (astrom ASTROM) {
 
 	// Earth barycentric & heliocentric position/velocity (au, au/d).
-	pvh, pvb, _ := Epv00(date1, date2)
+	pvh, pvb, _ := CgoEpv00(date1, date2)
 
 	// Compute the star-independent astrometry parameters.
-	return goApcg(date1, date2, pvb, pvh[0])
+	return GoApcg(date1, date2, pvb, pvh[0])
 }

@@ -1,6 +1,9 @@
 package sofa
 
-//  Ir Initialize an r-matrix to the identity matrix.
+// #include "sofa.h"
+import "C"
+
+//  CgoIr Initialize an r-matrix to the identity matrix.
 //
 //  - - -
 //   I r
@@ -20,7 +23,15 @@ package sofa
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Ir() (idmatrix [3][3]float64) {
+//  CgoIr Initialize an r-matrix to the identity matrix.
+func CgoIr() (idm [3][3]float64) {
+	var cIdm [3][3]C.double
+	C.iauIr(&cIdm[0])
+	return v3tC2Go(cIdm)
+}
+
+//  GoIr Initialize an r-matrix to the identity matrix.
+func GoIr() (idmatrix [3][3]float64) {
 	idmatrix[0][0] = 1.0
 	idmatrix[0][1] = 0.0
 	idmatrix[0][2] = 0.0

@@ -25,8 +25,8 @@ func TestAe2hd(t *testing.T) {
 		ref string
 		fn  func(a, b, c float64) (e, f float64)
 	}{
-		{"cgo", Ae2hd},
-		{"go", goAe2hd},
+		{"cgo", CgoAe2hd},
+		{"go", GoAe2hd},
 	}
 
 	for _, test := range tests {
@@ -47,8 +47,8 @@ func BenchmarkAe2hd(b *testing.B) {
 		ref string
 		fn  func(a, b, c float64) (e, f float64)
 	}{
-		{"cgo", Ae2hd},
-		{"go", goAe2hd},
+		{"cgo", CgoAe2hd},
+		{"go", GoAe2hd},
 	}
 
 	for _, test := range tests {

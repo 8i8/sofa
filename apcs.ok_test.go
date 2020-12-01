@@ -42,8 +42,8 @@ func TestApcs(t *testing.T) {
 		ref string
 		fn  func(a, b float64, c, d [2][3]float64, e [3]float64) ASTROM
 	}{
-		{"cgo", Apcs},
-		{"go", goApcs},
+		{"cgo", CgoApcs},
+		{"go", GoApcs},
 	}
 
 	for _, test := range tests {
@@ -102,8 +102,8 @@ func BenchmarkApcs(b *testing.B) {
 		ref string
 		fn  func(a, b float64, c, d [2][3]float64, e [3]float64) ASTROM
 	}{
-		{"cgo", Apcs},
-		{"go", goApcs},
+		{"cgo", CgoApcs},
+		{"go", GoApcs},
 	}
 
 	for _, test := range tests {

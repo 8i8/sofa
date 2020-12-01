@@ -5,7 +5,8 @@ package sofa
 // #include <sofam.h>
 import "C"
 
-//  A2af Decompose radians into degrees, arcminutes, arcseconds, fraction.
+//  CgoA2af Decompose radians into degrees, arcminutes, arcseconds,
+//  fraction.
 //
 //  - - - - -
 //   A 2 a f
@@ -65,17 +66,21 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func A2af(ndp int, angle float64) (sign byte, idmsf [4]int) {
+//  CgoA2af Decompose radians into degrees, arcminutes, arcseconds,
+//  fraction.
+func CgoA2af(ndp int, angle float64) (sign byte, idmsf [4]int) {
 	var cSign C.char
 	var cIdmsf [4]C.int
 	C.iauA2af(C.int(ndp), C.double(angle), &cSign, &cIdmsf[0])
 	return byte(cSign), v4sIntC2Go(cIdmsf)
 }
 
-func goA2af(ndp int, angle float64) (sign byte, idmsf [4]int) {
+//  GoA2af Decompose radians into degrees, arcminutes, arcseconds,
+//  fraction.
+func GoA2af(ndp int, angle float64) (sign byte, idmsf [4]int) {
 	/* Hours to degrees * radians to turns */
 	const F = 15.0 / D2PI
 
 	/* Scale then use days to h,m,s function. */
-	return goD2tf(ndp, angle*F)
+	return GoD2tf(ndp, angle*F)
 }

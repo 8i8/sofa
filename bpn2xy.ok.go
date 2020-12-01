@@ -1,6 +1,9 @@
 package sofa
 
-//  Bpn2xy Extract from the bias-precession-nutation matrix the X,Y
+// #include "sofa.h"
+import "C"
+
+//  CgoBpn2xy Extract from the bias-precession-nutation matrix the X,Y
 //  coordinates of the Celestial Intermediate Pole.
 //
 //  - - - - - - -
@@ -46,7 +49,19 @@ package sofa
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Bpn2xy(rbpn [3][3]float64) (x, y float64) {
+//  CgoBpn2xy Extract from the bias-precession-nutation matrix the X,Y
+//  coordinates of the Celestial Intermediate Pole.
+func CgoBpn2xy(rbpn [3][3]float64) (x, y float64) {
+	cX := C.double(x)
+	cY := C.double(y)
+	cRbpn := v3tGo2C(rbpn)
+	C.iauBpn2xy(&cRbpn[0], &cX, &cY)
+	return float64(cX), float64(cY)
+}
+
+//  GoBpn2xy Extract from the bias-precession-nutation matrix the X,Y
+//  coordinates of the Celestial Intermediate Pole.
+func GoBpn2xy(rbpn [3][3]float64) (x, y float64) {
 	// Extract the X,Y coordinates.
 	x = rbpn[2][0]
 	y = rbpn[2][1]

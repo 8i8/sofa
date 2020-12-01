@@ -47,8 +47,8 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-// double iauFaom03(double t)
-// Mean longitude of the Moon's ascending node (IERS Conventions 2003).
+//  CgoFaom03 Mean longitude of the Moon's ascending node (IERS
+//  Conventions 2003).
 func CgoFaom03(t float64) float64 {
 	var cF C.double
 	cF = C.iauFaom03(C.double(t))

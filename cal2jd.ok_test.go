@@ -22,8 +22,8 @@ func TestCal2jd(t *testing.T) {
 		ref string
 		fn  func(a, b, c int) (d, e float64, err error)
 	}{
-		{"cgo", Cal2jd},
-		{"go", goCal2jd},
+		{"cgo", CgoCal2jd},
+		{"go", GoCal2jd},
 	}
 
 	for _, test := range tests {
@@ -48,8 +48,8 @@ func BenchmarkCal2jd(b *testing.B) {
 		ref string
 		fn  func(a, b, c int) (d, e float64, err error)
 	}{
-		{"cgo", Cal2jd},
-		{"go", goCal2jd},
+		{"cgo", CgoCal2jd},
+		{"go", GoCal2jd},
 	}
 
 	for _, test := range tests {

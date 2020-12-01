@@ -44,7 +44,8 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  Mean elongation of the Moon from the Sun (IERS Conventions 2003).
+//  CgoFad03 Mean elongation of the Moon from the Sun (IERS Conventions
+//  2003).
 func CgoFad03(t float64) float64 {
 	var cF C.double
 	cF = C.iauFad03(C.double(t))

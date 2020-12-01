@@ -1,3 +1,3 @@
 package sofa
 
-// not required in go.
+// This function is not required in golang.

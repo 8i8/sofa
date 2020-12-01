@@ -3,10 +3,10 @@ package sofa
 // #include "sofa.h"
 import "C"
 
-//  Apci For a terrestrial observer, prepare star-independent astrometry
-//  parameters for transformations between ICRS and geocentric CIRS
-//  coordinates.  The Earth ephemeris and CIP/CIO are supplied by the
-//  caller.
+//  CgoApci For a terrestrial observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and
+//  geocentric CIRS coordinates.  The Earth ephemeris and CIP/CIO are
+//  supplied by the caller.
 //
 //  - - - - -
 //   A p c i
@@ -126,7 +126,11 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Apci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
+//  CgoApci For a terrestrial observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and
+//  geocentric CIRS coordinates.  The Earth ephemeris and CIP/CIO are
+//  supplied by the caller.
+func CgoApci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
 	x, y, s float64) (astrom ASTROM) {
 	var cASTROM C.iauASTROM
 	// Go into c.
@@ -137,17 +141,17 @@ func Apci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
 	return astrC2Go(cASTROM)
 }
 
-// goApci For a terrestrial observer, prepare star-independent astrometry
+// GoApci For a terrestrial observer, prepare star-independent astrometry
 // parameters for transformations between ICRS and geocentric CIRS
 // coordinates.  The Earth ephemeris and CIP/CIO are supplied by the
 // caller.
-func goApci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
+func GoApci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
 	x, y, s float64) (astrom ASTROM) {
 
 	// Star-independent astrometry parameters for geocenter.
-	astrom = goApcg(date1, date2, ebpv, ehp)
+	astrom = GoApcg(date1, date2, ebpv, ehp)
 
 	// CIO based BPN matrix.
-	astrom.bpn = goC2ixys(x, y, s)
+	astrom.bpn = GoC2ixys(x, y, s)
 	return
 }

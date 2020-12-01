@@ -3,9 +3,9 @@ package sofa
 // #include "sofa.h"
 import "C"
 
-//  Apcg For a geocentric observer, prepare star-independent astrometry
-//  parameters for transformations between ICRS and GCRS coordinates.  The
-//  Earth ephemeris is supplied by the caller.
+//  CgoApcg For a geocentric observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and GCRS
+//  coordinates.  The Earth ephemeris is supplied by the caller.
 //
 //  - - - - -
 //   A p c g
@@ -112,22 +112,27 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Apcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
+//  CgoApcg For a geocentric observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and GCRS
+//  coordinates.  The Earth ephemeris is supplied by the caller.
+func CgoApcg(date1, date2 float64,
+	ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
 	var astr C.iauASTROM
 	cebpv := v3dGo2C(ebpv)
 	cehp := v3sGo2C(ehp)
-	C.iauApcg(C.double(date1), C.double(date2), &cebpv[0], &cehp[0], &astr)
+	C.iauApcg(C.double(date1), C.double(date2),
+		&cebpv[0], &cehp[0], &astr)
 	return astrC2Go(astr)
 }
 
-//  Apcg For a geocentric observer, prepare star-independent astrometry
+//  GoApcg For a geocentric observer, prepare star-independent astrometry
 //  parameters for transformations between ICRS and GCRS coordinates.  The
 //  Earth ephemeris is supplied by the caller.
-func goApcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
+func GoApcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
 
 	// Geocentric observer {{0,0,0},{0,0,0},{0,0,0}}
 	var pv [2][3]float64
 
 	// Compute the star-independent astrometry parameters.
-	return goApcs(date1, date2, pv, ebpv, ehp)
+	return GoApcs(date1, date2, pv, ebpv, ehp)
 }

@@ -33,8 +33,8 @@ func TestAb(t *testing.T) {
 		ref string
 		fn  func(a, b [3]float64, c, d float64) [3]float64
 	}{
-		{"cgo", Ab},
-		{"go", goAb},
+		{"cgo", CgoAb},
+		{"go", GoAb},
 	}
 
 	for _, test := range tests {
@@ -65,8 +65,8 @@ func BenchmarkAb(b *testing.B) {
 		ref string
 		fn  func(a, b [3]float64, c, d float64) [3]float64
 	}{
-		{"cgo", Ab},
-		{"go", goAb},
+		{"cgo", CgoAb},
+		{"go", GoAb},
 	}
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {

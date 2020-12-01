@@ -3,7 +3,7 @@ package sofa
 // #include "sofa.h"
 import "C"
 
-//  Rxt Multiply two r-matrices.
+//  CgoRxt Multiply two r-matrices.
 //
 //  - - - -
 //   R x r
@@ -31,7 +31,8 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Rxr(a, b [3][3]float64) (atb [3][3]float64) {
+//  CgoRxt Multiply two r-matrices.
+func CgoRxr(a, b [3][3]float64) (atb [3][3]float64) {
 	var cAtb [3][3]C.double
 	cA := v3tGo2C(a)
 	cB := v3tGo2C(b)
@@ -39,8 +40,8 @@ func Rxr(a, b [3][3]float64) (atb [3][3]float64) {
 	return v3tC2Go(cAtb)
 }
 
-// goRxt Multiply two r-matrices.
-func goRxr(a, b [3][3]float64) (atb [3][3]float64) {
+// GoRxt Multiply two r-matrices.
+func GoRxr(a, b [3][3]float64) (atb [3][3]float64) {
 	var i, j, k int
 	var w float64
 

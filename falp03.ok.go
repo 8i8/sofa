@@ -46,7 +46,7 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  Mean anomaly of the Sun (IERS Conventions 2003).
+//  CgoFalp03 Mean anomaly of the Sun (IERS Conventions 2003).
 func CgoFalp03(t float64) float64 {
 	var cF C.double
 	cF = C.iauFalp03(C.double(t))

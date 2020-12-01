@@ -2,9 +2,8 @@ package sofa
 
 // #include <sofa.h>
 import "C"
-import "errors"
 
-//  Cal2jd returns the MJD, Modified Julian Date of the given date.
+//  CgoCal2jd returns the MJD, Modified Julian Date of the given date.
 //
 //  - - - - - - -
 //   C a l 2 j d
@@ -58,7 +57,8 @@ import "errors"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Cal2jd(iy, im, id int) (djm0, djm float64, err error) {
+//  CgoCal2jd returns the MJD, Modified Julian Date of the given date.
+func CgoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 	var cDjm0, cDjm C.double
 	i := C.iauCal2jd(C.int(iy), C.int(im), C.int(id), &cDjm0, &cDjm)
 	switch i {
@@ -72,12 +72,8 @@ func Cal2jd(iy, im, id int) (djm0, djm float64, err error) {
 	return float64(cDjm0), float64(cDjm), err
 }
 
-var errCal2jdOne = errors.New("-1")
-var errCal2jdTwo = errors.New("-2")
-var errCal2jdThree = errors.New("-3")
-
-// goCal2jd returns the MJD, Modified Julian Date of the given date.
-func goCal2jd(iy, im, id int) (djm0, djm float64, err error) {
+// GoCal2jd returns the MJD, Modified Julian Date of the given date.
+func GoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 	var ly, my int
 	var iypmy int // was a long in c code
 
@@ -89,11 +85,11 @@ func goCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 
 	// Validate year and month.
 	if iy < IYMIN {
-		err = errCal2jdOne
+		err = ErrYear
 		return
 	}
 	if im < 1 || im > 12 {
-		err = errCal2jdTwo
+		err = ErrMonth
 		return
 	}
 
@@ -104,7 +100,7 @@ func goCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 
 	// Validate day, taking into account leap years.
 	if (id < 1) || (id > (mtab[im-1] + ly)) {
-		err = errCal2jdThree
+		err = ErrDay
 		return
 	}
 
@@ -116,6 +112,5 @@ func goCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 		(367*(im-2-12*my))/12 -
 		(3*((iypmy+4900)/100))/4 +
 		id - 2432076))
-
 	return
 }

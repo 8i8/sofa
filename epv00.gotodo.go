@@ -5,8 +5,8 @@ package sofa
 import "C"
 import "fmt"
 
-//  Epv00 Earth position and velocity, heliocentric and barycentric, with
-//  respect to the Barycentric Celestial Reference System.
+//  CgoEpv00 Earth position and velocity, heliocentric and barycentric,
+//  with respect to the Barycentric Celestial Reference System.
 //
 //  - - - - - -
 //   E p v 0 0
@@ -107,7 +107,9 @@ import "fmt"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Epv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
+//  CgoEpv00 Earth position and velocity, heliocentric and barycentric,
+//  with respect to the Barycentric Celestial Reference System.
+func CgoEpv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
 
 	var cPvh, cPvb [2][3]C.double
 

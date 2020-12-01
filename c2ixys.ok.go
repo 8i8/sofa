@@ -4,8 +4,8 @@ package sofa
 import "C"
 import "math"
 
-//  C2ixys Form the celestial to intermediate-frame-of-date matrix given
-//  the CIP X,Y and the CIO locator s.
+//  CgoC2ixys Form the celestial to intermediate-frame-of-date matrix
+//  given the CIP X,Y and the CIO locator s.
 //
 //  - - - - - - -
 //   C 2 i x y s
@@ -60,15 +60,17 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func C2ixys(x, y, s float64) (rc2i [3][3]float64) {
+//  CgoC2ixys Form the celestial to intermediate-frame-of-date matrix
+//  given the CIP X,Y and the CIO locator s.
+func CgoC2ixys(x, y, s float64) (rc2i [3][3]float64) {
 	var cRc2i [3][3]C.double
 	C.iauC2ixys(C.double(x), C.double(y), C.double(s), &cRc2i[0])
 	return v3tC2Go(cRc2i)
 }
 
-// goC2ixys Form the celestial to intermediate-frame-of-date matrix given
+// GoC2ixys Form the celestial to intermediate-frame-of-date matrix given
 // the CIP X,Y and the CIO locator s.
-func goC2ixys(x, y, s float64) (rc2i [3][3]float64) {
+func GoC2ixys(x, y, s float64) (rc2i [3][3]float64) {
 	var r2, e, d float64
 
 	// Obtain the spherical angles E and d.
@@ -81,9 +83,9 @@ func goC2ixys(x, y, s float64) (rc2i [3][3]float64) {
 	d = math.Atan(math.Sqrt(r2 / (1.0 - r2)))
 
 	// Form the matrix.
-	rc2i = Ir()
-	rc2i = goRz(e, rc2i)
-	rc2i = goRy(d, rc2i)
-	rc2i = goRz(-(e + s), rc2i)
+	rc2i = GoIr()
+	rc2i = GoRz(e, rc2i)
+	rc2i = GoRy(d, rc2i)
+	rc2i = GoRz(-(e + s), rc2i)
 	return
 }

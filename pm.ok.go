@@ -1,8 +1,10 @@
 package sofa
 
+// #include "sofa.h"
+import "C"
 import "math"
 
-//  Pm Modulus of p-vector.
+//  CgoPm Modulus of p-vector.
 //
 //  - - -
 //   P m
@@ -25,6 +27,16 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Pm(p [3]float64) float64 {
+//  CgoPm Modulus of p-vector.
+func CgoPm(p [3]float64) float64 {
+	var cP [3]C.double
+	var cF C.double
+	cP = v3sGo2C(p)
+	cF = C.iauPm(&cP[0])
+	return float64(cF)
+}
+
+// GoPm Modulus of p-vector.
+func GoPm(p [3]float64) float64 {
 	return math.Sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2])
 }

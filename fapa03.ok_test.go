@@ -17,7 +17,7 @@ func TestFapa03(t *testing.T) {
 	const fname = "Fapa03"
 	tests := []struct {
 		ref string
-		fn  func(t float64) float64
+		fn  func(float64) float64
 	}{
 		{"cgo", CgoFapa03},
 		{"go", GoFapa03},
@@ -32,7 +32,7 @@ func TestFapa03(t *testing.T) {
 func BenchmarkFapa03(b *testing.B) {
 	tests := []struct {
 		ref string
-		fn  func(t float64) float64
+		fn  func(float64) float64
 	}{
 		{"cgo", CgoFapa03},
 		{"go", GoFapa03},

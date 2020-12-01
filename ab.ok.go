@@ -4,7 +4,7 @@ package sofa
 import "C"
 import "math"
 
-//  Ab Apply aberration to transform natural direction into proper
+//  CgoAb Apply aberration to transform natural direction into proper
 //  direction.
 //
 //  - - -
@@ -60,7 +60,9 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Ab(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
+//  CgoAb Apply aberration to transform natural direction into proper
+//  direction.
+func CgoAb(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
 	var cPpr [3]C.double
 	cPnat := v3sGo2C(pnat)
 	cv := v3sGo2C(v)
@@ -68,12 +70,14 @@ func Ab(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
 	return v3sC2Go(cPpr)
 }
 
-func goAb(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
+//  GoAb Apply aberration to transform natural direction into proper
+//  direction.
+func GoAb(pnat, v [3]float64, s, bm1 float64) (ppr [3]float64) {
 	var pdv, w1, w2, r2, w, r float64
 	var p [3]float64
 	var i int
 
-	pdv = Pdp(pnat, v)
+	pdv = GoPdp(pnat, v)
 	w1 = 1.0 + pdv/(1.0+bm1)
 	w2 = SRS / s
 	r2 = 0.0

@@ -14,7 +14,7 @@ var (
 	errAf2aAsec  = errors.New("asec outside range 0-59.999...")
 )
 
-//  Af2a Convert degrees, arcminutes, arcseconds to radians.
+//  CgoAf2a Convert degrees, arcminutes, arcseconds to radians.
 //
 //  - - - - -
 //   A f 2 a
@@ -56,7 +56,8 @@ var (
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Af2a(s byte, ideg, iamin int, asec float64) (rad float64, err error) {
+//  CgoAf2a Convert degrees, arcminutes, arcseconds to radians.
+func CgoAf2a(s byte, ideg, iamin int, asec float64) (rad float64, err error) {
 	var cRad C.double
 	j := C.iauAf2a(C.char(s), C.int(ideg), C.int(iamin), C.double(asec), &cRad)
 	switch int(j) {
@@ -70,7 +71,8 @@ func Af2a(s byte, ideg, iamin int, asec float64) (rad float64, err error) {
 	return float64(cRad), err
 }
 
-func goAf2a(s byte, ideg, iamin int, asec float64) (rad float64, err error) {
+// GoAf2a Convert degrees, arcminutes, arcseconds to radians.
+func GoAf2a(s byte, ideg, iamin int, asec float64) (rad float64, err error) {
 	/* Compute the interval. */
 	var sign = 1.0
 	if s == '-' {

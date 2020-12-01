@@ -46,7 +46,7 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  Mean longitude of Mars (IERS Conventions 2003).
+//  CgoFama03 Mean longitude of Mars (IERS Conventions 2003).
 func CgoFama03(t float64) float64 {
 	var cF C.double
 	cF = C.iauFama03(C.double(t))

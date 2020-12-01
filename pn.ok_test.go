@@ -26,8 +26,8 @@ func TestPn(t *testing.T) {
 		ref string
 		fn  func([3]float64) (float64, [3]float64)
 	}{
-		{"cgo", Pn},
-		{"go", goPn},
+		{"cgo", CgoPn},
+		{"go", GoPn},
 	}
 
 	for _, test := range tests {
@@ -52,8 +52,8 @@ func BenchmarkPn(b *testing.B) {
 		ref string
 		fn  func([3]float64) (float64, [3]float64)
 	}{
-		{"cgo", Pn},
-		{"go", goPn},
+		{"cgo", CgoPn},
+		{"go", GoPn},
 	}
 
 	for _, test := range tests {

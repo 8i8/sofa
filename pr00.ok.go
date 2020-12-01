@@ -1,7 +1,10 @@
 package sofa
 
-//  Pr00 Precession-rate part of the IAU 2000 precession-nutation models
-//  (part of MHB2000).
+// #include "sofa.h"
+import "C"
+
+//  CgoPr00 Precession-rate part of the IAU 2000 precession-nutation
+//  models (part of MHB2000).
 //
 //  - - - - -
 //   P r 0 0
@@ -75,7 +78,17 @@ package sofa
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Pr00(date1, date2 float64) (dpsipr, depspr float64) {
+//  CgoPr00 Precession-rate part of the IAU 2000 precession-nutation
+//  models (part of MHB2000).
+func CgoPr00(date1, date2 float64) (dpsipr, depspr float64) {
+	var cDepspr, cDpsipr C.double
+	C.iauPr00(C.double(date1), C.double(date2), &cDpsipr, &cDepspr)
+	return float64(cDpsipr), float64(cDepspr)
+}
+
+// GoPr00 Precession-rate part of the IAU 2000 precession-nutation
+// models (part of MHB2000).
+func GoPr00(date1, date2 float64) (dpsipr, depspr float64) {
 	var t float64
 	// Precession and obliquity corrections (radians per century)
 	const PRECOR = -0.29965 * DAS2R

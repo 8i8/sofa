@@ -4,7 +4,7 @@ package sofa
 import "C"
 import "math"
 
-//  Rz Rotate an r-matrix about the z-axis.
+//  CgoRz Rotate an r-matrix about the z-axis.
 //
 //  - - -
 //   R z
@@ -41,14 +41,15 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Rz(psi float64, r [3][3]float64) (rotated [3][3]float64) {
+//  CgoRz Rotate an r-matrix about the z-axis.
+func CgoRz(psi float64, r [3][3]float64) (rotated [3][3]float64) {
 	cR := v3tGo2C(r)
 	C.iauRz(C.double(psi), &cR[0])
 	return v3tC2Go(cR)
 }
 
-// goRz Rotate an r-matrix about the z-axis.
-func goRz(psi float64, r [3][3]float64) (rotated [3][3]float64) {
+// GoRz Rotate an r-matrix about the z-axis.
+func GoRz(psi float64, r [3][3]float64) (rotated [3][3]float64) {
 	var s, c, a00, a01, a02, a10, a11, a12 float64
 
 	s = math.Sin(psi)

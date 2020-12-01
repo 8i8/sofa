@@ -26,7 +26,8 @@ func TestFad03(t *testing.T) {
 
 	for _, test := range tests {
 		tname := fname + " " + test.ref
-		vvd(t, test.fn(0.80), 1.946709205396925672, 1e-12, tname, "")
+		vvd(t, test.fn(0.80), 1.946709205396925672, 1e-12,
+			tname, "")
 	}
 }
 

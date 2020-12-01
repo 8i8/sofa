@@ -41,14 +41,15 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Rx(phi float64, r [3][3]float64) (rotated [3][3]float64) {
+//  CgoRx Rotate an r-matrix about the x-axis.
+func CgoRx(phi float64, r [3][3]float64) (rotated [3][3]float64) {
 	cR := v3tGo2C(r)
 	C.iauRx(C.double(phi), &cR[0])
 	return v3tC2Go(cR)
 }
 
-// goRx Rotate an r-matrix about the x-axis.
-func goRx(phi float64, r [3][3]float64) (rotated [3][3]float64) {
+// GoRx Rotate an r-matrix about the x-axis.
+func GoRx(phi float64, r [3][3]float64) (rotated [3][3]float64) {
 	var s, c, a10, a11, a12, a20, a21, a22 float64
 
 	s = math.Sin(phi)

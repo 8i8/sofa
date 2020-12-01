@@ -4,7 +4,7 @@ package sofa
 import "C"
 import "math"
 
-//  Fane03 Mean longitude of Neptune (IERS Conventions 2003).
+//  CgoFane03 Mean longitude of Neptune (IERS Conventions 2003).
 //
 //  - - - - - - -
 //   F a n e 0 3
@@ -46,7 +46,7 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-// double iauFane03(double t)
+//  CgoFane03 Mean longitude of Neptune (IERS Conventions 2003).
 func CgoFane03(t float64) float64 {
 	var cF C.double
 	cF = C.iauFane03(C.double(t))

@@ -3,10 +3,10 @@ package sofa
 // #include "sofa.h"
 import "C"
 
-//  Apci13 For a terrestrial observer, prepare star-independent astrometry
-//  parameters for transformations between ICRS and geocentric CIRS
-//  coordinates.  The caller supplies the date, and SOFA models are used
-//  to predict the Earth ephemeris and CIP/CIO.
+//  CgoApci13 For a terrestrial observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and
+//  geocentric CIRS coordinates.  The caller supplies the date, and SOFA
+//  models are used to predict the Earth ephemeris and CIP/CIO.
 //
 //  - - - - - - -
 //   A p c i 1 3
@@ -121,7 +121,19 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Apci13(date1, date2 float64) (astrom ASTROM, eo float64) {
+//  CgoApci13 For a terrestrial observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and
+//  geocentric CIRS coordinates.  The caller supplies the date, and SOFA
+//  models are used to predict the Earth ephemeris and CIP/CIO.
+func CgoApci13(date1, date2 float64) (astrom ASTROM, eo float64) {
+	var cAstrom C.iauASTROM
+	var cEo C.double
+	C.iauApci13(C.double(date1), C.double(date2), &cAstrom, &cEo)
+	return astrC2Go(cAstrom), float64(cEo)
+}
+
+// TODO not yet go code
+func GoApci13(date1, date2 float64) (astrom ASTROM, eo float64) {
 	var cR [3][3]C.double
 	var cEhpv, cEbpv [2][3]C.double
 	var x, y, s C.double

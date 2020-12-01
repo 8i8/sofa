@@ -4,7 +4,7 @@ package sofa
 import "C"
 import "math"
 
-//  Ae2hd Horizon to equatorial coordinates:  transform azimuth and
+//  CgoAe2hd Horizon to equatorial coordinates:  transform azimuth and
 //  altitude to hour angle and declination.
 //
 //  - - - - - -
@@ -64,15 +64,17 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Ae2hd(az, el, phi float64) (ha, dec float64) {
+//  CgoAe2hd Horizon to equatorial coordinates:  transform azimuth and
+//  altitude to hour angle and declination.
+func CgoAe2hd(az, el, phi float64) (ha, dec float64) {
 	var cHa, cDec C.double
 	C.iauAe2hd(C.double(az), C.double(el), C.double(phi), &cHa, &cDec)
 	return float64(cHa), float64(cDec)
 }
 
-// goAe2hd Horizon to equatorial coordinates:  transform azimuth and
+// GoAe2hd Horizon to equatorial coordinates:  transform azimuth and
 // altitude to hour angle and declination.
-func goAe2hd(az, el, phi float64) (ha, dec float64) {
+func GoAe2hd(az, el, phi float64) (ha, dec float64) {
 	var sa, ca, se, ce, sp, cp, x, y, z, r float64
 
 	/* Useful trig functions. */

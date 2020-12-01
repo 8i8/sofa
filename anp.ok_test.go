@@ -3,16 +3,13 @@ package sofa
 import "testing"
 
 //
-//  - - - - - -
-//   t _ a n p
-//  - - - - - -
+//  - - - - - - - -
+//   T e s t A n p
+//  - - - - - - - -
 //
-//  Test iauAnp function.
+//  Test Anp function.
 //
-//  Returned:
-//     status    int         FALSE = success, TRUE = fail
-//
-//  Called:  iauAnp, vvd
+//  Called:  Anp, vvd
 //
 //  This revision:  2013 August 7
 //
@@ -22,12 +19,13 @@ func TestAnp(t *testing.T) {
 		ref string
 		fn  func(float64) float64
 	}{
-		{"cgo", Anp},
-		{"go", goAnp},
+		{"cgo", CgoAnp},
+		{"go", GoAnp},
 	}
 	for _, test := range tests {
 		tname := fname + " " + test.ref
-		vvd(t, test.fn(-0.1), 6.183185307179586477, 1e-12, tname, "")
+		vvd(t, test.fn(-0.1), 6.183185307179586477,
+			1e-12, tname, "")
 	}
 }
 
@@ -36,8 +34,8 @@ func BenchmarkAnp(b *testing.B) {
 		ref string
 		fn  func(float64) float64
 	}{
-		{"cgo", Anp},
-		{"go", goAnp},
+		{"cgo", CgoAnp},
+		{"go", GoAnp},
 	}
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {

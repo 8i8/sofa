@@ -20,8 +20,8 @@ func TestFae03(t *testing.T) {
 		ref string
 		fn  func(float64) float64
 	}{
-		{"cgo", Fae03},
-		{"go", goFae03},
+		{"cgo", CgoFae03},
+		{"go", GoFae03},
 	}
 
 	for _, test := range tests {
@@ -36,8 +36,8 @@ func BenchmarkFae03(b *testing.B) {
 		ref string
 		fn  func(float64) float64
 	}{
-		{"cgo", Fae03},
-		{"go", goFae03},
+		{"cgo", CgoFae03},
+		{"go", GoFae03},
 	}
 
 	for _, test := range tests {

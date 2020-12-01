@@ -36,10 +36,11 @@ func TestApci(t *testing.T) {
 
 	tests := []struct {
 		ref string
-		fn  func(a, b float64, c [2][3]float64, d [3]float64, e, f, g float64) ASTROM
+		fn  func(a, b float64, c [2][3]float64,
+			d [3]float64, e, f, g float64) ASTROM
 	}{
-		{"cgo", Apci},
-		{"go", goApci},
+		{"cgo", CgoApci},
+		{"go", GoApci},
 	}
 
 	for _, test := range tests {
@@ -114,16 +115,18 @@ func BenchmarkApci(b *testing.B) {
 
 	tests := []struct {
 		ref string
-		fn  func(a, b float64, c [2][3]float64, d [3]float64, e, f, g float64) ASTROM
+		fn  func(a, b float64, c [2][3]float64,
+			d [3]float64, e, f, g float64) ASTROM
 	}{
-		{"cgo", Apci},
-		{"go", goApci},
+		{"cgo", CgoApci},
+		{"go", GoApci},
 	}
 
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = test.fn(date1, date2, ebpv, ehp, x, y, s)
+				_ = test.fn(date1, date2,
+					ebpv, ehp, x, y, s)
 			}
 		})
 	}

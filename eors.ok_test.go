@@ -36,8 +36,8 @@ func TestEors(t *testing.T) {
 		ref string
 		fn  func([3][3]float64, float64) float64
 	}{
-		{"cgo", Eors},
-		{"go", goEors},
+		{"cgo", CgoEors},
+		{"go", GoEors},
 	}
 
 	for _, test := range tests {
@@ -69,8 +69,8 @@ func BenchmarkEors(b *testing.B) {
 		ref string
 		fn  func([3][3]float64, float64) float64
 	}{
-		{"cgo", Eors},
-		{"go", goEors},
+		{"cgo", CgoEors},
+		{"go", GoEors},
 	}
 
 	for _, test := range tests {

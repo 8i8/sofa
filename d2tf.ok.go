@@ -5,7 +5,7 @@ package sofa
 import "C"
 import "math"
 
-//  D2tf Decompose days to hours, minutes, seconds, fraction.
+//  CgoD2tf Decompose days to hours, minutes, seconds, fraction.
 //
 //  - - - - -
 //   D 2 t f
@@ -62,15 +62,16 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func D2tf(ndp int, days float64) (sign byte, ihmsf [4]int) {
+//  CgoD2tf Decompose days to hours, minutes, seconds, fraction.
+func CgoD2tf(ndp int, days float64) (sign byte, ihmsf [4]int) {
 	var cSign C.char
 	var cIhmsf [4]C.int
 	C.iauD2tf(C.int(ndp), C.double(days), &cSign, &cIhmsf[0])
 	return byte(cSign), v4sIntC2Go(cIhmsf)
 }
 
-// goD2tf Decompose days to hours, minutes, seconds, fraction.
-func goD2tf(ndp int, days float64) (sign byte, ihmsf [4]int) {
+// GoD2tf Decompose days to hours, minutes, seconds, fraction.
+func GoD2tf(ndp int, days float64) (sign byte, ihmsf [4]int) {
 	var nrs, n int
 	var rs, rm, rh, a, w, ah, am, as, af float64
 

@@ -23,8 +23,8 @@ func TestD2tf(t *testing.T) {
 		ref string
 		fn  func(int, float64) (byte, [4]int)
 	}{
-		{"cgo", D2tf},
-		{"go", goD2tf},
+		{"cgo", CgoD2tf},
+		{"go", GoD2tf},
 	}
 
 	for _, test := range tests {
@@ -47,8 +47,8 @@ func BenchmarkD2tf(b *testing.B) {
 		ref string
 		fn  func(int, float64) (byte, [4]int)
 	}{
-		{"cgo", D2tf},
-		{"go", goD2tf},
+		{"cgo", CgoD2tf},
+		{"go", GoD2tf},
 	}
 
 	for _, test := range tests {

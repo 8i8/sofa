@@ -22,8 +22,8 @@ func TestA2af(t *testing.T) {
 		ref string
 		fn  func(int, float64) (byte, [4]int)
 	}{
-		{"cgo", A2af},
-		{"go", goA2af},
+		{"cgo", CgoA2af},
+		{"go", GoA2af},
 	}
 
 	for _, test := range tests {
@@ -49,8 +49,8 @@ func BenchmarkA2af(b *testing.B) {
 		ref string
 		fn  func(int, float64) (byte, [4]int)
 	}{
-		{"cgo", A2af},
-		{"go", goA2af},
+		{"cgo", CgoA2af},
+		{"go", GoA2af},
 	}
 
 	for _, test := range tests {

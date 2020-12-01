@@ -19,12 +19,13 @@ func TestAnpm(t *testing.T) {
 		ref string
 		fn  func(float64) float64
 	}{
-		{"cgo", Anpm},
-		{"go", goAnpm},
+		{"cgo", CgoAnpm},
+		{"go", GoAnpm},
 	}
 	for _, test := range tests {
 		tname := fname + " " + test.ref
-		vvd(t, test.fn(-4.0), 2.283185307179586477, 1e-12, tname, "")
+		vvd(t, test.fn(-4.0), 2.283185307179586477,
+			1e-12, tname, "")
 	}
 }
 
@@ -33,8 +34,8 @@ func BenchmarkAnpm(b *testing.B) {
 		ref string
 		fn  func(float64) float64
 	}{
-		{"cgo", Anpm},
-		{"go", goAnpm},
+		{"cgo", CgoAnpm},
+		{"go", GoAnpm},
 	}
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {

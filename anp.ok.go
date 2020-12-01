@@ -4,7 +4,7 @@ package sofa
 import "C"
 import "math"
 
-// Anp Normalize angle into the range 0 <= a < 2pi.
+//  CgoAnp Normalize angle into the range 0 <= a < 2pi.
 //
 //  - - - -
 //   A n p
@@ -29,14 +29,15 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Anp(a float64) float64 {
+//  CgoAnp Normalize angle into the range 0 <= a < 2pi.
+func CgoAnp(a float64) float64 {
 
 	cA := C.iauAnp(C.double(a))
 	return float64(cA)
 }
 
-// Anp Normalize angle into the range 0 <= a < 2pi.
-func goAnp(a float64) float64 {
+// GoAnp Normalize angle into the range 0 <= a < 2pi.
+func GoAnp(a float64) float64 {
 
 	a = math.Mod(a, D2PI)
 	if a < 0 {

@@ -93,10 +93,10 @@ func CgoFw2m(gamb, phib, psi, eps float64) (r [3][3]float64) {
 // GoFw2m Form rotation matrix given the Fukushima-Williams angles.
 func GoFw2m(gamb, phib, psi, eps float64) (r [3][3]float64) {
 	// Construct the matrix.
-	r = Ir()
-	r = goRz(gamb, r)
-	r = goRx(phib, r)
-	r = goRz(-psi, r)
-	r = goRx(-eps, r)
+	r = GoIr()
+	r = GoRz(gamb, r)
+	r = GoRx(phib, r)
+	r = GoRz(-psi, r)
+	r = GoRx(-eps, r)
 	return
 }

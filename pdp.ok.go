@@ -1,6 +1,9 @@
 package sofa
 
-//  Pdp p-vector inner (=scalar=dot) product.
+// #include "sofa.h"
+import "C"
+
+//  CgoPdp p-vector inner (=scalar=dot) product.
 //
 //  - - - -
 //   P d p
@@ -24,7 +27,17 @@ package sofa
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-// double iauPdp(double a[3], double b[3])
-func Pdp(a, b [3]float64) float64 {
+//  CgoPdp p-vector inner (=scalar=dot) product.
+func CgoPdp(a, b [3]float64) float64 {
+	var cF C.double
+	var cA, cB [3]C.double
+	cA = v3sGo2C(a)
+	cB = v3sGo2C(b)
+	cF = C.iauPdp(&cA[0], &cB[0])
+	return float64(cF)
+}
+
+// GoPdp p-vector inner (=scalar=dot) product.
+func GoPdp(a, b [3]float64) float64 {
 	return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]
 }

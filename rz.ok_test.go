@@ -36,8 +36,8 @@ func TestRz(t *testing.T) {
 		ref string
 		fn  func(float64, [3][3]float64) [3][3]float64
 	}{
-		{"cgo", Rz},
-		{"go", goRz},
+		{"cgo", CgoRz},
+		{"go", GoRz},
 	}
 
 	for _, test := range tests {
@@ -80,8 +80,8 @@ func BenchmarkRz(b *testing.B) {
 		ref string
 		fn  func(float64, [3][3]float64) [3][3]float64
 	}{
-		{"cgo", Rz},
-		{"go", goRz},
+		{"cgo", CgoRz},
+		{"go", GoRz},
 	}
 
 	for _, test := range tests {

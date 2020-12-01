@@ -46,7 +46,7 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  Mean longitude of Jupiter (IERS Conventions 2003).
+//  CgoFaju03 Mean longitude of Jupiter (IERS Conventions 2003).
 func CgoFaju03(t float64) float64 {
 	var cF C.double
 	cF = C.iauFaju03(C.double(t))

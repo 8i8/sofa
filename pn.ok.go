@@ -3,7 +3,7 @@ package sofa
 // #include "sofa.h"
 import "C"
 
-//  Pn Convert a p-vector into modulus and unit vector.
+//  CgoPn Convert a p-vector into modulus and unit vector.
 //
 //  - - -
 //   P n
@@ -40,7 +40,8 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Pn(p [3]float64) (r float64, u [3]float64) {
+//  CgoPn Convert a p-vector into modulus and unit vector.
+func CgoPn(p [3]float64) (r float64, u [3]float64) {
 	var cU [3]C.double
 	var cR C.double
 	cP := v3sGo2C(p)
@@ -48,16 +49,16 @@ func Pn(p [3]float64) (r float64, u [3]float64) {
 	return float64(cR), v3sC2Go(cU)
 }
 
-// goPn Convert a p-vector into modulus and unit vector.
-func goPn(p [3]float64) (r float64, u [3]float64) {
+// GoPn Convert a p-vector into modulus and unit vector.
+func GoPn(p [3]float64) (r float64, u [3]float64) {
 
 	// Obtain the modulus and test for zero.
-	r = Pm(p)
+	r = GoPm(p)
 	if r == 0.0 {
 		// Null vector.
 		return
 	}
 	// Unit vector.
-	u = Sxp(1.0/r, p)
+	u = GoSxp(1.0/r, p)
 	return
 }

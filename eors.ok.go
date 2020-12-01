@@ -4,8 +4,8 @@ package sofa
 import "C"
 import "math"
 
-//  Eors Equation of the origins, given the classical NPB matrix and the
-//  quantity s.
+//  CgoEors Equation of the origins, given the classical NPB matrix and
+//  the quantity s.
 //
 //  - - - - -
 //   E o r s
@@ -46,15 +46,17 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Eors(rnpb [3][3]float64, s float64) (eo float64) {
+//  CgoEors Equation of the origins, given the classical NPB matrix and
+//  the quantity s.
+func CgoEors(rnpb [3][3]float64, s float64) (eo float64) {
 	cRnpb := v3tGo2C(rnpb)
 	cF := C.iauEors(&cRnpb[0], C.double(s))
 	return float64(cF)
 }
 
-// goEors Equation of the origins, given the classical NPB matrix and the
+// GoEors Equation of the origins, given the classical NPB matrix and the
 // quantity s.
-func goEors(rnpb [3][3]float64, s float64) (eo float64) {
+func GoEors(rnpb [3][3]float64, s float64) (eo float64) {
 	var x, ax, xs, ys, zs, p, q float64
 
 	// Evaluate Wallace & Capitaine (2006) expression (16).

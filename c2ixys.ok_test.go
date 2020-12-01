@@ -26,8 +26,8 @@ func TestC2ixys(t *testing.T) {
 		ref string
 		fn  func(a, b, c float64) [3][3]float64
 	}{
-		{"cgo", C2ixys},
-		{"go", goC2ixys},
+		{"cgo", CgoC2ixys},
+		{"go", GoC2ixys},
 	}
 
 	for _, test := range tests {
@@ -59,8 +59,8 @@ func BenchmarkC2ixys(b *testing.B) {
 		ref string
 		fn  func(a, b, c float64) [3][3]float64
 	}{
-		{"cgo", C2ixys},
-		{"go", goC2ixys},
+		{"cgo", CgoC2ixys},
+		{"go", GoC2ixys},
 	}
 
 	for _, test := range tests {

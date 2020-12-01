@@ -4,9 +4,10 @@ package sofa
 import "C"
 import "math"
 
-//  Apcs For an observer whose geocentric position and velocity are known,
-//  prepare star-independent astrometry parameters for transformations
-//  between ICRS and GCRS.  The Earth ephemeris is supplied by the caller.
+//  CgoApcs For an observer whose geocentric position and velocity are
+//  known, prepare star-independent astrometry parameters for
+//  transformations between ICRS and GCRS.  The Earth ephemeris is
+//  supplied by the caller.
 //
 //  - - - - -
 //   A p c s
@@ -132,12 +133,14 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-func Apcs(
-	date1, date2 float64,
-	pv, ebpv [2][3]float64,
-	ehp [3]float64) (astrom ASTROM) {
+//  CgoApcs For an observer whose geocentric position and velocity are
+//  known, prepare star-independent astrometry parameters for
+//  transformations between ICRS and GCRS.  The Earth ephemeris is
+//  supplied by the caller.
+func CgoApcs(date1, date2 float64, pv,
+	ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
 
-	// Output data.
+	// C Output data.
 	var cAstrom C.iauASTROM
 
 	// Go into c types.
@@ -153,11 +156,11 @@ func Apcs(
 	return astrC2Go(cAstrom)
 }
 
-//  goApcs For an observer whose geocentric position and velocity are
+//  GoApcs For an observer whose geocentric position and velocity are
 //  known, prepare star-independent astrometry parameters for
 //  transformations between ICRS and GCRS.  The Earth ephemeris is
 //  supplied by the caller.
-func goApcs(
+func GoApcs(
 	date1, date2 float64,
 	pv, ebpv [2][3]float64,
 	ehp [3]float64) (astrom ASTROM) {
@@ -188,7 +191,7 @@ func goApcs(
 	astrom.eb = pb
 
 	// Heliocentric direction and distance (unit vector and au).
-	astrom.em, astrom.eh = goPn(ph)
+	astrom.em, astrom.eh = GoPn(ph)
 
 	// Barycentric vel. in units of c, and reciprocal of Lorenz factor.
 	for i = 0; i < 3; i++ {
@@ -199,6 +202,6 @@ func goApcs(
 	astrom.bm1 = math.Sqrt(1.0 - v2)
 
 	// Reset the NPB matrix.
-	astrom.bpn = Ir()
+	astrom.bpn = GoIr()
 	return
 }

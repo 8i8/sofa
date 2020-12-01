@@ -21,8 +21,8 @@ func TestA2tf(t *testing.T) {
 		ref string
 		fn  func(int, float64) (byte, [4]int)
 	}{
-		{"cgo", A2tf},
-		{"go", goA2tf},
+		{"cgo", CgoA2tf},
+		{"go", GoA2tf},
 	}
 
 	for _, test := range tests {
@@ -43,8 +43,8 @@ func BenchmarkA2tf(b *testing.B) {
 		ref string
 		fn  func(int, float64) (byte, [4]int)
 	}{
-		{"cgo", A2tf},
-		{"go", goA2tf},
+		{"cgo", CgoA2tf},
+		{"go", GoA2tf},
 	}
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {

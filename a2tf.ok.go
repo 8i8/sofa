@@ -3,7 +3,7 @@ package sofa
 // #include "sofa.h"
 import "C"
 
-//  A2tf Decompose radians into hours, minutes, seconds, fraction.
+//  CgoA2tf Decompose radians into hours, minutes, seconds, fraction.
 //
 //  - - - - -
 //   A 2 t f
@@ -63,16 +63,17 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-// void iauA2tf(int ndp, double angle, char *sign, int ihmsf[4])
-func A2tf(ndp int, angle float64) (sign byte, ihmsf [4]int) {
+//  CgoA2tf Decompose radians into hours, minutes, seconds, fraction.
+func CgoA2tf(ndp int, angle float64) (sign byte, ihmsf [4]int) {
 	var cSign C.char
 	var cIhmsf [4]C.int
 	C.iauA2tf(C.int(ndp), C.double(angle), &cSign, &cIhmsf[0])
 	return byte(cSign), v4sIntC2Go(cIhmsf)
 }
 
-func goA2tf(ndp int, angle float64) (sign byte, ihmsf [4]int) {
+// GoA2tf Decompose radians into hours, minutes, seconds, fraction.
+func GoA2tf(ndp int, angle float64) (sign byte, ihmsf [4]int) {
 	// Scale then use days to h,m,s function.
-	sign, ihmsf = goD2tf(ndp, angle/D2PI)
+	sign, ihmsf = GoD2tf(ndp, angle/D2PI)
 	return
 }

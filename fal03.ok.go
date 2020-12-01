@@ -43,7 +43,7 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  Mean anomaly of the Moon (IERS Conventions 2003).
+//  CgoFal03 Mean anomaly of the Moon (IERS Conventions 2003).
 func CgoFal03(t float64) float64 {
 	var cF C.double
 	cF = C.iauFal03(C.double(t))

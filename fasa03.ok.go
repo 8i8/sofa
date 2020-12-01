@@ -49,7 +49,7 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-// double iauFasa03(double t)
+//  CgoFasa03 Mean longitude of Saturn (IERS Conventions 2003).
 func CgoFasa03(t float64) float64 {
 	var cF C.double
 	cF = C.iauFasa03(C.double(t))

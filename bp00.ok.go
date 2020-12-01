@@ -110,24 +110,24 @@ func GoBp00(date1, date2 float64) (rb, rp, rbp [3][3]float64) {
 	chia = (10.5526 + (-2.38064+(-0.001125)*t)*t) * t * DAS2R
 
 	// Apply IAU 2000 precession corrections.
-	dpsipr, depspr = Pr00(date1, date2)
+	dpsipr, depspr = GoPr00(date1, date2)
 	psia = psia77 + dpsipr
 	oma = oma77 + depspr
 
 	// Frame bias matrix: GCRS to J2000.0.
-	rb = Ir()
-	rb = goRz(dra0, rb)
-	rb = goRy(dpsibi*math.Sin(EPS0), rb)
-	rb = goRx(-depsbi, rb)
+	rb = GoIr()
+	rb = GoRz(dra0, rb)
+	rb = GoRy(dpsibi*math.Sin(EPS0), rb)
+	rb = GoRx(-depsbi, rb)
 
 	// Precession matrix: J2000.0 to mean of date.
-	rp = Ir()
-	rp = goRx(EPS0, rp)
-	rp = goRz(-psia, rp)
-	rp = goRx(-oma, rp)
-	rp = goRz(chia, rp)
+	rp = GoIr()
+	rp = GoRx(EPS0, rp)
+	rp = GoRz(-psia, rp)
+	rp = GoRx(-oma, rp)
+	rp = GoRz(chia, rp)
 
 	// Bias-precession matrix: GCRS to mean of date.
-	rbp = goRxr(rp, rb)
+	rbp = GoRxr(rp, rb)
 	return
 }

@@ -23,8 +23,8 @@ func TestApci13(t *testing.T) {
 		ref string
 		fn  func(a, b float64) (ASTROM, float64)
 	}{
-		{"cgo", Apci13},
-		//{"go", goApci13},
+		{"cgo", CgoApci13},
+		{"go", GoApci13},
 	}
 
 	for _, test := range tests {
@@ -78,7 +78,7 @@ func TestApci13(t *testing.T) {
 	}
 }
 
-func benchmarkApci13(b *testing.B) {
+func BenchmarkApci13(b *testing.B) {
 	var date1, date2 float64
 	date1 = 2456165.5
 	date2 = 0.401182685
@@ -87,8 +87,8 @@ func benchmarkApci13(b *testing.B) {
 		ref string
 		fn  func(a, b float64) (ASTROM, float64)
 	}{
-		//{"cgo", Apci13},
-		//{"go", goApci13},
+		{"cgo", CgoApci13},
+		{"go", GoApci13},
 	}
 
 	for _, test := range tests {

@@ -46,16 +46,16 @@ import "math"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  Mean longitude of Earth (IERS Conventions 2003).
-func Fae03(t float64) float64 {
+//  CgoFae03 Mean longitude of Earth (IERS Conventions 2003).
+func CgoFae03(t float64) float64 {
 	var cF C.double
 	cF = C.iauFae03(C.double(t))
 	return float64(cF)
 }
 
-// goFae03 Fundamental argument, IERS Conventions (2003): mean longitude
+// GoFae03 Fundamental argument, IERS Conventions (2003): mean longitude
 // of Earth.
-func goFae03(t float64) float64 {
+func GoFae03(t float64) float64 {
 	// Mean longitude of Earth (IERS Conventions 2003).
 	return math.Mod(1.753470314+628.3075849991*t, D2PI)
 }
