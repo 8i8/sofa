@@ -80,4 +80,9 @@ const (
 	// SCHWARZSCHILD RADIUS OF THE SUN (AU)
 	// = 2 * 1.32712440041E20 / (2.99792458E8)^2 / 1.49597870700E11
 	SRS = 1.97412574336e-8
+
+	// Reference ellipsoids.
+	WGS84 = 1
+	GRS80 = 2
+	WGS72 = 3
 )

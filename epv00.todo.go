@@ -3,7 +3,12 @@ package sofa
 // #include <sofa.h>
 // #include <sofam.h>
 import "C"
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
+
+var errEpv00 = errors.New("date outside the range 1900-2100 AD")
 
 //  CgoEpv00 Earth position and velocity, heliocentric and barycentric,
 //  with respect to the Barycentric Celestial Reference System.
@@ -124,7 +129,7 @@ func CgoEpv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
 	if int(i) > 0 {
 		err = fmt.Errorf(
 			"date outside the range 1900-2100 AD: %w",
-			ErrWarning)
+			errEpv00)
 	}
 	return
 }

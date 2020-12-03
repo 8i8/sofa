@@ -2,6 +2,11 @@ package sofa
 
 // #include <sofa.h>
 import "C"
+import "errors"
+
+var errYCal2jd1 = errors.New("bad year")
+var errYCal2jd2 = errors.New("bad month")
+var errYCal2jd3 = errors.New("bad day")
 
 //  CgoCal2jd returns the MJD, Modified Julian Date of the given date.
 //
@@ -62,12 +67,15 @@ func CgoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 	var cDjm0, cDjm C.double
 	i := C.iauCal2jd(C.int(iy), C.int(im), C.int(id), &cDjm0, &cDjm)
 	switch i {
+	case 0:
 	case -1:
-		err = ErrYear
+		err = errYCal2jd1
 	case -2:
-		err = ErrMonth
+		err = errYCal2jd2
 	case -3:
-		err = ErrDay
+		err = errYCal2jd3
+	default:
+		err = errAdmin
 	}
 	return float64(cDjm0), float64(cDjm), err
 }
@@ -85,11 +93,11 @@ func GoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 
 	// Validate year and month.
 	if iy < IYMIN {
-		err = ErrYear
+		err = errYCal2jd1
 		return
 	}
 	if im < 1 || im > 12 {
-		err = ErrMonth
+		err = errYCal2jd2
 		return
 	}
 
@@ -100,7 +108,7 @@ func GoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 
 	// Validate day, taking into account leap years.
 	if (id < 1) || (id > (mtab[im-1] + ly)) {
-		err = ErrDay
+		err = errYCal2jd3
 		return
 	}
 

@@ -25,16 +25,13 @@ func init() {
 //  Internal function used by t_sofa_c program.
 //
 //  Given:
+//     t        *testing.T   go test struct
 //     ival     int          value computed by function under test
 //     ivalok   int          correct value
 //     func     char[]       name of function under test
 //     test     char[]       name of individual test
 //
-//  Given and returned:
-//     status   int          set to TRUE if test fails
-//
-//  This revision:  2013 August 7
-//
+//  This revision:  2020 December 3
 //
 func viv(t *testing.T, ival, ivalok int, fname, test string) {
 	if ival != ivalok {
@@ -59,16 +56,14 @@ func viv(t *testing.T, ival, ivalok int, fname, test string) {
 //  Internal function used by test program.
 //
 //  Given:
+//     t        *testing.T   go test struct
 //     val      double       value computed by function under test
 //     valok    double       expected value
 //     dval     double       maximum allowable error
 //     fname    string       name of function under test
 //     test     string       name of individual test
 //
-//  Given and returned:
-//     status   int          set to TRUE if test fails
-//
-//  This revision:  2016 April 21
+//  This revision:  2020 December 3
 //
 func vvd(t *testing.T, val, valok, dval float64, fname, test string) {
 	var a, f float64 // Absolute and fractional error.
@@ -84,5 +79,33 @@ func vvd(t *testing.T, val, valok, dval float64, fname, test string) {
 		log.Output(2, fmt.Sprintf(
 			"%s passed: %s want %.20f got %.20f (1/%.3f)",
 			fname, test, valok, val, f))
+	}
+}
+
+//
+//  - - - - -
+//   e r r T
+//  - - - - -
+//
+//  Validate an error that has been returned by a library function.
+//
+//  Internal function used by test program.
+//
+//  Given:
+//     t        *testing.T   go test struct
+//     want     error        expected error
+//     err      error        error produced by called function
+//     tname    string       name of individual test
+//
+//  This revision:  2020 December 3
+//
+func errT(t *testing.T, want, err error, tname string) {
+	if err != want {
+		log.Output(2, fmt.Sprintf("%s failed: want %q got %q",
+			tname, want, err))
+		t.Fail()
+	} else if *verbose {
+		log.Output(2, fmt.Sprintf("%s passed: want %q got %q",
+			tname, want, err))
 	}
 }

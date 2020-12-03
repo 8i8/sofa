@@ -78,9 +78,9 @@ func CgoA2af(ndp int, angle float64) (sign byte, idmsf [4]int) {
 //  GoA2af Decompose radians into degrees, arcminutes, arcseconds,
 //  fraction.
 func GoA2af(ndp int, angle float64) (sign byte, idmsf [4]int) {
-	/* Hours to degrees * radians to turns */
+	// Hours to degrees * radians to turns.
 	const F = 15.0 / D2PI
 
-	/* Scale then use days to h,m,s function. */
+	// Scale then use days to h,m,s function.
 	return GoD2tf(ndp, angle*F)
 }
