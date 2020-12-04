@@ -192,9 +192,17 @@ func dint(a float64) (res float64) {
 	return
 }
 
-// fmax returns the greatest of the two floats.
+// fmax returns the greatest of two floats.
 func fmax(a, b float64) float64 {
 	if a > b {
+		return a
+	}
+	return b
+}
+
+// fmin returns the lesast of two floats.
+func fmin(a, b float64) float64 {
+	if a < b {
 		return a
 	}
 	return b
