@@ -85,4 +85,13 @@ const (
 	WGS84 = 1
 	GRS80 = 2
 	WGS72 = 3
+
+	// calculated with math.Nextafter(1, 2) -1
+	// `2.220446049250313080847263336181640625e-16` or `0x1p-52`
+	// hexadecimal floating-point literal, the same kind of thing
+	// that C got in C99. Takes a hexadecimal fractional number like
+	// `0x12.34ab` for the mantissa, and the exponent as a power of
+	// two. So `0x1p-52` basically means 2^-52.
+	DBL_EPSILON = 2.220446049250313080847263336181640625e-16
 )
+

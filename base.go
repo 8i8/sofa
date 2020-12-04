@@ -183,7 +183,6 @@ func dnint(a float64) (res float64) {
 }
 
 /* dint(A) - truncate to nearest whole number towards zero (double) */
-//#define dint(A) ((A)<0.0?ceil(A):floor(A))
 func dint(a float64) (res float64) {
 	if a < 0.0 {
 		res = math.Ceil(a)
@@ -191,4 +190,12 @@ func dint(a float64) (res float64) {
 		res = math.Floor(a)
 	}
 	return
+}
+
+// fmax returns the greatest of the two floats.
+func fmax(a, b float64) float64 {
+	if a > b {
+		return a
+	}
+	return b
 }
