@@ -2,6 +2,7 @@ package sofa
 
 // #include "sofa.h"
 import "C"
+import "math"
 
 //  CgoApco For a terrestrial observer, prepare star-independent
 //  astrometry parameters for transformations between ICRS and observed
@@ -200,60 +201,50 @@ func CgoApco(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
 //  coordinates.  The caller supplies the Earth ephemeris, the Earth
 //  rotation information and the refraction constants as well as the
 //  site coordinates.
-// TODO
-// apco.now.go|222 col 2| undefined: iauAper
-// apco.now.go|228 col 2| undefined: iauC2ixys
-// apco.now.go|231 col 2| undefined: iauPvtob
-// apco.now.go|234 col 2| undefined: iauTrxpv
-// apco.now.go|237 col 2| undefined: iauApcs
-// apco.now.go|240 col 2| undefined: iauCr
-// func GoApco(date1, date2 float64,
-// 	ebpv [2][3]float64, ehp [3]float64,
-// 	x, y, s, theta float64,
-// 	elong, phi, hm float64,
-// 	xp, yp, sp float64,
-// 	refa, refb float64) (astrom ASTROM) {
-// 	var sl, cl float64
-// 	var r [3][3]float64
-// 	var pvc, pv [2][3]float64
+func GoApco(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
+	x, y, s, theta, elong, phi, hm, xp, yp, sp, refa, refb float64,
+) (astrom ASTROM) {
+	var sl, cl float64
+	var r [3][3]float64
+	var pvc, pv [2][3]float64
 
-// 	// Longitude with adjustment for TIO locator s'.
-// 	astrom.along = elong + sp
+	// Longitude with adjustment for TIO locator s'.
+	astrom.along = elong + sp
 
-// 	// Polar motion, rotated onto the local meridian.
-// 	sl = math.Sin(astrom.along)
-// 	cl = math.Cos(astrom.along)
-// 	astrom.xpl = xp*cl - yp*sl
-// 	astrom.ypl = xp*sl + yp*cl
+	// Polar motion, rotated onto the local meridian.
+	sl = math.Sin(astrom.along)
+	cl = math.Cos(astrom.along)
+	astrom.xpl = xp*cl - yp*sl
+	astrom.ypl = xp*sl + yp*cl
 
-// 	// Functions of latitude.
-// 	astrom.sphi = math.Sin(phi)
-// 	astrom.cphi = math.Cos(phi)
+	// Functions of latitude.
+	astrom.sphi = math.Sin(phi)
+	astrom.cphi = math.Cos(phi)
 
-// 	// Refraction constants.
-// 	astrom.refa = refa
-// 	astrom.refb = refb
+	// Refraction constants.
+	astrom.refa = refa
+	astrom.refb = refb
 
-// 	// Local Earth rotation angle.
-// 	astrom = GoAper(theta, astrom)
+	// Local Earth rotation angle.
+	astrom = GoAper(theta, astrom)
 
-// 	// Disable the (redundant) diurnal aberration step.
-// 	astrom.diurab = 0.0
+	// Disable the (redundant) diurnal aberration step.
+	astrom.diurab = 0.0
 
-// 	// CIO based BPN matrix.
-// 	r = GoC2ixys(x, y, s)
+	// CIO based BPN matrix.
+	r = GoC2ixys(x, y, s)
 
-// 	// Observer's geocentric position and velocity (m, m/s, CIRS).
-// 	iauPvtob(elong, phi, hm, xp, yp, sp, theta, pvc)
+	// Observer's geocentric position and velocity (m, m/s, CIRS).
+	pvc = GoPvtob(elong, phi, hm, xp, yp, sp, theta)
 
-// 	// Rotate into GCRS.
-// 	iauTrxpv(r, pvc, pv)
+	// Rotate into GCRS.
+	pv = GoTrxpv(r, pvc)
 
-// 	// ICRS <. GCRS parameters.
-// 	iauApcs(date1, date2, pv, ebpv, ehp, astrom)
+	// ICRS <. GCRS parameters.
+	astrom = GoApcs(date1, date2, pv, ebpv, ehp, astrom)
 
-// 	// Store the CIO based BPN matrix.
-// 	iauCr(r, astrom.bpn)
+	// Store the CIO based BPN matrix.
+	astrom.bpn = r
 
-// 	return
-// }
+	return
+}

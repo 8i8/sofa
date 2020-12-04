@@ -120,8 +120,8 @@ import "C"
 //  astrometry parameters for transformations between ICRS and GCRS
 //  coordinates.  The caller supplies the date, and SOFA models are used
 //  to predict the Earth ephemeris.
-func CgoApcg13(date1, date2 float64) (astrom ASTROM) {
-	var cAstrom C.iauASTROM
+func CgoApcg13(date1, date2 float64, astrom ASTROM) ASTROM {
+	cAstrom := astrGo2C(astrom)
 	C.iauApcg13(C.double(date1), C.double(date2), &cAstrom)
 	return astrC2Go(cAstrom)
 }
@@ -130,11 +130,11 @@ func CgoApcg13(date1, date2 float64) (astrom ASTROM) {
 //  astrometry parameters for transformations between ICRS and GCRS
 //  coordinates.  The caller supplies the date, and SOFA models are used
 //  to predict the Earth ephemeris.
-func GoApcg13(date1, date2 float64) (astrom ASTROM) {
+func GoApcg13(date1, date2 float64, astrom ASTROM) ASTROM {
 
 	// Earth barycentric & heliocentric position/velocity (au, au/d).
 	pvh, pvb, _ := CgoEpv00(date1, date2)
 
 	// Compute the star-independent astrometry parameters.
-	return GoApcg(date1, date2, pvb, pvh[0])
+	return GoApcg(date1, date2, pvb, pvh[0], astrom)
 }

@@ -18,6 +18,7 @@ func TestApci(t *testing.T) {
 	var date1, date2, x, y, s float64
 	var ebpv [2][3]float64
 	var ehp [3]float64
+	var astr ASTROM
 
 	date1 = 2456165.5
 	date2 = 0.401182685
@@ -37,7 +38,8 @@ func TestApci(t *testing.T) {
 	tests := []struct {
 		ref string
 		fn  func(a, b float64, c [2][3]float64,
-			d [3]float64, e, f, g float64) ASTROM
+			d [3]float64, e, f, g float64,
+			h ASTROM) ASTROM
 	}{
 		{"cgo", CgoApci},
 		{"go", GoApci},
@@ -46,7 +48,8 @@ func TestApci(t *testing.T) {
 	for _, test := range tests {
 		tname := fname + " " + test.ref
 
-		astrom := test.fn(date1, date2, ebpv, ehp, x, y, s)
+		astrom := test.fn(date1, date2,
+			ebpv, ehp, x, y, s, astr)
 
 		vvd(t, astrom.pmt, 12.65133794027378508, 1e-11,
 			tname, "pmt")
@@ -97,6 +100,7 @@ func BenchmarkApci(b *testing.B) {
 	var date1, date2, x, y, s float64
 	var ebpv [2][3]float64
 	var ehp [3]float64
+	var astr ASTROM
 
 	date1 = 2456165.5
 	date2 = 0.401182685
@@ -116,7 +120,8 @@ func BenchmarkApci(b *testing.B) {
 	tests := []struct {
 		ref string
 		fn  func(a, b float64, c [2][3]float64,
-			d [3]float64, e, f, g float64) ASTROM
+			d [3]float64, e, f, g float64,
+			h ASTROM) ASTROM
 	}{
 		{"cgo", CgoApci},
 		{"go", GoApci},
@@ -126,7 +131,7 @@ func BenchmarkApci(b *testing.B) {
 		b.Run(test.ref, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = test.fn(date1, date2,
-					ebpv, ehp, x, y, s)
+					ebpv, ehp, x, y, s, astr)
 			}
 		})
 	}

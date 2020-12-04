@@ -131,14 +131,13 @@ import "C"
 //  geocentric CIRS coordinates.  The Earth ephemeris and CIP/CIO are
 //  supplied by the caller.
 func CgoApci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
-	x, y, s float64) (astrom ASTROM) {
-	var cASTROM C.iauASTROM
-	// Go into c.
+	x, y, s float64, astrom ASTROM) ASTROM {
+	cAstrom := astrGo2C(astrom)
 	cEbpv := v3dGo2C(ebpv)
 	cEhp := v3sGo2C(ehp)
 	C.iauApci(C.double(date1), C.double(date2), &cEbpv[0], &cEhp[0],
-		C.double(x), C.double(y), C.double(s), &cASTROM)
-	return astrC2Go(cASTROM)
+		C.double(x), C.double(y), C.double(s), &cAstrom)
+	return astrC2Go(cAstrom)
 }
 
 // GoApci For a terrestrial observer, prepare star-independent astrometry
@@ -146,12 +145,12 @@ func CgoApci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
 // coordinates.  The Earth ephemeris and CIP/CIO are supplied by the
 // caller.
 func GoApci(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
-	x, y, s float64) (astrom ASTROM) {
+	x, y, s float64, astrom ASTROM) ASTROM {
 
 	// Star-independent astrometry parameters for geocenter.
-	astrom = GoApcg(date1, date2, ebpv, ehp)
+	astrom = GoApcg(date1, date2, ebpv, ehp, astrom)
 
 	// CIO based BPN matrix.
 	astrom.bpn = GoC2ixys(x, y, s)
-	return
+	return astrom
 }

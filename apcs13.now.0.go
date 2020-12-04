@@ -1,19 +1,17 @@
 package sofa
 
-// #include "sofa.h"
-import "C"
-
-//  CgoApcg For a geocentric observer, prepare star-independent
-//  astrometry parameters for transformations between ICRS and GCRS
-//  coordinates.  The Earth ephemeris is supplied by the caller.
+//  CgoApcs13 For an observer whose geocentric position and velocity are
+//  known, prepare star-independent astrometry parameters for
+//  transformations between ICRS and GCRS.  The Earth ephemeris is from
+//  SOFA models.
 //
-//  - - - - -
-//   A p c g
-//  - - - - -
+//  - - - - - - -
+//   A p c s 1 3
+//  - - - - - - -
 //
-//  The parameters produced by this function are required in the
-//  parallax, light deflection and aberration parts of the astrometric
-//  transformation chain.
+//  The parameters produced by this function are required in the space
+//  motion, parallax, light deflection and aberration parts of the
+//  astrometric transformation chain.
 //
 //  This function is part of the International Astronomical Union's
 //  SOFA (Standards of Fundamental Astronomy) software collection.
@@ -23,8 +21,7 @@ import "C"
 //  Given:
 //     date1  double       TDB as a 2-part...
 //     date2  double       ...Julian Date (Note 1)
-//     ebpv   double[2][3] Earth barycentric pos/vel (au, au/day)
-//     ehp    double[3]    Earth heliocentric position (au)
+//     pv     double[2][3] observer's geocentric pos/vel (Note 3)
 //
 //  Returned:
 //     astrom iauASTROM*   star-independent astrometry parameters:
@@ -73,7 +70,17 @@ import "C"
 //
 //  2) All the vectors are with respect to BCRS axes.
 //
-//  3) This is one of several functions that inserts into the astrom
+//  3) The observer's position and velocity pv are geocentric but with
+//     respect to BCRS axes, and in units of m and m/s.  No assumptions
+//     are made about proximity to the Earth, and the function can be
+//     used for deep space applications as well as Earth orbit and
+//     terrestrial.
+//
+//  4) In cases where the caller wishes to supply his own Earth
+//     ephemeris, the function iauApcs can be used instead of the present
+//     function.
+//
+//  5) This is one of several functions that inserts into the astrom
 //     structure star-independent parameters needed for the chain of
 //     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
 //
@@ -100,10 +107,11 @@ import "C"
 //     aberration and parallax (unless subsumed into the ICRS <-> GCRS
 //     transformation), and atmospheric refraction.
 //
-//  4) The context structure astrom produced by this function is used by
+//  6) The context structure astrom produced by this function is used by
 //     iauAtciq* and iauAticq*.
 //
 //  Called:
+//     iauEpv00     Earth position and velocity
 //     iauApcs      astrometry parameters, ICRS-GCRS, space observer
 //
 //  This revision:   2013 October 9
@@ -112,28 +120,20 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  CgoApcg For a geocentric observer, prepare star-independent
-//  astrometry parameters for transformations between ICRS and GCRS
-//  coordinates.  The Earth ephemeris is supplied by the caller.
-func CgoApcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
-	astrom ASTROM) ASTROM {
-	cAstrom := astrGo2C(astrom)
-	cebpv := v3dGo2C(ebpv)
-	cehp := v3sGo2C(ehp)
-	C.iauApcg(C.double(date1), C.double(date2),
-		&cebpv[0], &cehp[0], &cAstrom)
-	return astrC2Go(cAstrom)
+// void iauApcs13(double date1, double date2, double pv[2][3],
+//                iauASTROM *astrom)
+func CgoApcs13(date1, date2 float64, pv [2][3]float64, astrom ASTROM,
+) ASTROM {
+	return astrom
 }
 
-//  GoApcg For a geocentric observer, prepare star-independent astrometry
-//  parameters for transformations between ICRS and GCRS coordinates.  The
-//  Earth ephemeris is supplied by the caller.
-func GoApcg(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
-	astrom ASTROM) ASTROM {
+// {
+//    double ehpv[2][3], ebpv[2][3];
 
-	// Geocentric observer {{0,0,0},{0,0,0},{0,0,0}}
-	var pv [2][3]float64
+// /* Earth barycentric & heliocentric position/velocity (au, au/d). */
+//    (void) iauEpv00(date1, date2, ehpv, ebpv);
 
-	// Compute the star-independent astrometry parameters.
-	return GoApcs(date1, date2, pv, ebpv, ehp, astrom)
-}
+// /* Compute the star-independent astrometry parameters. */
+//    iauApcs(date1, date2, pv, ebpv, ehpv[0], astrom);
+
+// /* Finished. */

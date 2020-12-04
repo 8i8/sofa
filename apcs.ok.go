@@ -137,8 +137,8 @@ import "math"
 //  known, prepare star-independent astrometry parameters for
 //  transformations between ICRS and GCRS.  The Earth ephemeris is
 //  supplied by the caller.
-func CgoApcs(date1, date2 float64, pv,
-	ebpv [2][3]float64, ehp [3]float64) (astrom ASTROM) {
+func CgoApcs(date1, date2 float64, pv, ebpv [2][3]float64,
+	ehp [3]float64, astrom ASTROM) ASTROM {
 
 	// C Output data.
 	var cAstrom C.iauASTROM
@@ -160,10 +160,8 @@ func CgoApcs(date1, date2 float64, pv,
 //  known, prepare star-independent astrometry parameters for
 //  transformations between ICRS and GCRS.  The Earth ephemeris is
 //  supplied by the caller.
-func GoApcs(
-	date1, date2 float64,
-	pv, ebpv [2][3]float64,
-	ehp [3]float64) (astrom ASTROM) {
+func GoApcs(date1, date2 float64, pv, ebpv [2][3]float64,
+	ehp [3]float64, astrom ASTROM) ASTROM {
 
 	// au/d to m/s
 	var AUDMS = DAU / DAYSEC
@@ -203,5 +201,5 @@ func GoApcs(
 
 	// Reset the NPB matrix.
 	astrom.bpn = GoIr()
-	return
+	return astrom
 }

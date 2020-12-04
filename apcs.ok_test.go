@@ -19,6 +19,7 @@ func TestApcs(t *testing.T) {
 	var date1, date2 float64
 	var pv, ebpv [2][3]float64
 	var ehp [3]float64
+	var astr ASTROM
 
 	date1 = 2456384.5
 	date2 = 0.970031644
@@ -40,7 +41,8 @@ func TestApcs(t *testing.T) {
 
 	tests := []struct {
 		ref string
-		fn  func(a, b float64, c, d [2][3]float64, e [3]float64) ASTROM
+		fn  func(a, b float64, c, d [2][3]float64,
+			e [3]float64, f ASTROM) ASTROM
 	}{
 		{"cgo", CgoApcs},
 		{"go", GoApcs},
@@ -48,7 +50,7 @@ func TestApcs(t *testing.T) {
 
 	for _, test := range tests {
 		tname := fname + " " + test.ref
-		astrom := test.fn(date1, date2, pv, ebpv, ehp)
+		astrom := test.fn(date1, date2, pv, ebpv, ehp, astr)
 
 		vvd(t, astrom.pmt, 13.25248468622587269, 1e-11, tname, "pmt")
 		vvd(t, astrom.eb[0], -0.9741827110629881886, 1e-12, tname, "eb(1)")
@@ -79,6 +81,7 @@ func BenchmarkApcs(b *testing.B) {
 	var date1, date2 float64
 	var pv, ebpv [2][3]float64
 	var ehp [3]float64
+	var astr ASTROM
 
 	date1 = 2456384.5
 	date2 = 0.970031644
@@ -100,7 +103,8 @@ func BenchmarkApcs(b *testing.B) {
 
 	tests := []struct {
 		ref string
-		fn  func(a, b float64, c, d [2][3]float64, e [3]float64) ASTROM
+		fn  func(a, b float64, c, d [2][3]float64,
+			e [3]float64, f ASTROM) ASTROM
 	}{
 		{"cgo", CgoApcs},
 		{"go", GoApcs},
@@ -109,7 +113,8 @@ func BenchmarkApcs(b *testing.B) {
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = test.fn(date1, date2, pv, ebpv, ehp)
+				_ = test.fn(date1, date2, pv, ebpv,
+					ehp, astr)
 			}
 		})
 	}

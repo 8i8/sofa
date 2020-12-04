@@ -54,7 +54,7 @@ func TestApco(t *testing.T) {
 			a15, a16 float64) (b1 ASTROM)
 	}{
 		{"cgo", CgoApco},
-		//{"go", GoApco},
+		{"go", GoApco},
 	}
 	for _, test := range tests {
 		tname := fname + " " + test.ref
@@ -168,7 +168,7 @@ func BenchmarkApco(b *testing.B) {
 			a15, a16 float64) (b1 ASTROM)
 	}{
 		{"cgo", CgoApco},
-		//{"go", GoApco},
+		{"go", GoApco},
 	}
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {

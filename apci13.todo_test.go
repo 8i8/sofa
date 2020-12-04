@@ -16,12 +16,14 @@ import "testing"
 func TestApci13(t *testing.T) {
 	const fname = "Apci13"
 	var date1, date2 float64
+	var astr ASTROM
+
 	date1 = 2456165.5
 	date2 = 0.401182685
 
 	tests := []struct {
 		ref string
-		fn  func(a, b float64) (ASTROM, float64)
+		fn  func(a, b float64, c ASTROM) (ASTROM, float64)
 	}{
 		{"cgo", CgoApci13},
 		{"go", GoApci13},
@@ -29,7 +31,7 @@ func TestApci13(t *testing.T) {
 
 	for _, test := range tests {
 		tname := fname + " " + test.ref
-		astrom, eo := test.fn(date1, date2)
+		astrom, eo := test.fn(date1, date2, astr)
 
 		vvd(t, astrom.pmt, 12.65133794027378508, 1e-11,
 			tname, "pmt")
@@ -80,12 +82,14 @@ func TestApci13(t *testing.T) {
 
 func BenchmarkApci13(b *testing.B) {
 	var date1, date2 float64
+	var astr ASTROM
+
 	date1 = 2456165.5
 	date2 = 0.401182685
 
 	tests := []struct {
 		ref string
-		fn  func(a, b float64) (ASTROM, float64)
+		fn  func(a, b float64, c ASTROM) (ASTROM, float64)
 	}{
 		{"cgo", CgoApci13},
 		{"go", GoApci13},
@@ -94,7 +98,7 @@ func BenchmarkApci13(b *testing.B) {
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_, _ = test.fn(date1, date2)
+				_, _ = test.fn(date1, date2, astr)
 			}
 		})
 	}

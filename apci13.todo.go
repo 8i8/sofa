@@ -125,19 +125,23 @@ import "C"
 //  astrometry parameters for transformations between ICRS and
 //  geocentric CIRS coordinates.  The caller supplies the date, and SOFA
 //  models are used to predict the Earth ephemeris and CIP/CIO.
-func CgoApci13(date1, date2 float64) (astrom ASTROM, eo float64) {
-	var cAstrom C.iauASTROM
+func CgoApci13(date1, date2 float64, astrom ASTROM) (ASTROM, float64) {
 	var cEo C.double
+	cAstrom := astrGo2C(astrom)
 	C.iauApci13(C.double(date1), C.double(date2), &cAstrom, &cEo)
 	return astrC2Go(cAstrom), float64(cEo)
 }
 
-// TODO not yet go code
-func GoApci13(date1, date2 float64) (astrom ASTROM, eo float64) {
+//  GoApci13 For a terrestrial observer, prepare star-independent
+//  astrometry parameters for transformations between ICRS and
+//  geocentric CIRS coordinates.  The caller supplies the date, and SOFA
+//  models are used to predict the Earth ephemeris and CIP/CIO.
+func GoApci13(date1, date2 float64, astrom ASTROM) (ASTROM, float64) {
 	var cR [3][3]C.double
 	var cEhpv, cEbpv [2][3]C.double
 	var x, y, s C.double
 	var cAstrom C.iauASTROM
+	var eo float64
 
 	/* Earth barycentric & heliocentric position/velocity (au, au/d). */
 	C.iauEpv00(C.double(date1), C.double(date2), &cEhpv[0], &cEbpv[0])
@@ -157,7 +161,7 @@ func GoApci13(date1, date2 float64) (astrom ASTROM, eo float64) {
 	/* Equation of the origins. */
 	eo = float64(C.iauEors(&cR[0], s))
 	astrom = astrC2Go(cAstrom)
-	return
+	return astrom, eo
 }
 
 // goApci13 For a terrestrial observer, prepare star-independent
