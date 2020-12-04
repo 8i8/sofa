@@ -34,10 +34,13 @@ apci13.todo_test.go
 apco.c
 apco.ok.go
 apco.ok_test.go
+apco13.c
 apcs.c
 apcs.ok.go
 apcs.ok_test.go
 apcs13.c
+apcs13.dep.GoEpv00.go
+apcs13.dep.GoEpv00_test.go
 aper.c
 aper.ok.go
 aper.ok_test.go
@@ -135,8 +138,8 @@ nut00a.c
 nut00a.todo.go
 nut00a.todo_test.go
 nut06a.c
-nut06a.todo.go
-nut06a.todo_test.go
+nut06a.dep.GoNut00a.go
+nut06a.dep.GoNut00a_test.go
 obl06.c
 obl06.ok.go
 obl06.ok_test.go
@@ -171,8 +174,8 @@ rxp.c
 rxp.ok.go
 rxp.ok_test.go
 rxpv.c
-rxpv.now.go
-rxpv.now_test.go
+rxpv.ok.go
+rxpv.ok_test.go
 rxr.c
 rxr.ok.go
 rxr.ok_test.go

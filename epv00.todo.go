@@ -134,9 +134,14 @@ func CgoEpv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
 	return
 }
 
-//  Epv00 Earth position and velocity, heliocentric and barycentric, with
-//  respect to the Barycentric Celestial Reference System.
 // TODO gocode
+
+//  GoEpv00 Earth position and velocity, heliocentric and barycentric,
+//  with respect to the Barycentric Celestial Reference System.
+func GoEpv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
+	return CgoEpv00(date1, date2)
+}
+
 //func goEpv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
 
 //	const (

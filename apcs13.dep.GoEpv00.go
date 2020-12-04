@@ -1,5 +1,8 @@
 package sofa
 
+// #include "sofa.h"
+import "C"
+
 //  CgoApcs13 For an observer whose geocentric position and velocity are
 //  known, prepare star-independent astrometry parameters for
 //  transformations between ICRS and GCRS.  The Earth ephemeris is from
@@ -120,20 +123,33 @@ package sofa
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-// void iauApcs13(double date1, double date2, double pv[2][3],
-//                iauASTROM *astrom)
-func CgoApcs13(date1, date2 float64, pv [2][3]float64, astrom ASTROM,
-) ASTROM {
-	return astrom
+//  CgoApcs13 For an observer whose geocentric position and velocity are
+//  known, prepare star-independent astrometry parameters for
+//  transformations between ICRS and GCRS.  The Earth ephemeris is from
+//  SOFA models.
+func CgoApcs13(date1, date2 float64, pv [2][3]float64,
+	astrom ASTROM) ASTROM {
+
+	cAstrom := astrGo2C(astrom)
+	cPv := v3dGo2C(pv)
+	C.iauApcs13(C.double(date1), C.double(date2), &cPv[0], &cAstrom)
+	return astrC2Go(cAstrom)
 }
 
-// {
-//    double ehpv[2][3], ebpv[2][3];
+//  GoApcs13 For an observer whose geocentric position and velocity are
+//  known, prepare star-independent astrometry parameters for
+//  transformations between ICRS and GCRS.  The Earth ephemeris is from
+//  SOFA models.
+func GoApcs13(date1, date2 float64, pv [2][3]float64,
+	astrom ASTROM) ASTROM {
 
-// /* Earth barycentric & heliocentric position/velocity (au, au/d). */
-//    (void) iauEpv00(date1, date2, ehpv, ebpv);
+	var ehpv, ebpv [2][3]float64
 
-// /* Compute the star-independent astrometry parameters. */
-//    iauApcs(date1, date2, pv, ebpv, ehpv[0], astrom);
+	// Earth barycentric & heliocentric position/velocity (au, au/d).
+	ehpv, ebpv, _ = CgoEpv00(date1, date2)
 
-// /* Finished. */
+	// Compute the star-independent astrometry parameters.
+	astrom = GoApcs(date1, date2, pv, ebpv, ehpv[0], astrom)
+
+	return astrom
+}
