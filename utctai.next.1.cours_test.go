@@ -21,7 +21,7 @@ func TestUtctai(t *testing.T) {
 		fn  func(a1, a2 float64) (b1, b2 float64, b3 error)
 	}{
 		{"cgo", CgoUtctai},
-		//{"go", GoUtctai},
+		{"go", GoUtctai},
 	}
 	for _, test := range tests {
 		tname := fname + " " + test.ref

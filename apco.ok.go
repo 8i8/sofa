@@ -173,13 +173,13 @@ import "math"
 //              iauASTROM *astrom)
 func CgoApco(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
 	x, y, s, theta, elong, phi, hm, xp, yp, sp, refa, refb float64,
-) (astrom ASTROM) {
+	astr ASTROM) (astrom ASTROM) {
 
 	var cEbpv [2][3]C.double
 	var cEhp [3]C.double
-	var cAstrom C.iauASTROM
 
 	// Go to C
+	cAstrom := astrGo2C(astr)
 	cEbpv = v3dGo2C(ebpv)
 	cEhp = v3sGo2C(ehp)
 

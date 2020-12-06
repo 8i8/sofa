@@ -19,6 +19,7 @@ func TestApco(t *testing.T) {
 		phi, hm, xp, yp, sp, refa, refb float64
 	var ebpv [2][3]float64
 	var ehp [3]float64
+	var astr ASTROM
 
 	date1 = 2456384.5
 	date2 = 0.970031644
@@ -51,7 +52,7 @@ func TestApco(t *testing.T) {
 			a5, a6, a7, a8 float64,
 			a9, a10, a11 float64,
 			a12, a13, a14 float64,
-			a15, a16 float64) (b1 ASTROM)
+			a15, a16 float64, a17 ASTROM) (b1 ASTROM)
 	}{
 		{"cgo", CgoApco},
 		{"go", GoApco},
@@ -63,7 +64,7 @@ func TestApco(t *testing.T) {
 			x, y, s, theta,
 			elong, phi, hm,
 			xp, yp, sp,
-			refa, refb)
+			refa, refb, astr)
 
 		vvd(t, astrom.pmt, 13.25248468622587269, 1e-11,
 			tname, "pmt")
@@ -133,6 +134,7 @@ func BenchmarkApco(b *testing.B) {
 		phi, hm, xp, yp, sp, refa, refb float64
 	var ebpv [2][3]float64
 	var ehp [3]float64
+	var astr ASTROM
 
 	date1 = 2456384.5
 	date2 = 0.970031644
@@ -165,7 +167,7 @@ func BenchmarkApco(b *testing.B) {
 			a5, a6, a7, a8 float64,
 			a9, a10, a11 float64,
 			a12, a13, a14 float64,
-			a15, a16 float64) (b1 ASTROM)
+			a15, a16 float64, a17 ASTROM) (b1 ASTROM)
 	}{
 		{"cgo", CgoApco},
 		{"go", GoApco},
@@ -178,7 +180,7 @@ func BenchmarkApco(b *testing.B) {
 					x, y, s, theta,
 					elong, phi, hm,
 					xp, yp, sp,
-					refa, refb)
+					refa, refb, astr)
 			}
 		})
 	}

@@ -232,16 +232,18 @@ func GoApco13(utc1, utc2, dut1, elong, phi, hm,
 	var r [3][3]float64
 	var x, y, s, theta, sp, refa, refb float64
 
-	// if j < 0 {
-	// 	return -1
-	// }
-	// if err != nil {
-	// 	return -1
-	// }
 	// UTC to other time scales.
 	tai1, tai2, err = GoUtctai(utc1, utc2)
+	if err != nil && !errors.Is(err, errUtctaiPlus1) {
+		err = errApco13Min1
+		return
+	}
 	tt1, tt2, _ = GoTaitt(tai1, tai2)
 	ut11, ut12, err = GoUtcut1(utc1, utc2, dut1)
+	if err != nil && !errors.Is(err, errUtcut1Plus1) {
+		err = errApco13Min1
+		return
+	}
 
 	// Earth barycentric & heliocentric position/velocity (au, au/d).
 	ehpv, ebpv, _ = GoEpv00(tt1, tt2)

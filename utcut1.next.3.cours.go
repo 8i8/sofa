@@ -100,31 +100,42 @@ func CgoUtcut1(utc1, utc2, dut1 float64) (ut11, ut12 float64, err error) {
 // UTC, to Universal Time, UT1.
 func GoUtcut1(utc1, utc2, dut1 float64) (ut11, ut12 float64, err error) {
 
-	// var iy, im, id, js, jw int
-	// var w, dat, dta, tai1, tai2 float64
+	var iy, im, id int
+	var dat, dta, tai1, tai2 float64
+	var errs, errw error
 
-	// // Look up TAI-UTC.
-	// if iauJd2cal(utc1, utc2, &iy, &im, &id, &w) {
-	// 	return -1
-	// }
-	// js = iauDat(iy, im, id, 0.0, &dat)
-	// if js < 0 {
-	// 	return -1
-	// }
+	// Look up TAI-UTC.
+	iy, im, id, _, err = GoJd2cal(utc1, utc2)
+	if err != nil {
+		err = errUtcut1Min1
+		return
+	}
+	dat, errs = GoDat(iy, im, id, 0.0)
+	if errs != nil {
+		if !errors.Is(errs, errDat1) {
+			err = errUtcut1Min1
+			return
+		}
+		err = errUtcut1Plus1
+	}
 
-	// // Form UT1-TAI.
-	// dta = dut1 - dat
+	// Form UT1-TAI.
+	dta = dut1 - dat
 
-	// // UTC to TAI to UT1.
-	// jw = iauUtctai(utc1, utc2, &tai1, &tai2)
-	// if jw < 0 {
-	// 	return -1
-	// } else if jw > 0 {
-	// 	js = jw
-	// }
-	// if iauTaiut1(tai1, tai2, dta, ut11, ut12) {
-	// 	return -1
-	// }
+	// UTC to TAI to UT1.
+	tai1, tai2, errw = GoUtctai(utc1, utc2)
+	if errw != nil {
+		if !errors.Is(errw, errUtctaiPlus1) {
+			err = errUtcut1Min1
+			return
+		}
+		err = errUtcut1Plus1
+	}
+	ut11, ut12, err = GoTaiut1(tai1, tai2, dta)
+	if err != nil {
+		err = errUtcut1Min1
+		return
+	}
 
-	 return 0.0, 0.0, nil
+	return
 }
