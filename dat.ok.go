@@ -5,12 +5,12 @@ import "C"
 import "errors"
 
 var (
-	errDat1    = errors.New("dubious year (Note 1)")
-	errDatMin1 = errors.New("bad year")
-	errDatMin2 = errors.New("bad month")
-	errDatMin3 = errors.New("bad day (Note 3)")
-	errDatMin4 = errors.New("bad fraction (Note 4)")
-	errDatMin5 = errors.New("internal error (Note 5)")
+	errDatWarn = errors.New("dubious year (Note 1)")
+	errDatE1   = errors.New("bad year")
+	errDatE2   = errors.New("bad month")
+	errDatE3   = errors.New("bad day (Note 3)")
+	errDatE4   = errors.New("bad fraction (Note 4)")
+	errDatE5   = errors.New("internal error (Note 5)")
 )
 
 //  CgoDat For a given UTC date, calculate Delta(AT) = TAI-UTC.
@@ -236,7 +236,7 @@ func GoDat(iy, im, id int, fd float64) (deltat float64, err error) {
 
 	// If invalid fraction of a day, set error status and give up.
 	if fd < 0.0 || fd > 1.0 {
-		err = errDatMin4
+		err = errDatE4
 		return
 	}
 
@@ -250,13 +250,13 @@ func GoDat(iy, im, id int, fd float64) (deltat float64, err error) {
 
 	// If pre-UTC year, set warning status and give up.
 	if iy < changes[0].iyear {
-		err = errDat1
+		err = errDatWarn
 		return
 	}
 
 	// If suspiciously late year, set warning status but proceed.
 	if iy > IYV+5 {
-		err = errDat1
+		err = errDatWarn
 	}
 
 	// Combine year and month to form a date-ordered integer...
@@ -271,7 +271,7 @@ func GoDat(iy, im, id int, fd float64) (deltat float64, err error) {
 
 	// Prevent underflow warnings.
 	if i < 0 {
-		err = errDatMin5
+		err = errDatE5
 		return
 	}
 

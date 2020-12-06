@@ -7,8 +7,8 @@ import (
 	"math"
 )
 
-var errUtctaiPlus1 = errors.New("dubious year (Note 2)")
-var errUtctaiMin1 = errors.New("unacceptable date")
+var errUtctaiWarn = errors.New("dubious year (Note 2)")
+var errUtctaiE1 = errors.New("unacceptable date")
 
 //  CgoUtctai Time scale transformation:  Coordinated Universal Time,
 //  UTC, to International Atomic Time, TAI.
@@ -85,9 +85,9 @@ func CgoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err error) {
 	switch int(cI) {
 	case 0:
 	case -1:
-		err = errUtctaiMin1
+		err = errUtctaiE1
 	case 1:
-		err = errUtctaiPlus1
+		err = errUtctaiWarn
 	default:
 		err = errAdmin
 	}
@@ -120,13 +120,13 @@ func GoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err error) {
 		return
 	}
 	dat0, err = GoDat(iy, im, id, 0.0)
-	if err != nil && !errors.Is(err, errDat1) {
+	if err != nil && !errors.Is(err, errDatWarn) {
 		return
 	}
 
 	// Get TAI-UTC at 12h today (to detect drift).
 	dat12, err = GoDat(iy, im, id, 0.5)
-	if err != nil && !errors.Is(err, errDat1) {
+	if err != nil && !errors.Is(err, errDatWarn) {
 		return
 	}
 
@@ -136,7 +136,7 @@ func GoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err error) {
 		return
 	}
 	dat24, err = GoDat(iyt, imt, idt, 0.0)
-	if err != nil && !errors.Is(err, errDat1) {
+	if err != nil && !errors.Is(err, errDatWarn) {
 		return
 	}
 

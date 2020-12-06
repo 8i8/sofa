@@ -4,8 +4,8 @@ package sofa
 import "C"
 import "errors"
 
-var errUtcut1Min1 = errors.New("unacceptable date")
-var errUtcut1Plus1 = errors.New("dubious year (Note 3)")
+var errUtcut1Warn = errors.New("dubious year (Note 3)")
+var errUtcut1E1 = errors.New("unacceptable date")
 
 //  CgoUtcut1 Time scale transformation:  Coordinated Universal Time,
 //  UTC, to Universal Time, UT1.
@@ -87,9 +87,9 @@ func CgoUtcut1(utc1, utc2, dut1 float64) (ut11, ut12 float64, err error) {
 	switch int(cI) {
 	case 0:
 	case -1:
-		err = errUtcut1Min1
+		err = errUtcut1E1
 	case 1:
-		err = errUtcut1Plus1
+		err = errUtcut1Warn
 	default:
 		err = errAdmin
 	}
@@ -107,16 +107,16 @@ func GoUtcut1(utc1, utc2, dut1 float64) (ut11, ut12 float64, err error) {
 	// Look up TAI-UTC.
 	iy, im, id, _, err = GoJd2cal(utc1, utc2)
 	if err != nil {
-		err = errUtcut1Min1
+		err = errUtcut1E1
 		return
 	}
 	dat, errs = GoDat(iy, im, id, 0.0)
 	if errs != nil {
-		if !errors.Is(errs, errDat1) {
-			err = errUtcut1Min1
+		if !errors.Is(errs, errDatWarn) {
+			err = errUtcut1E1
 			return
 		}
-		err = errUtcut1Plus1
+		err = errUtcut1Warn
 	}
 
 	// Form UT1-TAI.
@@ -125,15 +125,15 @@ func GoUtcut1(utc1, utc2, dut1 float64) (ut11, ut12 float64, err error) {
 	// UTC to TAI to UT1.
 	tai1, tai2, errw = GoUtctai(utc1, utc2)
 	if errw != nil {
-		if !errors.Is(errw, errUtctaiPlus1) {
-			err = errUtcut1Min1
+		if !errors.Is(errw, errUtctaiWarn) {
+			err = errUtcut1E1
 			return
 		}
-		err = errUtcut1Plus1
+		err = errUtcut1Warn
 	}
 	ut11, ut12, err = GoTaiut1(tai1, tai2, dta)
 	if err != nil {
-		err = errUtcut1Min1
+		err = errUtcut1E1
 		return
 	}
 

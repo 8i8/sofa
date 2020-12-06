@@ -9,9 +9,9 @@ import (
 )
 
 var (
-	errAf2aIdeg  = errors.New("ideg outside range 0-359")
-	errAf2aIamin = errors.New("iamin outside range 0-59")
-	errAf2aAsec  = errors.New("asec outside range 0-59.999...")
+	errAf2aE1 = errors.New("ideg outside range 0-359")
+	errAf2aE2 = errors.New("iamin outside range 0-59")
+	errAf2aE3 = errors.New("asec outside range 0-59.999...")
 )
 
 //  CgoAf2a Convert degrees, arcminutes, arcseconds to radians.
@@ -35,10 +35,10 @@ var (
 //     rad       double  angle in radians
 //
 //  Returned (function value):
-//               int     status:  0 = OK
-//                                1 = ideg outside range 0-359
-//                                2 = iamin outside range 0-59
-//                                3 = asec outside range 0-59.999...
+//     err       error   nil       = OK
+//                       errAf2aE1 = ideg outside range 0-359
+//                       errAf2aE2 = iamin outside range 0-59
+//                       errAf2aE3 = asec outside range 0-59.999...
 //
 //  Notes:
 //
@@ -62,11 +62,11 @@ func CgoAf2a(s byte, ideg, iamin int, asec float64) (rad float64, err error) {
 	j := C.iauAf2a(C.char(s), C.int(ideg), C.int(iamin), C.double(asec), &cRad)
 	switch int(j) {
 	case 1:
-		err = errAf2aIdeg
+		err = errAf2aE1
 	case 2:
-		err = errAf2aIamin
+		err = errAf2aE2
 	case 3:
-		err = errAf2aAsec
+		err = errAf2aE3
 	}
 	return float64(cRad), err
 }
@@ -85,13 +85,13 @@ func GoAf2a(s byte, ideg, iamin int, asec float64) (rad float64, err error) {
 
 	/* Validate arguments and return status. */
 	if ideg < 0 || ideg > 359 {
-		err = errAf2aIdeg
+		err = errAf2aE1
 	}
 	if iamin < 0 || iamin > 59 {
-		err = errAf2aIamin
+		err = errAf2aE2
 	}
 	if asec < 0.0 || asec >= 60.0 {
-		err = errAf2aAsec
+		err = errAf2aE3
 	}
 	return
 }

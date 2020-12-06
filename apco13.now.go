@@ -4,8 +4,8 @@ package sofa
 import "C"
 import "errors"
 
-var errApco13Plus1 = errors.New("dubious year (Note 2)")
-var errApco13Min1 = errors.New("unacceptable date")
+var errApco13Warn = errors.New("dubious year (Note 2)")
+var errApco13E1 = errors.New("unacceptable date")
 
 //  CgoApcp13 For a terrestrial observer, prepare star-independent
 //  astrometry parameters for transformations between ICRS and observed
@@ -208,9 +208,9 @@ func CgoApco13(utc1, utc2, dut1, elong, phi, hm,
 	switch int(cI) {
 	case 0:
 	case -1:
-		err = errApco13Min1
+		err = errApco13E1
 	case 1:
-		err = errApco13Plus1
+		err = errApco13Warn
 	default:
 		err = errAdmin
 	}
@@ -234,14 +234,14 @@ func GoApco13(utc1, utc2, dut1, elong, phi, hm,
 
 	// UTC to other time scales.
 	tai1, tai2, err = GoUtctai(utc1, utc2)
-	if err != nil && !errors.Is(err, errUtctaiPlus1) {
-		err = errApco13Min1
+	if err != nil && !errors.Is(err, errUtctaiWarn) {
+		err = errApco13E1
 		return
 	}
 	tt1, tt2, _ = GoTaitt(tai1, tai2)
 	ut11, ut12, err = GoUtcut1(utc1, utc2, dut1)
-	if err != nil && !errors.Is(err, errUtcut1Plus1) {
-		err = errApco13Min1
+	if err != nil && !errors.Is(err, errUtcut1Warn) {
+		err = errApco13E1
 		return
 	}
 
