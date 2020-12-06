@@ -223,55 +223,53 @@ func CgoApco13(utc1, utc2, dut1, elong, phi, hm,
 // coordinates.  The caller supplies UTC, site coordinates, ambient air
 // conditions and observing wavelength, and SOFA models are used to
 // obtain the Earth ephemeris, CIP/CIO and refraction constants.
-// TODO golang
 func GoApco13(utc1, utc2, dut1, elong, phi, hm,
 	xp, yp, phpa, tc, rh, wl float64,
-	astrom ASTROM) (ASTROM, float64, error) {
+	astr ASTROM) (astrom ASTROM, eo float64, err error) {
 
-	// var tai1, tai2, tt1, tt2, ut11, ut12 float64
-	// var ehpv, ebpv [2][3]float64
-	// var r [3][3]float64
-	// var x, y, s, theta, sp, refa, refb float64
-	// var err error
+	var tai1, tai2, tt1, tt2, ut11, ut12 float64
+	var ehpv, ebpv [2][3]float64
+	var r [3][3]float64
+	var x, y, s, theta, sp, refa, refb float64
 
-	// // UTC to other time scales.
-	// err = iauUtctai(utc1, utc2, &tai1, &tai2)
 	// if j < 0 {
 	// 	return -1
 	// }
-	// err = iauTaitt(tai1, tai2, &tt1, &tt2)
-	// err = iauUtcut1(utc1, utc2, dut1, &ut11, &ut12)
 	// if err != nil {
 	// 	return -1
 	// }
+	// UTC to other time scales.
+	tai1, tai2, err = GoUtctai(utc1, utc2)
+	tt1, tt2, _ = GoTaitt(tai1, tai2)
+	ut11, ut12, err = GoUtcut1(utc1, utc2, dut1)
 
-	// // Earth barycentric & heliocentric position/velocity (au, au/d).
-	// ehpv, ebpv, _ = GoEpv00(tt1, tt2)
+	// Earth barycentric & heliocentric position/velocity (au, au/d).
+	ehpv, ebpv, _ = GoEpv00(tt1, tt2)
 
-	// // Form the equinox based BPN matrix, IAU 2006/2000A.
-	// r = GoPnm06a(tt1, tt2)
+	// Form the equinox based BPN matrix, IAU 2006/2000A.
+	r = GoPnm06a(tt1, tt2)
 
-	// // Extract CIP X,Y.
-	// x, y = GoBpn2xy(r)
+	// Extract CIP X,Y.
+	x, y = GoBpn2xy(r)
 
-	// // Obtain CIO locator s.
-	// s = GoS06(tt1, tt2, x, y)
+	// Obtain CIO locator s.
+	s = GoS06(tt1, tt2, x, y)
 
-	// // Earth rotation angle.
-	// theta = iauEra00(ut11, ut12)
+	// Earth rotation angle.
+	theta = GoEra00(ut11, ut12)
 
-	// // TIO locator s'.
-	// sp = iauSp00(tt1, tt2)
+	// TIO locator s'.
+	sp = GoSp00(tt1, tt2)
 
-	// // Refraction constants A and B.
-	// iauRefco(phpa, tc, rh, wl, &refa, &refb)
+	// Refraction constants A and B.
+	refa, refb = GoRefco(phpa, tc, rh, wl)
 
-	// // Compute the star-independent astrometry parameters.
-	// astrom = GoApco(tt1, tt2, ebpv, ehpv[0], x, y, s, theta,
-	// 	elong, phi, hm, xp, yp, sp, refa, refb, astrom)
+	// Compute the star-independent astrometry parameters.
+	astrom = GoApco(tt1, tt2, ebpv, ehpv[0], x, y, s, theta,
+		elong, phi, hm, xp, yp, sp, refa, refb, astr)
 
-	// // Equation of the origins.
-	// eo = GoEors(r, s)
+	// Equation of the origins.
+	eo = GoEors(r, s)
 
-	return astrom, 0, nil
+	return
 }

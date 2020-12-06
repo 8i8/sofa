@@ -39,7 +39,7 @@ func TestApco13(t *testing.T) {
 			a13 ASTROM) (ASTROM, float64, error)
 	}{
 		{"cgo", CgoApco13},
-		//{"go", GoApco13},
+		{"go", GoApco13},
 	}
 
 	for _, test := range tests {
@@ -138,7 +138,7 @@ func BenchmarkApco13(b *testing.B) {
 			a13 ASTROM) (ASTROM, float64, error)
 	}{
 		{"cgo", CgoApco13},
-		//{"go", GoApco13},
+		{"go", GoApco13},
 	}
 
 	for _, test := range tests {

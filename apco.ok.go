@@ -203,7 +203,8 @@ func CgoApco(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
 //  site coordinates.
 func GoApco(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
 	x, y, s, theta, elong, phi, hm, xp, yp, sp, refa, refb float64,
-) (astrom ASTROM) {
+	astrom ASTROM) ASTROM {
+
 	var sl, cl float64
 	var r [3][3]float64
 	var pvc, pv [2][3]float64
@@ -246,5 +247,5 @@ func GoApco(date1, date2 float64, ebpv [2][3]float64, ehp [3]float64,
 	// Store the CIO based BPN matrix.
 	astrom.bpn = r
 
-	return
+	return astrom
 }
