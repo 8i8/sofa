@@ -5,10 +5,9 @@ package sofa
 import "C"
 import (
 	"errors"
-	"fmt"
 )
 
-var errEpv00 = errors.New("date outside the range 1900-2100 AD")
+var errEpv00Warn = errors.New("date outside the range 1900-2100 AD")
 
 //  CgoEpv00 Earth position and velocity, heliocentric and barycentric,
 //  with respect to the Barycentric Celestial Reference System.
@@ -30,9 +29,9 @@ var errEpv00 = errors.New("date outside the range 1900-2100 AD")
 //     pvb          double[2][3]  barycentric Earth position/velocity
 //
 //  Returned (function value):
-//                  int           status: 0 = OK
-//                                       +1 = warning: date outside
-//                                            the range 1900-2100 AD
+//     err          error         nil = ok
+//                                errEpv00Warn = warning: date outside
+//                                the range 1900-2100 AD
 //
 //  Notes:
 //
@@ -120,24 +119,27 @@ func CgoEpv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
 
 	//  Earth position and velocity, heliocentric and barycentric,
 	//  with respect to the Barycentric Celestial Reference System.
-	i := C.iauEpv00(C.double(date1), C.double(date2), &cPvh[0], &cPvb[0])
+	cI := C.iauEpv00(C.double(date1), C.double(date2), &cPvh[0], &cPvb[0])
 
 	// C into go types.
 	pvh = v3dC2Go(cPvh)
 	pvb = v3dC2Go(cPvb)
 
-	if int(i) > 0 {
-		err = fmt.Errorf(
-			"date outside the range 1900-2100 AD: %w",
-			errEpv00)
+	// Status
+	switch int(cI) {
+	case 0:
+	case 1:
+		err = errEpv00Warn
+	default:
+		err = errAdmin
 	}
+
 	return
 }
 
-// TODO gocode
-
 //  GoEpv00 Earth position and velocity, heliocentric and barycentric,
 //  with respect to the Barycentric Celestial Reference System.
+// TODO gocode
 func GoEpv00(date1, date2 float64) (pvh, pvb [2][3]float64, err error) {
 	return CgoEpv00(date1, date2)
 }

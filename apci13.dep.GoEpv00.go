@@ -137,59 +137,28 @@ func CgoApci13(date1, date2 float64, astrom ASTROM) (ASTROM, float64) {
 //  geocentric CIRS coordinates.  The caller supplies the date, and SOFA
 //  models are used to predict the Earth ephemeris and CIP/CIO.
 func GoApci13(date1, date2 float64, astrom ASTROM) (ASTROM, float64) {
-	var cR [3][3]C.double
-	var cEhpv, cEbpv [2][3]C.double
-	var x, y, s C.double
-	var cAstrom C.iauASTROM
+	var cr [3][3]float64
+	var ehpv, ebpv [2][3]float64
+	var x, y, s float64
 	var eo float64
 
-	/* Earth barycentric & heliocentric position/velocity (au, au/d). */
-	C.iauEpv00(C.double(date1), C.double(date2), &cEhpv[0], &cEbpv[0])
+	// Earth barycentric & heliocentric position/velocity (au, au/d). 
+	ehpv, ebpv, _ = GoEpv00(date1, date2)
 
-	/* Form the equinox based BPN matrix, IAU 2006/2000A. */
-	C.iauPnm06a(C.double(date1), C.double(date2), &cR[0])
+	// Form the equinox based BPN matrix, IAU 2006/2000A. 
+	cr = GoPnm06a(date1, date2)
 
-	/* Extract CIP X,Y. */
-	C.iauBpn2xy(&cR[0], &x, &y)
+	// Extract CIP X,Y. 
+	x, y = GoBpn2xy(cr)
 
-	/* Obtain CIO locator s. */
-	s = C.iauS06(C.double(date1), C.double(date2), x, y)
+	// Obtain CIO locator s. 
+	s = GoS06(date1, date2, x, y)
 
-	/* Compute the star-independent astrometry parameters. */
-	C.iauApci(C.double(date1), C.double(date2), &cEbpv[0], &cEhpv[0][0], x, y, s, &cAstrom)
+	// Compute the star-independent astrometry parameters. 
+	astrom = GoApci(date1, date2, ebpv, ehpv[0], x, y, s, astrom)
 
-	/* Equation of the origins. */
-	eo = float64(C.iauEors(&cR[0], s))
-	astrom = astrC2Go(cAstrom)
+	// Equation of the origins. 
+	eo = GoEors(cr, s)
+
 	return astrom, eo
 }
-
-// goApci13 For a terrestrial observer, prepare star-independent
-// astrometry parameters for transformations between ICRS and geocentric
-// CIRS coordinates.  The caller supplies the date, and SOFA models are
-// used to predict the Earth ephemeris and CIP/CIO.
-//func goApci13(date1, date2 float64) (astrom ASTROM, eo float64) {
-//     var r [3][3]float64
-//     var ehpv, ebpv [2][3]float64
-//     var x, y, s float64
-
-// /* Earth barycentric & heliocentric position/velocity (au, au/d). */
-//    (void) iauEpv00(date1, date2, ehpv, ebpv);
-
-// /* Form the equinox based BPN matrix, IAU 2006/2000A. */
-//    iauPnm06a(date1, date2, r);
-
-// /* Extract CIP X,Y. */
-//    iauBpn2xy(r, &x, &y);
-
-// /* Obtain CIO locator s. */
-//    s = iauS06(date1, date2, x, y);
-
-// /* Compute the star-independent astrometry parameters. */
-//    iauApci(date1, date2, ebpv, ehpv[0], x, y, s, astrom);
-
-// /* Equation of the origins. */
-//    *eo = iauEors(r, s);
-
-// /* Finished. */
-// }

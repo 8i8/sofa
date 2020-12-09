@@ -146,7 +146,7 @@ func GoApcs13(date1, date2 float64, pv [2][3]float64,
 	var ehpv, ebpv [2][3]float64
 
 	// Earth barycentric & heliocentric position/velocity (au, au/d).
-	ehpv, ebpv, _ = CgoEpv00(date1, date2)
+	ehpv, ebpv, _ = GoEpv00(date1, date2)
 
 	// Compute the star-independent astrometry parameters.
 	astrom = GoApcs(date1, date2, pv, ebpv, ehpv[0], astrom)

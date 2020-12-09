@@ -4,8 +4,8 @@ package sofa
 import "C"
 import "errors"
 
-var errGd2gc1 = errors.New("illegal identifier (Note 3)")
-var errGd2gc2 = errors.New("illegal case (Note 3)")
+var errGd2gcE1 = errors.New("illegal identifier (gd2c documentation note 3)")
+var errGd2gcE2 = errors.New("illegal case (gd2c documentation note 3)")
 
 //  CgoGd2gc Transform geodetic coordinates to geocentric using the
 //  specified reference ellipsoid.
@@ -29,9 +29,9 @@ var errGd2gc2 = errors.New("illegal case (Note 3)")
 //     xyz     double[3]  geocentric vector (Note 2)
 //
 //  Returned (function value):
-//             int        status:  0 = OK
-//                                -1 = illegal identifier (Note 3)
-//                                -2 = illegal case (Note 3)
+//     err     error      nil = OK
+//                        errGd2gcE1 = illegal identifier (Note 3)
+//                        errGd2gcE2 = illegal case (Note 3)
 //
 //  Notes:
 //
@@ -71,24 +71,22 @@ var errGd2gc2 = errors.New("illegal case (Note 3)")
 //
 //  CgoGd2gc Transform geodetic coordinates to geocentric using the
 //  specified reference ellipsoid.
-// int iauGd2gc ( int n, double elong, double phi, double height,
-//                double xyz[3] )
 func CgoGd2gc(n int, elong, phi,
 	height float64) (xyz [3]float64, err error) {
 
 	var cXyz [3]C.double
-	cStatus := C.iauGd2gc(C.int(n), C.double(elong), C.double(phi),
+	cI := C.iauGd2gc(C.int(n), C.double(elong), C.double(phi),
 		C.double(height), &cXyz[0])
-	switch int(cStatus) {
+	switch int(cI) {
 	case 0:
-	case 1:
-		err = errGd2gc1
-	case 2:
-		err = errGd2gc2
+	case -1:
+		err = errGd2gcE1
+	case -2:
+		err = errGd2gcE2
 	default:
 		err = errAdmin
 	}
-	return v3sC2Go(cXyz), nil
+	return v3sC2Go(cXyz), err
 }
 
 func GoGd2gc(n int, elong, phi,
@@ -98,12 +96,15 @@ func GoGd2gc(n int, elong, phi,
 
 	// Obtain reference ellipsoid parameters.
 	a, f, err = GoEform(n)
+	if err != nil {
+		err = errGd2gcE1
+	}
 
 	// If OK, transform longitude, geodetic latitude, height to x,y,z.
 	if err == nil {
 		xyz, err = GoGd2gce(a, f, elong, phi, height)
 		if err != nil {
-			err = errGd2gc2
+			err = errGd2gcE2
 		}
 	}
 

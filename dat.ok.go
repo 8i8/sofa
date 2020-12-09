@@ -5,12 +5,12 @@ import "C"
 import "errors"
 
 var (
-	errDatWarn = errors.New("dubious year (Note 1)")
+	errDatWarn = errors.New("dubious year (dat documentation note 1)")
 	errDatE1   = errors.New("bad year")
 	errDatE2   = errors.New("bad month")
-	errDatE3   = errors.New("bad day (Note 3)")
-	errDatE4   = errors.New("bad fraction (Note 4)")
-	errDatE5   = errors.New("internal error (Note 5)")
+	errDatE3   = errors.New("bad day (dat documentation note 3)")
+	errDatE4   = errors.New("bad fraction (dat documentation note 4)")
+	errDatE5   = errors.New("internal error (dat documentation note 5)")
 )
 
 //  CgoDat For a given UTC date, calculate Delta(AT) = TAI-UTC.
@@ -66,14 +66,13 @@ var (
 //     deltat double   TAI minus UTC, seconds
 //
 //  Returned (function value):
-//            int      status (Note 5):
-//                       1 = dubious year (Note 1)
-//                       0 = OK
-//                      -1 = bad year
-//                      -2 = bad month
-//                      -3 = bad day (Note 3)
-//                      -4 = bad fraction (Note 4)
-//                      -5 = internal error (Note 5)
+//     err    error    errDatWarn = dubious year (Note 1)
+//                     nil = OK
+//                     errDatE1 = bad year
+//                     2rrDatE2 = bad month
+//                     3rrDatE3 = bad day (Note 3)
+//                     4rrDatE4 = bad fraction (Note 4)
+//                     5rrDatE5 = internal error (Note 5)
 //
 //  Notes:
 //
@@ -144,7 +143,20 @@ func CgoDat(iy, im, id int, fd float64) (deltat float64, err error) {
 		&cDeltat)
 	switch int(cI) {
 	case 0:
+	case 1:
+		err = errDatWarn
+	case -1:
+		err = errDatE1
+	case -2:
+		err = errDatE2
+	case -3:
+		err = errDatE3
+	case -4:
+		err = errDatE4
+	case -5:
+		err = errDatE5
 	default:
+		err = errAdmin
 	}
 	return float64(cDeltat), err
 }
@@ -244,7 +256,7 @@ func GoDat(iy, im, id int, fd float64) (deltat float64, err error) {
 	_, djm, err = GoCal2jd(iy, im, id)
 
 	// If invalid year, month, or day, give up.
-	if err != nil {
+	if err != nil && !errors.Is(err, errDatWarn) {
 		return
 	}
 

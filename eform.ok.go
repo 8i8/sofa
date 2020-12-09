@@ -4,7 +4,7 @@ package sofa
 import "C"
 import "errors"
 
-var errEform = errors.New("illegal identifier (Note 3)")
+var errEformE1 = errors.New("illegal identifier (Note 3)")
 
 //  CgoEform Earth reference ellipsoids.
 //
@@ -25,8 +25,8 @@ var errEform = errors.New("illegal identifier (Note 3)")
 //     f    double      flattening (Note 2)
 //
 //  Returned (function value):
-//          int         status:  0 = OK
-//                              -1 = illegal identifier (Note 3)
+//     err  error       nil = OK
+//                      errEformE1 = illegal identifier (Note 3)
 //
 //  Notes:
 //
@@ -78,7 +78,7 @@ func CgoEform(n int) (a, f float64, err error) {
 	switch int(cStatus) {
 	case 0:
 	case -1:
-		err = errEform
+		err = errEformE1
 	default:
 		err = errAdmin
 	}
@@ -103,7 +103,7 @@ func GoEform(n int) (a, f float64, err error) {
 		// Invalid identifier.
 		a = 0.0
 		f = 0.0
-		err = errEform
+		err = errEformE1
 	}
 	return
 }

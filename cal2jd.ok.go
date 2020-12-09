@@ -4,9 +4,9 @@ package sofa
 import "C"
 import "errors"
 
-var errYCal2jd1 = errors.New("bad year")
-var errYCal2jd2 = errors.New("bad month")
-var errYCal2jd3 = errors.New("bad day")
+var errCal2jdE1 = errors.New("bad year (cal2jd documentation note 3: JD not computed)")
+var errCal2jdE2 = errors.New("bad month (JD not computed)")
+var errCal2jdE3 = errors.New("bad day (JD computed)")
 
 //  CgoCal2jd returns the MJD, Modified Julian Date of the given date.
 //
@@ -29,11 +29,10 @@ var errYCal2jd3 = errors.New("bad day")
 //     djm       double  Modified Julian Date for 0 hrs
 //
 //  Returned (function value):
-//               int     status:
-//                           0 = OK
-//                          -1 = bad year   (Note 3: JD not computed)
-//                          -2 = bad month  (JD not computed)
-//                          -3 = bad day    (JD computed)
+//     err       error   nil = OK
+//                       errCal2jdE1 = bad year   (Note 3: JD not computed)
+//                       errCal2jdE2 = bad month  (JD not computed)
+//                       errCal2jdE3 = bad day    (JD computed)
 //
 //  Notes:
 //
@@ -69,11 +68,11 @@ func CgoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 	switch i {
 	case 0:
 	case -1:
-		err = errYCal2jd1
+		err = errCal2jdE1
 	case -2:
-		err = errYCal2jd2
+		err = errCal2jdE2
 	case -3:
-		err = errYCal2jd3
+		err = errCal2jdE3
 	default:
 		err = errAdmin
 	}
@@ -93,11 +92,11 @@ func GoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 
 	// Validate year and month.
 	if iy < IYMIN {
-		err = errYCal2jd1
+		err = errCal2jdE1
 		return
 	}
 	if im < 1 || im > 12 {
-		err = errYCal2jd2
+		err = errCal2jdE2
 		return
 	}
 
@@ -108,7 +107,7 @@ func GoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 
 	// Validate day, taking into account leap years.
 	if (id < 1) || (id > (mtab[im-1] + ly)) {
-		err = errYCal2jd3
+		err = errCal2jdE3
 		return
 	}
 

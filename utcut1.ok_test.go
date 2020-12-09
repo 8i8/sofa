@@ -20,7 +20,7 @@ func TestUtcut1(t *testing.T) {
 		fn  func(a1, a2, a3 float64) (b1, b2 float64, b3 error)
 	}{
 		{"cgo", CgoUtcut1},
-		//{"go", GoUtcut1},
+		{"go", GoUtcut1},
 	}
 	for _, test := range tests {
 		tname := fname + " " + test.ref

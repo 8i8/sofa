@@ -4,7 +4,7 @@ package sofa
 import "C"
 import "errors"
 
-var errApco13Warn = errors.New("dubious year (Note 2)")
+var errApco13Warn = errors.New("dubious year (Apco13 documentation note 2)")
 var errApco13E1 = errors.New("unacceptable date")
 
 //  CgoApcp13 For a terrestrial observer, prepare star-independent
@@ -60,9 +60,9 @@ var errApco13E1 = errors.New("unacceptable date")
 //     eo     double*    equation of the origins (ERA-GST)
 //
 //  Returned (function value):
-//            int        status: +1 = dubious year (Note 2)
-//                                0 = OK
-//                               -1 = unacceptable date
+//      err   error      errApco13Warn = dubious year (Note 2)
+//                       nil = OK
+//                       errApco13E1 = unacceptable date
 //
 //  Notes:
 //

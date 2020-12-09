@@ -26,7 +26,7 @@ func TestEform(t *testing.T) {
 		tname := fname + " " + test.ref
 
 		a, f, err := test.fn(0) // error raised
-		errT(t, errEform, err, tname+" 0")
+		errT(t, errEformE1, err, tname+" 0")
 
 		a, f, err = test.fn(WGS84)
 		errT(t, nil, err, tname+" 1")
@@ -44,7 +44,7 @@ func TestEform(t *testing.T) {
 		vvd(t, f, 0.3352779454167504862e-2, 1e-18, tname, "f3")
 
 		a, f, err = test.fn(4) // error raised
-		errT(t, errEform, err, tname+" 3")
+		errT(t, errEformE1, err, tname+" 3")
 	}
 }
 

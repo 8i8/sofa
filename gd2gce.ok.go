@@ -7,7 +7,7 @@ import (
 	"math"
 )
 
-var errGd2gce = errors.New("illegal case (Note 4)")
+var errGd2gceE1 = errors.New("illegal case (Note 4)")
 
 //  CgoGd2gce Transform geodetic coordinates to geocentric for a
 //  reference ellipsoid of specified form.
@@ -83,7 +83,7 @@ func CgoGd2gce(a, f, elong, phi, height float64) (
 	switch int(cI) {
 	case 0:
 	case -1:
-		err = errGd2gce
+		err = errGd2gceE1
 	}
 	return v3sC2Go(cXyz), err
 }
@@ -102,7 +102,7 @@ func GoGd2gce(a, f, elong, phi, height float64) (
 	w = w * w
 	d = cp*cp + w*sp*sp
 	if d <= 0.0 {
-		return xyz, errGd2gce
+		return xyz, errGd2gceE1
 	}
 	ac = a / math.Sqrt(d)
 	as = w * ac

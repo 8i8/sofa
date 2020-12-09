@@ -7,7 +7,7 @@ import (
 	"math"
 )
 
-var errJd2cal = errors.New("unacceptable date (Note 1)")
+var errJd2calE1 = errors.New("unacceptable date (Note 1)")
 
 //  CgoJd2cal Julian Date to Gregorian year, month, day, and fraction of
 //  a day.
@@ -87,7 +87,7 @@ func CgoJd2cal(dj1, dj2 float64) (
 	switch int(cI) {
 	case 0:
 	case -1:
-		err = errJd2cal
+		err = errJd2calE1
 	default:
 		err = errAdmin
 	}
@@ -110,7 +110,7 @@ func GoJd2cal(dj1, dj2 float64) (
 	// Verify date is acceptable.
 	dj = dj1 + dj2
 	if dj < DJMIN || dj > DJMAX {
-		err = errJd2cal
+		err = errJd2calE1
 		return
 	}
 
