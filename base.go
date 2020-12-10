@@ -5,23 +5,30 @@ import "C"
 import "math"
 
 type ASTROM struct {
-	pmt    float64       /* PM time interval (SSB, Julian years) */
-	eb     [3]float64    /* SSB to observer (vector, au) */
-	eh     [3]float64    /* Sun to observer (unit vector) */
-	em     float64       /* distance from Sun to observer (au) */
-	v      [3]float64    /* barycentric observer velocity (vector, c) */
-	bm1    float64       /* sqrt(1-|v|^2): reciprocal of Lorenz factor */
-	bpn    [3][3]float64 /* bias-precession-nutation matrix */
-	along  float64       /* longitude + s' + dERA(DUT) (radians) */
-	phi    float64       /* geodetic latitude (radians) */
-	xpl    float64       /* polar motion xp wrt local meridian (radians) */
-	ypl    float64       /* polar motion yp wrt local meridian (radians) */
-	sphi   float64       /* sine of geodetic latitude */
-	cphi   float64       /* cosine of geodetic latitude */
-	diurab float64       /* magnitude of diurnal aberration vector */
-	eral   float64       /* "local" Earth rotation angle (radians) */
-	refa   float64       /* refraction constant A (radians) */
-	refb   float64       /* refraction constant B (radians) */
+	pmt    float64       // PM time interval (SSB, Julian years) 
+	eb     [3]float64    // SSB to observer (vector, au) 
+	eh     [3]float64    // Sun to observer (unit vector) 
+	em     float64       // distance from Sun to observer (au) 
+	v      [3]float64    // barycentric observer velocity (vector, c) 
+	bm1    float64       // sqrt(1-|v|^2): reciprocal of Lorenz factor 
+	bpn    [3][3]float64 // bias-precession-nutation matrix 
+	along  float64       // longitude + s' + dERA(DUT) (radians) 
+	phi    float64       // geodetic latitude (radians) 
+	xpl    float64       // polar motion xp wrt local meridian (radians) 
+	ypl    float64       // polar motion yp wrt local meridian (radians) 
+	sphi   float64       // sine of geodetic latitude 
+	cphi   float64       // cosine of geodetic latitude 
+	diurab float64       // magnitude of diurnal aberration vector 
+	eral   float64       // "local" Earth rotation angle (radians) 
+	refa   float64       // refraction constant A (radians) 
+	refb   float64       // refraction constant B (radians) 
+}
+
+// Body parameters for light deflection
+type LDBODY struct {
+	bm float64       // mass of the body (solar masses)
+	dl float64       // deflection limiter (radians^2/2)
+	pv [2][3]float64 // barycentric PV of the body (au, au/day)
 }
 
 // v3sC2GO translates a 3d vector from cgo into go.
@@ -151,6 +158,22 @@ func astrC2Go(in C.iauASTROM) (out ASTROM) {
 	out.refa = float64(in.refa)
 	out.refb = float64(in.refb)
 
+	return
+}
+
+// ldbodyGo2C translates an LDBODY from go into cgo.
+func ldbodyGo2C(in LDBODY) (out C.iauLDBODY) {
+	out.bm = C.double(in.bm)
+	out.dl = C.double(in.dl)
+	out.pv = v3dGo2C(in.pv)
+	return
+}
+
+// ldbodyC2Go( translates an iauLDBODY from cgo into go.
+func ldbodyC2Go(in C.iauLDBODY) (out LDBODY) {
+	out.bm = float64(in.bm)
+	out.dl = float64(in.dl)
+	out.pv = v3dC2Go(in.pv)
 	return
 }
 
