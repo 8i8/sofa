@@ -2,7 +2,10 @@ package sofa
 
 // #include "sofa.h"
 import "C"
-import "errors"
+import (
+	"errors"
+	"github.com/8i8/sofa/en"
+)
 
 var (
 	errDatWarn = errors.New("dubious year (dat documentation note 1)")
@@ -12,6 +15,16 @@ var (
 	errDatE4   = errors.New("bad fraction (dat documentation note 4)")
 	errDatE5   = errors.New("internal error (dat documentation note 5)")
 )
+
+var errDat = en.New(5, "dat", []string{
+	"internal error (dat documentation note 5)",
+	"bad fraction (dat documentation note 4)",
+	"bad day (dat documentation note 3)",
+	"bad month",
+	"bad year",
+	"",
+	"dubious year (dat documentation note 1)",
+})
 
 //  CgoDat For a given UTC date, calculate Delta(AT) = TAI-UTC.
 //
@@ -137,32 +150,18 @@ var (
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
 //  CgoDat For a given UTC date, calculate Delta(AT) = TAI-UTC.
-func CgoDat(iy, im, id int, fd float64) (deltat float64, err error) {
+func CgoDat(iy, im, id int, fd float64) (deltat float64, err en.ErrNum) {
 	var cDeltat C.double
 	cI := C.iauDat(C.int(iy), C.int(im), C.int(id), C.double(fd),
 		&cDeltat)
-	switch int(cI) {
-	case 0:
-	case 1:
-		err = errDatWarn
-	case -1:
-		err = errDatE1
-	case -2:
-		err = errDatE2
-	case -3:
-		err = errDatE3
-	case -4:
-		err = errDatE4
-	case -5:
-		err = errDatE5
-	default:
-		err = errAdmin
+	if int(cI) != 0 {
+		err = errDat.Set(int(cI))
 	}
 	return float64(cDeltat), err
 }
 
 // GoDat For a given UTC date, calculate Delta(AT) = TAI-UTC.
-func GoDat(iy, im, id int, fd float64) (deltat float64, err error) {
+func GoDat(iy, im, id int, fd float64) (deltat float64, err en.ErrNum) {
 
 	// Release year for this version of iauDat
 	const IYV = 2020
@@ -248,7 +247,7 @@ func GoDat(iy, im, id int, fd float64) (deltat float64, err error) {
 
 	// If invalid fraction of a day, set error status and give up.
 	if fd < 0.0 || fd > 1.0 {
-		err = errDatE4
+		err = errDat.Set(-4)
 		return
 	}
 
@@ -256,19 +255,22 @@ func GoDat(iy, im, id int, fd float64) (deltat float64, err error) {
 	_, djm, err = GoCal2jd(iy, im, id)
 
 	// If invalid year, month, or day, give up.
-	if err != nil && !errors.Is(err, errDatWarn) {
-		return
+	if err != nil {
+		if err.Is() < 0 {
+			err = errDat.Wrap(err)
+			return
+		}
 	}
 
 	// If pre-UTC year, set warning status and give up.
 	if iy < changes[0].iyear {
-		err = errDatWarn
+		err = errDat.Set(1)
 		return
 	}
 
 	// If suspiciously late year, set warning status but proceed.
 	if iy > IYV+5 {
-		err = errDatWarn
+		err = errDat.Set(1)
 	}
 
 	// Combine year and month to form a date-ordered integer...
@@ -283,7 +285,7 @@ func GoDat(iy, im, id int, fd float64) (deltat float64, err error) {
 
 	// Prevent underflow warnings.
 	if i < 0 {
-		err = errDatE5
+		err = errDat.Set(-5)
 		return
 	}
 

@@ -95,9 +95,6 @@ import "C"
 //
 //  CgoC2tpe Form the celestial to terrestrial matrix given the date,
 //  the UT1, the nutation and the polar motion.  IAU 2000.
-// void iauC2tpe(double tta, double ttb, double uta, double utb,
-//               double dpsi, double deps, double xp, double yp,
-//               double rc2t[3][3])
 func CgoC2tpe(tta, ttb, uta, utb, dpsi, deps, xp, yp float64) (
 	rc2t [3][3]float64) {
 	var cRc2t [3][3]C.double
@@ -107,25 +104,30 @@ func CgoC2tpe(tta, ttb, uta, utb, dpsi, deps, xp, yp float64) (
 	return v3tC2Go(cRc2t)
 }
 
-// double epsa, rb[3][3], rp[3][3], rbp[3][3], rn[3][3],
-//        rbpn[3][3], gmst, ee, sp, rpom[3][3];
+//  GoC2tpe Form the celestial to terrestrial matrix given the date,
+//  the UT1, the nutation and the polar motion.  IAU 2000.
+func GoC2tpe(tta, ttb, uta, utb, dpsi, deps, xp, yp float64) (
+	rc2t [3][3]float64) {
 
-// /* Form the celestial-to-true matrix for this TT. */
-// iauPn00(tta, ttb, dpsi, deps, &epsa, rb, rp, rbp, rn, rbpn);
+	var epsa, gmst, ee, sp float64
+	var rbpn, rpom [3][3]float64
 
-// /* Predict the Greenwich Mean Sidereal Time for this UT1 and TT. */
-// gmst = iauGmst00(uta, utb, tta, ttb);
+	// Form the celestial-to-true matrix for this TT. 
+	epsa, _, _, _, _, rbpn = GoPn00(tta, ttb, dpsi, deps)
 
-// /* Predict the equation of the equinoxes given TT and nutation. */
-// ee = iauEe00(tta, ttb, epsa, dpsi);
+	// Predict the Greenwich Mean Sidereal Time for this UT1 and TT. 
+	gmst = GoGmst00(uta, utb, tta, ttb)
 
-// /* Estimate s'. */
-// sp = iauSp00(tta, ttb);
+	// Predict the equation of the equinoxes given TT and nutation. 
+	ee = GoEe00(tta, ttb, epsa, dpsi)
 
-// /* Form the polar motion matrix. */
-// iauPom00(xp, yp, sp, rpom);
+	// Estimate s'. 
+	sp = GoSp00(tta, ttb)
 
-// /* Combine to form the celestial-to-terrestrial matrix. */
-// iauC2teqx(rbpn, gmst + ee, rpom, rc2t);
+	// Form the polar motion matrix. 
+	rpom = GoPom00(xp, yp, sp)
 
-// return;
+	// Combine to form the celestial-to-terrestrial matrix. 
+	rc2t = GoC2teqx(rbpn, gmst+ee, rpom)
+	return
+}

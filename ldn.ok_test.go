@@ -72,7 +72,7 @@ func TestLdn(t *testing.T) {
 	}
 }
 
-func Benchmark(b *testing.B) {
+func BenchmarkLdn(b *testing.B) {
 	var n int
 	var ob, sc [3]float64
 	body := make([]LDBODY, 3)

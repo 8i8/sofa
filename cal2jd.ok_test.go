@@ -3,6 +3,7 @@ package sofa
 import (
 	"log"
 	"testing"
+	"github.com/8i8/sofa/en"
 )
 
 //
@@ -20,7 +21,7 @@ func TestCal2jd(t *testing.T) {
 	const fname = "Cal2jd"
 	tests := []struct {
 		ref string
-		fn  func(a, b, c int) (d, e float64, err error)
+		fn  func(a, b, c int) (d, e float64, err en.ErrNum)
 	}{
 		{"cgo", CgoCal2jd},
 		{"go", GoCal2jd},
@@ -46,7 +47,7 @@ func TestCal2jd(t *testing.T) {
 func BenchmarkCal2jd(b *testing.B) {
 	tests := []struct {
 		ref string
-		fn  func(a, b, c int) (d, e float64, err error)
+		fn  func(a, b, c int) (d, e float64, err en.ErrNum)
 	}{
 		{"cgo", CgoCal2jd},
 		{"go", GoCal2jd},

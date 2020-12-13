@@ -1,6 +1,9 @@
 package sofa
 
-import "testing"
+import (
+	"testing"
+	"github.com/8i8/sofa/en"
+)
 
 //
 //  - - - - - - - -
@@ -18,7 +21,7 @@ func TestDat(t *testing.T) {
 	tests := []struct {
 		ref string
 		fn  func(a1, a2, a3 int, a4 float64) (
-			b1 float64, b2 error)
+			b1 float64, b2 en.ErrNum)
 	}{
 		{"cgo", CgoDat},
 		{"go", GoDat},
@@ -45,7 +48,7 @@ func BenchmarkDat(b *testing.B) {
 	tests := []struct {
 		ref string
 		fn  func(a1, a2, a3 int, a4 float64) (
-			b1 float64, b2 error)
+			b1 float64, b2 en.ErrNum)
 	}{
 		{"cgo", CgoDat},
 		{"go", GoDat},

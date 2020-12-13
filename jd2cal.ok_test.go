@@ -1,6 +1,9 @@
 package sofa
 
-import "testing"
+import (
+	"testing"
+	"github.com/8i8/sofa/en"
+)
 
 //
 //  - - - - - - - - - - -
@@ -20,7 +23,7 @@ func TestJd2cal(t *testing.T) {
 	dj2 = 50123.9999
 	tests := []struct {
 		ref string
-		fn  func(a1, a2 float64) (b1, b2, b3 int, b4 float64, b5 error)
+		fn  func(a1, a2 float64) (b1, b2, b3 int, b4 float64, b5 en.ErrNum)
 	}{
 		{"cgo", CgoJd2cal},
 		{"go", GoJd2cal},
@@ -44,7 +47,7 @@ func BenchmarkJd2cal(b *testing.B) {
 	dj2 = 50123.9999
 	tests := []struct {
 		ref string
-		fn  func(a1, a2 float64) (b1, b2, b3 int, b4 float64, b5 error)
+		fn  func(a1, a2 float64) (b1, b2, b3 int, b4 float64, b5 en.ErrNum)
 	}{
 		{"cgo", CgoJd2cal},
 		{"go", GoJd2cal},

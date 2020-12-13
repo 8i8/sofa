@@ -5,9 +5,12 @@ import "C"
 import (
 	"errors"
 	"math"
+	"github.com/8i8/sofa/en"
 )
 
 var errJd2calE1 = errors.New("unacceptable date (Note 1)")
+
+var errJd2cal = en.New(1, "jd2cal", []string{"unacceptable date (Note 1)"})
 
 //  CgoJd2cal Julian Date to Gregorian year, month, day, and fraction of
 //  a day.
@@ -78,18 +81,14 @@ var errJd2calE1 = errors.New("unacceptable date (Note 1)")
 //  CgoJd2cal Julian Date to Gregorian year, month, day, and fraction of
 //  a day.
 func CgoJd2cal(dj1, dj2 float64) (
-	iy, im, id int, fd float64, err error) {
+	iy, im, id int, fd float64, err en.ErrNum) {
 
 	var cIy, cIm, cId C.int
 	var cFd C.double
 	cI := C.iauJd2cal(C.double(dj1), C.double(dj2), 
 	&cIy, &cIm, &cId, &cFd)
-	switch int(cI) {
-	case 0:
-	case -1:
-		err = errJd2calE1
-	default:
-		err = errAdmin
+	if int(cI) != 0 {
+		err = errJd2cal.Set(int(cI))
 	}
 	return int(cIy), int(cIm), int(cId), float64(cFd), err
 }
@@ -97,7 +96,7 @@ func CgoJd2cal(dj1, dj2 float64) (
 // GoJd2cal Julian Date to Gregorian year, month, day, and fraction of a
 // day.
 func GoJd2cal(dj1, dj2 float64) (
-	iy, im, id int, fd float64, err error) {
+	iy, im, id int, fd float64, err en.ErrNum) {
 
 	// Minimum and maximum allowed JD
 	const DJMIN = -68569.5
@@ -110,7 +109,7 @@ func GoJd2cal(dj1, dj2 float64) (
 	// Verify date is acceptable.
 	dj = dj1 + dj2
 	if dj < DJMIN || dj > DJMAX {
-		err = errJd2calE1
+		err = errJd2cal.Set(-1)
 		return
 	}
 

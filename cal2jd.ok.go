@@ -2,11 +2,21 @@ package sofa
 
 // #include <sofa.h>
 import "C"
-import "errors"
+import (
+	"errors"
+
+	"github.com/8i8/sofa/en"
+)
 
 var errCal2jdE1 = errors.New("bad year (cal2jd documentation note 3: JD not computed)")
 var errCal2jdE2 = errors.New("bad month (JD not computed)")
 var errCal2jdE3 = errors.New("bad day (JD computed)")
+
+var errCal2jd = en.New(3, "cal2jd", []string{
+	"bad year (cal2jd documentation note 3: JD not computed)",
+	"bad month (JD not computed)",
+	"bad day (JD computed)",
+})
 
 //  CgoCal2jd returns the MJD, Modified Julian Date of the given date.
 //
@@ -62,25 +72,17 @@ var errCal2jdE3 = errors.New("bad day (JD computed)")
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
 //  CgoCal2jd returns the MJD, Modified Julian Date of the given date.
-func CgoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
+func CgoCal2jd(iy, im, id int) (djm0, djm float64, err en.ErrNum) {
 	var cDjm0, cDjm C.double
-	i := C.iauCal2jd(C.int(iy), C.int(im), C.int(id), &cDjm0, &cDjm)
-	switch i {
-	case 0:
-	case -1:
-		err = errCal2jdE1
-	case -2:
-		err = errCal2jdE2
-	case -3:
-		err = errCal2jdE3
-	default:
-		err = errAdmin
+	cI := C.iauCal2jd(C.int(iy), C.int(im), C.int(id), &cDjm0, &cDjm)
+	if int(cI) != 0 {
+		err = errCal2jd.Set(int(cI))
 	}
 	return float64(cDjm0), float64(cDjm), err
 }
 
 // GoCal2jd returns the MJD, Modified Julian Date of the given date.
-func GoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
+func GoCal2jd(iy, im, id int) (djm0, djm float64, err en.ErrNum) {
 	var ly, my int
 	var iypmy int // was a long in c code
 
@@ -92,11 +94,11 @@ func GoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 
 	// Validate year and month.
 	if iy < IYMIN {
-		err = errCal2jdE1
+		err = errCal2jd.Set(-1)
 		return
 	}
 	if im < 1 || im > 12 {
-		err = errCal2jdE2
+		err = errCal2jd.Set(-2)
 		return
 	}
 
@@ -107,7 +109,7 @@ func GoCal2jd(iy, im, id int) (djm0, djm float64, err error) {
 
 	// Validate day, taking into account leap years.
 	if (id < 1) || (id > (mtab[im-1] + ly)) {
-		err = errCal2jdE3
+		err = errCal2jd.Set(-3)
 		return
 	}
 
