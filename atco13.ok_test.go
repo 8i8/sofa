@@ -69,7 +69,7 @@ func TestAtco13(t *testing.T) {
 		vvd(t, eo, -0.003020548354802412839, 1e-14,
 			tname, "eo")
 
-		errT(t, nil, err, tname)
+		errT(t, nil, err, tname, "err")
 	}
 }
 

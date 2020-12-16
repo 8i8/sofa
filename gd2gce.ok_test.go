@@ -33,7 +33,7 @@ func TestGd2gce(t *testing.T) {
 
 		xyz, err := test.fn(a, f, e, p, h)
 
-		errT(t, nil, err, tname+" 0")
+		errT(t, nil, err, tname, "0")
 		vvd(t, xyz[0], -5598999.6665116328, 1e-7, tname, "1")
 		vvd(t, xyz[1], 233011.6351463057189, 1e-7, tname, "2")
 		vvd(t, xyz[2], -3040909.0517314132, 1e-7, tname, "3")

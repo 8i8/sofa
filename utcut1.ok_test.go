@@ -28,7 +28,7 @@ func TestUtcut1(t *testing.T) {
 
 		vvd(t, u1, 2453750.5, 1e-6, tname, "u1")
 		vvd(t, u2, 0.8921045608981481481, 1e-12, tname, "u2")
-		errT(t, nil, err, tname)
+		errT(t, nil, err, tname, "err")
 	}
 }
 

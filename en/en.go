@@ -33,12 +33,12 @@ func (e errnum) Set(n int) ErrNum {
 // Add additions v with the current error value.
 func (e errnum) Add(err ErrNum, v int) ErrNum {
 	if err == nil {
-		e.check(v)
 		e = e.Set(v).(errnum)
+		e.limit()
 		return e
 	}
 	e.n += (err.Is() + v)
-	e.check(e.n)
+	e.limit()
 	return e
 }
 
@@ -121,6 +121,18 @@ func New(o int, name string, msg []string) ErrNum {
 		os.Exit(1)
 	}
 	return errnum{offset: o, name: name, msg: msg}
+}
+
+// limit checks that the value of e.n is not out side of the output
+// boundaries, if it is then the value is set to the limit that has 
+// been passed.
+func (e errnum) limit() {
+	if e.n >= len(e.msg)-e.offset {
+		e.n = len(e.msg)-e.offset - 1
+	}
+	if e.n < -e.offset {
+		e.n = -e.offset
+	}
 }
 
 // check verifies that the current error value is within the output

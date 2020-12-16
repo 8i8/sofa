@@ -29,7 +29,7 @@ func TestTaitt(t *testing.T) {
 
 		vvd(t, t1, 2453750.5, 1e-6, tname, "t1")
 		vvd(t, t2, 0.892855139, 1e-12, tname, "t2")
-		errT(t, nil, err, tname)
+		errT(t, nil, err, tname, "err")
 	}
 }
 

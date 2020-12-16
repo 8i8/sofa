@@ -2,9 +2,11 @@ package sofa
 
 // #include "sofa.h"
 import "C"
-import "errors"
+import "github.com/8i8/sofa/en"
+// import "errors"
 
-var errEformE1 = errors.New("illegal identifier (Note 3)")
+// var errEformitE1 = errors.New("illegal identifier (Note 3)")
+var errEform = en.New(1, "Eform", []string{"illegal identifier (Note 3)"})
 
 //  CgoEform Earth reference ellipsoids.
 //
@@ -71,22 +73,22 @@ var errEformE1 = errors.New("illegal identifier (Note 3)")
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
 //  CgoEform Earth reference ellipsoids.
-func CgoEform(n int) (a, f float64, err error) {
+func CgoEform(n int) (a, f float64, err en.ErrNum) {
 	var cA, cF C.double
 	var cStatus C.int
 	cStatus = C.iauEform(C.int(n), &cA, &cF)
 	switch int(cStatus) {
 	case 0:
 	case -1:
-		err = errEformE1
+		err = errEform.Set(-1)
 	default:
-		err = errAdmin
+		err = errEform.Set(0)
 	}
 	return float64(cA), float64(cF), err
 }
 
 //  GoEform Earth reference ellipsoids.
-func GoEform(n int) (a, f float64, err error) {
+func GoEform(n int) (a, f float64, err en.ErrNum) {
 
 	// Look up a and f for the specified reference ellipsoid.
 	switch n {
@@ -103,7 +105,7 @@ func GoEform(n int) (a, f float64, err error) {
 		// Invalid identifier.
 		a = 0.0
 		f = 0.0
-		err = errEformE1
+		err = errEform.Set(-1)
 	}
 	return
 }

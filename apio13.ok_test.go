@@ -66,7 +66,7 @@ func TestApio13(t *testing.T) {
 			tname, "refa")
 		vvd(t, astr.refb, -0.2361408314943696227e-6, 1e-18,
 			tname, "refb")
-		errT(t, nil, err, tname)
+		errT(t, nil, err, tname, "err")
 	}
 }
 

@@ -36,7 +36,7 @@ func TestDtf2d(t *testing.T) {
 
 		vvd(t, u1+u2, 2449534.49999, 1e-6, tname, "u")
 		// viv(t, j, 0, "iauDtf2d", "j")
-		errT(t, nil, err, tname)
+		errT(t, nil, err, tname, "err")
 	}
 }
 

@@ -32,15 +32,15 @@ func TestDat(t *testing.T) {
 
 		deltat, err := test.fn(2003, 6, 1, 0.0)
 		vvd(t, deltat, 32.0, 0.0, tname, "d1")
-		errT(t, nil, err, tname+" j1")
+		errT(t, nil, err, tname, "j1")
 
 		deltat, err = test.fn(2008, 1, 17, 0.0)
 		vvd(t, deltat, 33.0, 0.0, tname, "d2")
-		errT(t, nil, err, tname+" j2")
+		errT(t, nil, err, tname, "j2")
 
 		deltat, err = test.fn(2017, 9, 1, 0.0)
 		vvd(t, deltat, 37.0, 0.0, tname, "d3")
-		errT(t, nil, err, tname+" j3")
+		errT(t, nil, err, tname, "j3")
 	}
 }
 

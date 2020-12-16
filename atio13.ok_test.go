@@ -55,7 +55,7 @@ func TestAtio13(t *testing.T) {
 		vvd(t, hob, -0.09247619879782006106, 1e-12, tname, "hob")
 		vvd(t, dob, 0.1717653435758265198, 1e-12, tname, "dob")
 		vvd(t, rob, 2.710085107986886201, 1e-12, tname, "rob")
-		errT(t, nil, err, tname)
+		errT(t, nil, err, tname, "err")
 	}
 }
 

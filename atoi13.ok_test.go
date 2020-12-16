@@ -50,7 +50,7 @@ func TestAtoi13(t *testing.T) {
 			elong, phi, hm, xp, yp, phpa, tc, rh, wl)
 		vvd(t, ri, 2.710121574449135955, 1e-12, tname, "R/ri")
 		vvd(t, di, 0.1729371839114567725, 1e-12, tname, "R/di")
-		errT(t, nil, err, tname+" R/J")
+		errT(t, nil, err, tname, "R/J")
 
 		ob1 = -0.09247619879782006106
 		ob2 = 0.1717653435758265198
@@ -58,7 +58,7 @@ func TestAtoi13(t *testing.T) {
 			elong, phi, hm, xp, yp, phpa, tc, rh, wl)
 		vvd(t, ri, 2.710121574449135955, 1e-12, tname, "H/ri")
 		vvd(t, di, 0.1729371839114567725, 1e-12, tname, "H/di")
-		errT(t, nil, err, tname+" H/J")
+		errT(t, nil, err, tname, "H/J")
 
 		ob1 = 0.09233952224794989993
 		ob2 = 1.407758704513722461
@@ -66,7 +66,7 @@ func TestAtoi13(t *testing.T) {
 			elong, phi, hm, xp, yp, phpa, tc, rh, wl)
 		vvd(t, ri, 2.710121574449135955, 1e-12, tname, "A/ri")
 		vvd(t, di, 0.1729371839114567728, 1e-12, tname, "A/di")
-		errT(t, nil, err, tname+" A/J")
+		errT(t, nil, err, tname, "A/J")
 	}
 }
 

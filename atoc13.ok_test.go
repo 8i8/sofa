@@ -50,7 +50,7 @@ func TestAtoc13(t *testing.T) {
 			elong, phi, hm, xp, yp, phpa, tc, rh, wl)
 		vvd(t, rc, 2.709956744660731630, 1e-12, tname, "R/rc")
 		vvd(t, dc, 0.1741696500896438967, 1e-12, tname, "R/dc")
-		errT(t, nil, err, tname+" R/j")
+		errT(t, nil, err, tname, "R/j")
 
 		ob1 = -0.09247619879782006106
 		ob2 = 0.1717653435758265198
@@ -58,7 +58,7 @@ func TestAtoc13(t *testing.T) {
 			elong, phi, hm, xp, yp, phpa, tc, rh, wl)
 		vvd(t, rc, 2.709956744660731630, 1e-12, tname, "H/rc")
 		vvd(t, dc, 0.1741696500896438967, 1e-12, tname, "H/dc")
-		errT(t, nil, err, tname+" H/j")
+		errT(t, nil, err, tname, "H/j")
 
 		ob1 = 0.09233952224794989993
 		ob2 = 1.407758704513722461
@@ -66,7 +66,7 @@ func TestAtoc13(t *testing.T) {
 			elong, phi, hm, xp, yp, phpa, tc, rh, wl)
 		vvd(t, rc, 2.709956744660731630, 1e-12, tname, "A/rc")
 		vvd(t, dc, 0.1741696500896438970, 1e-12, tname, "A/dc")
-		errT(t, nil, err, tname+" A/j")
+		errT(t, nil, err, tname, "A/j")
 	}
 }
 

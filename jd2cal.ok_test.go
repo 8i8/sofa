@@ -37,7 +37,7 @@ func TestJd2cal(t *testing.T) {
 		viv(t, im, 2, tname, "m")
 		viv(t, id, 10, tname, "d")
 		vvd(t, fd, 0.9999, 1e-7, tname, "fd")
-		errT(t, nil, err, tname)
+		errT(t, nil, err, tname, "err")
 	}
 }
 

@@ -230,3 +230,16 @@ func fmin(a, b float64) float64 {
 	}
 	return b
 }
+
+// pow is an integer power calculation.
+func pow(base, exp int) int {
+	var res = 1
+	for exp > 0 {
+		if exp&1 > 0 {
+			res *= base
+		}
+		exp >>= 1
+		base *= base
+	}
+	return res
+}

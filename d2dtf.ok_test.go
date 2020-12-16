@@ -41,7 +41,7 @@ func TestD2dtf(t *testing.T) {
 		viv(t, ihmsf[1], 59, tname, "m")
 		viv(t, ihmsf[2], 60, tname, "s")
 		viv(t, ihmsf[3], 13599, tname, "f")
-		errT(t, nil, err, tname+" err")
+		errT(t, nil, err, tname, "err")
 	}
 }
 

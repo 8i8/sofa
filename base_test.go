@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"testing"
+	"github.com/8i8/sofa/en"
 )
 
 // verbose shows the output of all tests.
@@ -99,13 +100,30 @@ func vvd(t *testing.T, val, valok, dval float64, fname, test string) {
 //
 //  This revision:  2020 December 3
 //
-func errT(t *testing.T, want, err error, tname string) {
+func errT(t *testing.T, want, err error, tname, msg string) {
 	if err != want {
 		log.Output(2, fmt.Sprintf("%s failed: want %q got %q",
-			tname, want, err))
+			tname+ " " + msg, want, err))
 		t.Fail()
 	} else if *verbose {
 		log.Output(2, fmt.Sprintf("%s passed: want %q got %q",
-			tname, want, err))
+			tname+ " " + msg, want, err))
+	}
+}
+
+func errEN(t *testing.T, want int, err en.ErrNum, tname, msg string) {
+	if err == nil {
+		log.Output(2, fmt.Sprintf("%s failed: want %d got nil",
+			tname+ " " + msg, want))
+		t.Fail()
+		return
+	}	
+	if err.Is() != want {
+		log.Output(2, fmt.Sprintf("%s failed: want %d got %d",
+			tname+ " " + msg, want, err.Is()))
+		t.Fail()
+	} else if *verbose {
+		log.Output(2, fmt.Sprintf("%s passed: want %d got %d",
+			tname+ " " + msg, want, err.Is()))
 	}
 }
