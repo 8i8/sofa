@@ -75,8 +75,8 @@ var errCal2jd = en.New(3, "cal2jd", []string{
 func CgoCal2jd(iy, im, id int) (djm0, djm float64, err en.ErrNum) {
 	var cDjm0, cDjm C.double
 	cI := C.iauCal2jd(C.int(iy), C.int(im), C.int(id), &cDjm0, &cDjm)
-	if int(cI) != 0 {
-		err = errCal2jd.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errCal2jd.Set(n)
 	}
 	return float64(cDjm0), float64(cDjm), err
 }

@@ -62,8 +62,8 @@ func CgoUt1tai(ut11, ut12, dta float64) (
 	var cTai1, cTai2 C.double
 	cI := C.iauUt1tai(C.double(ut11), C.double(ut12), C.double(dta),
 		&cTai1, &cTai2)
-	if int(cI) != 0 {
-		err = errUt1tai.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errUt1tai.Set(n)
 	}
 	return float64(cTai1), float64(cTai2), err
 }

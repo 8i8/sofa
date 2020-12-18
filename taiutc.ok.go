@@ -84,8 +84,8 @@ var errTaiutc = en.New(1, "Taiutc", []string{
 func CgoTaiutc(tai1, tai2 float64) (utc1, utc2 float64, err en.ErrNum) {
 	var cUtc1, cUtc2 C.double
 	cI := C.iauTaiutc(C.double(tai1), C.double(tai2), &cUtc1, &cUtc2)
-	if int(cI) != 0 {
-		err = errTaiutc.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errTaiutc.Set(n)
 	}
 	return float64(cUtc1), float64(cUtc2), err
 }

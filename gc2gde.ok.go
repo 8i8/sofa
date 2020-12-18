@@ -87,8 +87,8 @@ func CgoGc2gde(a, f float64, xyz [3]float64) (
 	cXyz := v3sGo2C(xyz)
 	cI := C.iauGc2gde(C.double(a), C.double(f), &cXyz[0], &cElong, &cPhi,
 		&cHeight)
-	if int(cI) != 0 {
-		err = errGc2gde.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errGc2gde.Set(n)
 	}
 	return float64(cElong), float64(cPhi), float64(cHeight), err
 }

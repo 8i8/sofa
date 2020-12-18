@@ -151,8 +151,8 @@ func CgoStarpv(ra, dec, pmr, pmd, px, rv float64) (
 	var cPv [2][3]C.double
 	cI := C.iauStarpv(C.double(ra), C.double(dec), C.double(pmr),
 		C.double(pmd), C.double(px), C.double(rv), &cPv[0])
-	if int(cI) != 0 {
-		err = errStarpv.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errStarpv.Set(n)
 	}
 	return v3dC2Go(cPv), err
 }

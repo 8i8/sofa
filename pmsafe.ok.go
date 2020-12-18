@@ -135,8 +135,8 @@ func CgoPmsafe(ra1, dec1, pmr1, pmd1, px1,
 		C.double(ep1a), C.double(ep1b), C.double(ep2a),
 		C.double(ep2b), &cRa2, &cDec2, &cPmr2, &cPmd2, &cPx2,
 		&cRv2)
-	if int(cI) != 0 {
-		err = errPmsafe.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errPmsafe.Set(n)
 	}
 	return float64(cRa2), float64(cDec2), float64(cPmr2),
 		float64(cPmd2), float64(cPx2), float64(cRv2), err

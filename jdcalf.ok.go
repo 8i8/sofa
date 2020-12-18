@@ -87,8 +87,8 @@ func CgoJdcalf(ndp int, dj1, dj2 float64) (
 	var cIymdf [4]C.int
 	cI := C.iauJdcalf(C.int(ndp), C.double(dj1), C.double(dj2),
 		&cIymdf[0])
-	if int(cI) != 0 {
-		err = errJdcalf.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errJdcalf.Set(n)
 	}
 	return v4sIntC2Go(cIymdf), err
 }

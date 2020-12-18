@@ -2,7 +2,11 @@ package sofa
 
 // #include "sofa.h"
 import "C"
-import "github.com/8i8/sofa/en"
+import (
+	"math"
+
+	"github.com/8i8/sofa/en"
+)
 
 var errUt1tt = en.New(0, "Ut1tt", []string{
 	"",
@@ -52,8 +56,6 @@ var errUt1tt = en.New(0, "Ut1tt", []string{
 //
 //  CgoUt1tt Time scale transformation:  Universal Time, UT1, to
 //  Terrestrial Time, TT.
-// int iauUt1tt(double ut11, double ut12, double dt,
-//              double *tt1, double *tt2)
 func CgoUt1tt(ut11, ut12, dt float64) (tt1, tt2 float64, err en.ErrNum) {
 	var cTt1, cTt2 C.double
 	cI := C.iauUt1tt(C.double(ut11), C.double(ut12), C.double(dt),
@@ -64,17 +66,21 @@ func CgoUt1tt(ut11, ut12, dt float64) (tt1, tt2 float64, err en.ErrNum) {
 	return float64(cTt1), float64(cTt2), err
 }
 
-// double dtd;
+//  GoUt1tt Time scale transformation:  Universal Time, UT1, to
+//  Terrestrial Time, TT.
+func GoUt1tt(ut11, ut12, dt float64) (tt1, tt2 float64, err en.ErrNum) {
+	var dtd float64
 
-// /* Result, safeguarding precision. */
-// dtd = dt / DAYSEC;
-// if ( fabs(ut11) > fabs(ut12) ) {
-//    *tt1 = ut11;
-//    *tt2 = ut12 + dtd;
-// } else {
-//    *tt1 = ut11 + dtd;
-//    *tt2 = ut12;
-// }
+	// Result, safeguarding precision. 
+	dtd = dt / DAYSEC
+	if math.Abs(ut11) > math.Abs(ut12) {
+		tt1 = ut11
+		tt2 = ut12 + dtd
+	} else {
+		tt1 = ut11 + dtd
+		tt2 = ut12
+	}
 
-// /* Status (always OK). */
-// return 0;
+	// Status (always OK). 
+	return
+}

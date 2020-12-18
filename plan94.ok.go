@@ -191,8 +191,8 @@ func CgoPlan94(date1, date2 float64, np int) (
 	var cPv [2][3]C.double
 	cI := C.iauPlan94(C.double(date1), C.double(date2),
 		C.int(np), &cPv[0])
-	if int(cI) != 0 {
-		err = errPlan94.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errPlan94.Set(n)
 	}
 	return v3dC2Go(cPv), err
 }

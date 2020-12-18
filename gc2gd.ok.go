@@ -79,8 +79,8 @@ func CgoGc2gd(n int, xyz [3]float64) (
 	var cElong, cPhi, cHeight C.double
 	cXyz := v3sGo2C(xyz)
 	cI := C.iauGc2gd(C.int(n), &cXyz[0], &cElong, &cPhi, &cHeight)
-	if int(cI) != 0 {
-		err = errGc2gd.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errGc2gd.Set(n)
 	}
 	return float64(cElong), float64(cPhi), float64(cHeight), err
 }

@@ -124,8 +124,8 @@ func CgoPvstar(pv [2][3]float64) (ra, dec, pmr, pmd, px, rv float64,
 	var cRa, cDec, cPmr, cPmd, cPx, cRv C.double
 	cPv := v3dGo2C(pv)
 	cI := C.iauPvstar(&cPv[0], &cRa, &cDec, &cPmr, &cPmd, &cPx, &cRv)
-	if int(cI) != 0 {
-		err = errPvstar.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errPvstar.Set(n)
 	}
 
 	return float64(cRa), float64(cDec), float64(cPmr),

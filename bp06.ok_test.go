@@ -89,4 +89,19 @@ func TestBp06(t *testing.T) {
 }
 
 func BenchmarkBp06(b *testing.B) {
+	tests := []struct {
+		ref string
+		fn  func(a1, a2 float64) (c1, c2, c3 [3][3]float64)
+	}{
+		{"cgo", CgoBp06},
+		{"go", GoBp06},
+	}
+
+	for _, test := range tests {
+		b.Run(test.ref, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _, _ = test.fn(2400000.5, 50123.9999)
+			}
+		})
+	}
 }

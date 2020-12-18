@@ -63,8 +63,8 @@ func CgoTf2a(s byte, ihour, imin int, sec float64) (
 	var cRad C.double
 	cI := C.iauTf2a(C.char(s), C.int(ihour), C.int(imin),
 		C.double(sec), &cRad)
-	if int(cI) != 0 {
-		err = errTf2a.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errTf2a.Set(n)
 	}
 	return float64(cRad), err
 }

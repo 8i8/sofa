@@ -73,8 +73,8 @@ var errTcbtdb = en.New(0, "Tcbtdb", []string{
 func CgoTcbtdb(tcb1, tcb2 float64) (tdb1, tdb2 float64, err en.ErrNum) {
 	var cTdb1, cTdb2 C.double
 	cI := C.iauTcbtdb(C.double(tcb1), C.double(tcb2), &cTdb1, &cTdb2)
-	if int(cI) != 0 {
-		err = errTcbtdb.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errTcbtdb.Set(n)
 	}
 	return float64(cTdb1), float64(cTdb2), err
 }

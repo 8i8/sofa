@@ -60,8 +60,8 @@ func CgoTtut1(tt1, tt2, dt float64) (ut11, ut12 float64, err en.ErrNum) {
 	var cUt11, cUt12 C.double
 	cI := C.iauTtut1(C.double(tt1), C.double(tt2), C.double(dt), &cUt11,
 		&cUt12)
-	if int(cI) != 0 {
-		err = errTtut1.Set(int(cI))
+		if n := int(cI); n != 0 {
+		err = errTtut1.Set(n)
 	}
 	return float64(cUt11), float64(cUt12), err
 }

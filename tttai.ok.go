@@ -59,8 +59,8 @@ var errTttai = en.New(0, "Tttai", []string{
 func CgoTttai(tt1, tt2 float64) (tai1, tai2 float64, err en.ErrNum) {
 	var cTai1, cTai2 C.double
 	cI := C.iauTttai(C.double(tt1), C.double(tt2), &cTai1, &cTai2)
-	if int(cI) != 0 {
-		err = errTttai.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errTttai.Set(n)
 	}
 	return float64(cTai1), float64(cTai2), err
 }

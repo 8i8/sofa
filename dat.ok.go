@@ -4,6 +4,7 @@ package sofa
 import "C"
 import (
 	"errors"
+
 	"github.com/8i8/sofa/en"
 )
 
@@ -154,8 +155,8 @@ func CgoDat(iy, im, id int, fd float64) (deltat float64, err en.ErrNum) {
 	var cDeltat C.double
 	cI := C.iauDat(C.int(iy), C.int(im), C.int(id), C.double(fd),
 		&cDeltat)
-	if int(cI) != 0 {
-		err = errDat.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errDat.Set(n)
 	}
 	return float64(cDeltat), err
 }

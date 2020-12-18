@@ -58,8 +58,8 @@ var errTcgtt = en.New(0, "Tcgtt", []string{
 func CgoTcgtt(tcg1, tcg2 float64) (tt1, tt2 float64, err en.ErrNum) {
 	var cTt1, cTt2 C.double
 	cI := C.iauTcgtt(C.double(tcg1), C.double(tcg2), &cTt1, &cTt2)
-	if int(cI) != 0 {
-		err = errTcgtt.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errTcgtt.Set(n)
 	}
 	return float64(cTt1), float64(cTt2), err
 }

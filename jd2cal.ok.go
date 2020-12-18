@@ -87,8 +87,8 @@ func CgoJd2cal(dj1, dj2 float64) (
 	var cFd C.double
 	cI := C.iauJd2cal(C.double(dj1), C.double(dj2), 
 	&cIy, &cIm, &cId, &cFd)
-	if int(cI) != 0 {
-		err = errJd2cal.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errJd2cal.Set(n)
 	}
 	return int(cIy), int(cIm), int(cId), float64(cFd), err
 }

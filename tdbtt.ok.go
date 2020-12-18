@@ -74,8 +74,8 @@ func CgoTdbtt(tdb1, tdb2, dtr float64) (
 	var cTt1, cTt2 C.double
 	cI := C.iauTdbtt(C.double(tdb1), C.double(tdb2), C.double(dtr),
 		&cTt1, &cTt2)
-	if int(cI) != 0 {
-		err = errTdbtt.Set(int(cI))
+		if n := int(cI); n != 0 {
+		err = errTdbtt.Set(n)
 	}
 	return float64(cTt1), float64(cTt2), err
 }

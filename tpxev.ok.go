@@ -96,8 +96,8 @@ func CgoTpxev(v, v0 [3]float64) (xi, eta float64, err en.ErrNum) {
 	var cXi, cEta C.double
 	cV, cV0 := v3sGo2C(v), v3sGo2C(v0)
 	cI := C.iauTpxev(&cV[0], &cV0[0], &cXi, &cEta)
-	if int(cI) != 0 {
-		err = errTpxev.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errTpxev.Set(n)
 	}
 	return float64(cXi), float64(cEta), err
 }

@@ -63,8 +63,8 @@ func CgoTf2d(s byte, ihour, imin int, sec float64) (
 	var cDays C.double
 	cI := C.iauTf2d(C.char(s), C.int(ihour), C.int(imin),
 		C.double(sec), &cDays)
-	if int(cI) != 0 {
-		err = errTf2d.Set(int(cI))
+	if n := int(cI); n != 0 {
+		err = errTf2d.Set(n)
 	}
 	return float64(cDays), err
 }
