@@ -2,7 +2,15 @@ package sofa
 
 // #include "sofa.h"
 import "C"
-import "math"
+import (
+	"math"
+
+	"github.com/8i8/sofa/en"
+)
+
+var errTaiut1 = en.New(0, "Taiut1", []string{
+	"",
+})
 
 //  CgoTaiut1 Time scale transformation:  International Atomic Time,
 //  TAI, to Universal Time, UT1.
@@ -50,21 +58,21 @@ import "math"
 //
 //  CgoTaiut1 Time scale transformation:  International Atomic Time,
 //  TAI, to Universal Time, UT1.
-func CgoTaiut1(tai1, tai2, dta float64) (ut11, ut12 float64, err error) {
+func CgoTaiut1(tai1, tai2, dta float64) (ut11, ut12 float64, err en.ErrNum) {
 	var cUt11, cUt12 C.double
 	cI := C.iauTaiut1(C.double(tai1), C.double(tai2), C.double(dta),
 		&cUt11, &cUt12)
 	switch int(cI) {
 	case 0:
 	default:
-		err = errAdmin
+		err = errTaiut1.Set(0)
 	}
 	return float64(cUt11), float64(cUt12), err
 }
 
 //  GoTaiut1 Time scale transformation:  International Atomic Time,
 //  TAI, to Universal Time, UT1.
-func GoTaiut1(tai1, tai2, dta float64) (ut11, ut12 float64, err error) {
+func GoTaiut1(tai1, tai2, dta float64) (ut11, ut12 float64, err en.ErrNum) {
 	var dtad float64
 
 	// Result, safeguarding precision.

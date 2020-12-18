@@ -1,6 +1,10 @@
 package sofa
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/8i8/sofa/en"
+)
 
 //
 //  - - - - - - - - - - -
@@ -18,7 +22,7 @@ func TestAtco13(t *testing.T) {
 	var rc, dc, pr, pd, px, rv, utc1, utc2, dut1,
 		elong, phi, hm, xp, yp, phpa, tc, rh, wl,
 		aob, zob, hob, dob, rob, eo float64
-	var err error
+	var err en.ErrNum
 
 	rc = 2.71
 	dc = 0.174
@@ -43,7 +47,7 @@ func TestAtco13(t *testing.T) {
 		ref string
 		fn  func(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11,
 			a12, a13, a14, a15, a16, a17, a18 float64) (
-			c1, c2, c3, c4, c5, c6 float64, c7 error)
+			c1, c2, c3, c4, c5, c6 float64, c7 en.ErrNum)
 	}{
 		{"cgo", CgoAtco13},
 		{"go", GoAtco13},
@@ -100,7 +104,7 @@ func BenchmarkAtco13(b *testing.B) {
 		ref string
 		fn  func(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11,
 			a12, a13, a14, a15, a16, a17, a18 float64) (
-			c1, c2, c3, c4, c5, c6 float64, c7 error)
+			c1, c2, c3, c4, c5, c6 float64, c7 en.ErrNum)
 	}{
 		{"cgo", CgoAtco13},
 		{"go", GoAtco13},
@@ -110,8 +114,8 @@ func BenchmarkAtco13(b *testing.B) {
 		b.Run(test.ref, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				test.fn(rc, dc, pr, pd, px, rv, utc1,
-				utc2, dut1, elong, phi, hm, xp, yp,
-				phpa, tc, rh, wl)
+					utc2, dut1, elong, phi, hm, xp, yp,
+					phpa, tc, rh, wl)
 			}
 		})
 	}

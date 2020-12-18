@@ -119,7 +119,7 @@ var errPvstar = en.New(2, "Pvstar", []string{
 //  CgoPvstar Convert star position+velocity vector to catalog
 //  coordinates.
 func CgoPvstar(pv [2][3]float64) (ra, dec, pmr, pmd, px, rv float64,
-	err error) {
+	err en.ErrNum) {
 
 	var cRa, cDec, cPmr, cPmd, cPx, cRv C.double
 	cPv := v3dGo2C(pv)
@@ -135,7 +135,7 @@ func CgoPvstar(pv [2][3]float64) (ra, dec, pmr, pmd, px, rv float64,
 //  GoPvstar Convert star position+velocity vector to catalog
 //  coordinates.
 func GoPvstar(pv [2][3]float64) (ra, dec, pmr, pmd, px, rv float64,
-	err error) {
+	err en.ErrNum) {
 
 	var r, vr, vt, bett, betr, d, w, del, a, rad, decd, rd float64
 	var x, ur, ut, usr, ust [3]float64

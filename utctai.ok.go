@@ -3,12 +3,16 @@ package sofa
 // #include "sofa.h"
 import "C"
 import (
-	"errors"
 	"math"
+
+	"github.com/8i8/sofa/en"
 )
 
-var errUtctaiWarn = errors.New("dubious year (Note 2)")
-var errUtctaiE1 = errors.New("unacceptable date")
+var errUtctai = en.New(1, "Utctai", []string{
+	"unacceptable date",
+	"",
+	"dubious year (Note 2)",
+})
 
 //  CgoUtctai Time scale transformation:  Coordinated Universal Time,
 //  UTC, to International Atomic Time, TAI.
@@ -79,24 +83,24 @@ var errUtctaiE1 = errors.New("unacceptable date")
 //
 //  CgoUtctai Time scale transformation:  Coordinated Universal Time,
 //  UTC, to International Atomic Time, TAI.
-func CgoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err error) {
+func CgoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err en.ErrNum) {
 	var cTai1, cTai2 C.double
 	cI := C.iauUtctai(C.double(utc1), C.double(utc2), &cTai1, &cTai2)
 	switch int(cI) {
 	case 0:
 	case -1:
-		err = errUtctaiE1
+		err = errUtctai.Set(-1)
 	case 1:
-		err = errUtctaiWarn
+		err = errUtctai.Set(1)
 	default:
-		err = errAdmin
+		err = errUtctai.Set(0)
 	}
 	return float64(cTai1), float64(cTai2), err
 }
 
 // GoUtctai Time scale transformation:  Coordinated Universal Time, UTC,
 // to International Atomic Time, TAI.
-func GoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err error) {
+func GoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err en.ErrNum) {
 	var big1 bool
 	var iy, im, id, iyt, imt, idt int
 	var u1, u2, fd, dat0, dat12, dat24,
@@ -117,26 +121,31 @@ func GoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err error) {
 	// Get TAI-UTC at 0h today.
 	iy, im, id, fd, err = GoJd2cal(u1, u2)
 	if err != nil {
+		err = errUtctai.Wrap(err)
 		return
 	}
 	dat0, err = GoDat(iy, im, id, 0.0)
-	if err != nil && !errors.Is(err, errDatWarn) {
+	if err != nil && err.Is() < 0 {
+		err = errUtctai.Wrap(err)
 		return
 	}
 
 	// Get TAI-UTC at 12h today (to detect drift).
 	dat12, err = GoDat(iy, im, id, 0.5)
-	if err != nil && !errors.Is(err, errDatWarn) {
+	if err != nil && err.Is() < 0 {
+		err = errUtctai.Wrap(err)
 		return
 	}
 
 	// Get TAI-UTC at 0h tomorrow (to detect jumps).
 	iyt, imt, idt, _, err = GoJd2cal(u1+1.5, u2-fd)
 	if err != nil {
+		err = errUtctai.Wrap(err)
 		return
 	}
 	dat24, err = GoDat(iyt, imt, idt, 0.0)
-	if err != nil && !errors.Is(err, errDatWarn) {
+	if err != nil && err.Is() < 0 {
+		err = errUtctai.Wrap(err)
 		return
 	}
 
@@ -153,6 +162,7 @@ func GoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err error) {
 	// Today's calendar date to 2-part JD.
 	z1, z2, err = GoCal2jd(iy, im, id)
 	if err != nil {
+		err = errUtctai.Wrap(err)
 		return
 	}
 
@@ -167,6 +177,5 @@ func GoUtctai(utc1, utc2 float64) (tai1, tai2 float64, err error) {
 		tai1 = a2
 		tai2 = u1
 	}
-
 	return
 }

@@ -31,6 +31,14 @@ type LDBODY struct {
 	pv [2][3]float64 // barycentric PV of the body (au, au/day)
 }
 
+// v2sC2Go translates a vector from cgo into go.
+func v2sC2Go(in [2]C.double) (out [2]float64) {
+	out[0] = float64(in[0])
+	out[1] = float64(in[1])
+	return
+}
+
+
 // v3sC2GO translates a 3d vector from cgo into go.
 func v3sC2Go(in [3]C.double) (out [3]float64) {
 	out[0] = float64(in[0])
@@ -175,14 +183,6 @@ func ldbodyC2Go(in C.iauLDBODY) (out LDBODY) {
 	out.dl = float64(in.dl)
 	out.pv = v3dC2Go(in.pv)
 	return
-}
-
-// Abs returns the absolute value of x.
-func Abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
 }
 
 // dsign gives the magnitude of 'a' with sign of 'b' (double).

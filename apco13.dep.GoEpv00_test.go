@@ -1,6 +1,10 @@
 package sofa
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/8i8/sofa/en"
+)
 
 //
 //  - - - - - - - - - - -
@@ -36,7 +40,7 @@ func TestApco13(t *testing.T) {
 		ref string
 		fn  func(a1, a2, a3, a4, a5, a6,
 			a7, a8, a9, a10, a11, a12 float64,
-			a13 ASTROM) (ASTROM, float64, error)
+			a13 ASTROM) (ASTROM, float64, en.ErrNum)
 	}{
 		{"cgo", CgoApco13},
 		{"go", GoApco13},
@@ -109,7 +113,7 @@ func TestApco13(t *testing.T) {
 			tname, "refb")
 		vvd(t, eo, -0.003020548354802412839, 1e-14,
 			tname, "eo")
-			errT(t, nil, err, tname, "err")
+		errT(t, nil, err, tname, "err")
 	}
 }
 
@@ -135,7 +139,7 @@ func BenchmarkApco13(b *testing.B) {
 		ref string
 		fn  func(a1, a2, a3, a4, a5, a6,
 			a7, a8, a9, a10, a11, a12 float64,
-			a13 ASTROM) (ASTROM, float64, error)
+			a13 ASTROM) (ASTROM, float64, en.ErrNum)
 	}{
 		{"cgo", CgoApco13},
 		{"go", GoApco13},

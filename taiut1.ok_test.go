@@ -1,6 +1,10 @@
 package sofa
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/8i8/sofa/en"
+)
 
 //
 //  - - - - - - - - - - -
@@ -17,7 +21,7 @@ func TestTaiut1(t *testing.T) {
 	const fname = "Taiut1"
 	tests := []struct {
 		ref string
-		fn  func(a1, a2, a3 float64) (b1, b2 float64, b3 error)
+		fn  func(a1, a2, a3 float64) (b1, b2 float64, b3 en.ErrNum)
 	}{
 		{"cgo", CgoTaiut1},
 		{"go", GoTaiut1},
@@ -36,7 +40,7 @@ func TestTaiut1(t *testing.T) {
 func BenchmarkTaiut1(b *testing.B) {
 	tests := []struct {
 		ref string
-		fn  func(a1, a2, a3 float64) (b1, b2 float64, b3 error)
+		fn  func(a1, a2, a3 float64) (b1, b2 float64, b3 en.ErrNum)
 	}{
 		{"cgo", CgoTaiut1},
 		{"go", GoTaiut1},

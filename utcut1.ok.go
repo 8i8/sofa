@@ -2,10 +2,15 @@ package sofa
 
 // #include "sofa.h"
 import "C"
-import "errors"
+import (
+	"github.com/8i8/sofa/en"
+)
 
-var errUtcut1Warn = errors.New("dubious year (Note 3)")
-var errUtcut1E1 = errors.New("unacceptable date")
+var errUtcut1 = en.New(1, "Utcut1", []string{
+	"unacceptable date",
+	"",
+	"dubious year (Note 3)",
+})
 
 //  CgoUtcut1 Time scale transformation:  Coordinated Universal Time,
 //  UTC, to Universal Time, UT1.
@@ -80,60 +85,59 @@ var errUtcut1E1 = errors.New("unacceptable date")
 //
 //  CgoUtcut1 Time" scale transformation:  Coordinated Universal Time,
 //  UTC, to Universal Time, UT1.
-func CgoUtcut1(utc1, utc2, dut1 float64) (ut11, ut12 float64, err error) {
+func CgoUtcut1(utc1, utc2, dut1 float64) (ut11, ut12 float64, err en.ErrNum) {
 	var cUt11, cUt12 C.double
 	cI := C.iauUtcut1(C.double(utc1), C.double(utc2), C.double(dut1),
 		&cUt11, &cUt12)
 	switch int(cI) {
 	case 0:
 	case -1:
-		err = errUtcut1E1
+		err = errUtcut1.Set(-1)
 	case 1:
-		err = errUtcut1Warn
+		err = errUtcut1.Set(1)
 	default:
-		err = errAdmin
+		err = errUtcut1.Set(0)
 	}
 	return float64(cUt11), float64(cUt12), err
 }
 
 // GoUtcut1 Time scale transformation:  Coordinated Universal Time,
 // UTC, to Universal Time, UT1.
-func GoUtcut1(utc1, utc2, dut1 float64) (ut11, ut12 float64, err error) {
+func GoUtcut1(utc1, utc2, dut1 float64) (ut11, ut12 float64, err en.ErrNum) {
 
 	var iy, im, id int
 	var dat, dta, tai1, tai2 float64
-	var errs, errw error
 
 	// Look up TAI-UTC.
 	iy, im, id, _, err = GoJd2cal(utc1, utc2)
 	if err != nil {
-		err = errUtcut1E1
+		err = errUtcut1.Wrap(err)
 		return
 	}
-	dat, errs = GoDat(iy, im, id, 0.0)
-	if errs != nil {
-		if !errors.Is(errs, errDatWarn) {
-			err = errUtcut1E1
+	dat, err = GoDat(iy, im, id, 0.0)
+	if err != nil {
+		if err.Is() < 0 {
+			err = errUtcut1.Wrap(err)
 			return
 		}
-		err = errUtcut1Warn
+		err = errUtcut1.Wrap(err)
 	}
 
 	// Form UT1-TAI.
 	dta = dut1 - dat
 
 	// UTC to TAI to UT1.
-	tai1, tai2, errw = GoUtctai(utc1, utc2)
-	if errw != nil {
-		if !errors.Is(errw, errUtctaiWarn) {
-			err = errUtcut1E1
+	tai1, tai2, err = GoUtctai(utc1, utc2)
+	if err != nil {
+		if err.Is() < 0 {
+			err = errUtcut1.Wrap(err)
 			return
 		}
-		err = errUtcut1Warn
+		err = errUtcut1.Wrap(err)
 	}
 	ut11, ut12, err = GoTaiut1(tai1, tai2, dta)
 	if err != nil {
-		err = errUtcut1E1
+		err = errUtcut1.Wrap(err)
 		return
 	}
 

@@ -1,6 +1,10 @@
 package sofa
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/8i8/sofa/en"
+)
 
 //
 //  - - - - - - - - - - -
@@ -17,7 +21,7 @@ func TestUtcut1(t *testing.T) {
 	const fname = "Utcut1"
 	tests := []struct {
 		ref string
-		fn  func(a1, a2, a3 float64) (b1, b2 float64, b3 error)
+		fn  func(a1, a2, a3 float64) (b1, b2 float64, b3 en.ErrNum)
 	}{
 		{"cgo", CgoUtcut1},
 		{"go", GoUtcut1},
@@ -35,7 +39,7 @@ func TestUtcut1(t *testing.T) {
 func BenchmarkUtcut1(b *testing.B) {
 	tests := []struct {
 		ref string
-		fn  func(a1, a2, a3 float64) (b1, b2 float64, b3 error)
+		fn  func(a1, a2, a3 float64) (b1, b2 float64, b3 en.ErrNum)
 	}{
 		{"cgo", CgoUtcut1},
 		{"go", GoUtcut1},

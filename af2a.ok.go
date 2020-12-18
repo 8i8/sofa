@@ -80,7 +80,7 @@ func GoAf2a(s byte, ideg, iamin int, asec float64) (rad float64, err error) {
 	}
 
 	rad = sign * (60.0*(60.0*
-		(float64(Abs(ideg)))+(float64(Abs(iamin)))) +
+		(math.Abs(float64(ideg)))+(math.Abs(float64(iamin)))) +
 		math.Abs(asec)) * DAS2R
 
 	/* Validate arguments and return status. */

@@ -2,10 +2,15 @@ package sofa
 
 // #include "sofa.h"
 import "C"
-import "errors"
+import (
+	"github.com/8i8/sofa/en"
+)
 
-var errAtco13Warn = errors.New("dubious year (Note 4)")
-var errAtco13E1 = errors.New("unacceptable date")
+var errAtco13 = en.New(1, "Atco13", []string{
+	"unacceptable date",
+	"",
+	"dubious year (Note 4)",
+})
 
 //  CgoAtco13 ICRS RA,Dec to observed place.  The caller supplies UTC,
 //  site coordinates, ambient air conditions and observing wavelength.
@@ -165,7 +170,7 @@ var errAtco13E1 = errors.New("unacceptable date")
 //  site coordinates, ambient air conditions and observing wavelength.
 func CgoAtco13(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm,
 	xp, yp, phpa, tc, rh, wl float64) (
-	aob, zob, hob, dob, rob, eo float64, err error) {
+	aob, zob, hob, dob, rob, eo float64, err en.ErrNum) {
 
 	var cAob, cZob, cHob, cDob, cRob, cEo C.double
 	cI := C.iauAtco13(
@@ -178,12 +183,12 @@ func CgoAtco13(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm,
 		&cAob, &cZob, &cHob, &cDob, &cRob, &cEo)
 	switch int(cI) {
 	case 1:
-		err = errAtco13Warn
+		err = errAtco13.Set(1)
 	case 0:
 	case -1:
-		err = errAtco13E1
+		err = errAtco13.Set(-1)
 	default:
-		err = errAdmin
+		err = errAtco13.Set(0)
 	}
 	return float64(cAob), float64(cZob), float64(cHob),
 		float64(cDob), float64(cRob), float64(cEo), err
@@ -193,7 +198,7 @@ func CgoAtco13(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm,
 //  site coordinates, ambient air conditions and observing wavelength.
 func GoAtco13(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm,
 	xp, yp, phpa, tc, rh, wl float64) (
-	aob, zob, hob, dob, rob, eo float64, err error) {
+	aob, zob, hob, dob, rob, eo float64, err en.ErrNum) {
 
 	var astrom ASTROM
 	var ri, di float64
@@ -204,11 +209,11 @@ func GoAtco13(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm,
 
 	// Abort if bad UTC.
 	if err != nil {
-		if !errors.Is(err, errApco13Warn) {
-			err = errAtco13E1
+		if err.Is() < 0 {
+			err = errAtco13.Set(-1)
 			return
 		}
-		err = errAtco13Warn
+		err = errAtco13.Set(1)
 	}
 
 	// Transform ICRS to CIRS.

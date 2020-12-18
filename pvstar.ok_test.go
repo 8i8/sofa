@@ -1,6 +1,10 @@
 package sofa
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/8i8/sofa/en"
+)
 
 //
 //  - - - - - - - - - - -
@@ -30,7 +34,7 @@ func TestPvstar(t *testing.T) {
 	tests := []struct {
 		ref string
 		fn  func([2][3]float64) (c1, c2, c3, c4, c5, c6 float64,
-			c7 error)
+			c7 en.ErrNum)
 	}{
 		{"cgo", CgoPvstar},
 		{"go", GoPvstar},
@@ -38,7 +42,6 @@ func TestPvstar(t *testing.T) {
 
 	for _, test := range tests {
 		tname := fname + " " + test.ref
-
 
 		ra, dec, pmr, pmd, px, rv, err = test.fn(pv)
 
@@ -69,7 +72,7 @@ func BenchmarkPvstar(b *testing.B) {
 	tests := []struct {
 		ref string
 		fn  func([2][3]float64) (c1, c2, c3, c4, c5, c6 float64,
-			c7 error)
+			c7 en.ErrNum)
 	}{
 		{"cgo", CgoPvstar},
 		{"go", GoPvstar},

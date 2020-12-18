@@ -2,10 +2,13 @@ package sofa
 
 // #include "sofa.h"
 import "C"
-import "errors"
+import "github.com/8i8/sofa/en"
 
-var errApco13Warn = errors.New("dubious year (Apco13 documentation note 2)")
-var errApco13E1 = errors.New("unacceptable date")
+var errApco13 = en.New(1, "Apco13", []string{
+	"unacceptable date",
+	"",
+	"dubious year (Apco14 documentation note 2)",
+})
 
 //  CgoApcp13 For a terrestrial observer, prepare star-independent
 //  astrometry parameters for transformations between ICRS and observed
@@ -193,10 +196,10 @@ var errApco13E1 = errors.New("unacceptable date")
 //  obtain the Earth ephemeris, CIP/CIO and refraction constants.
 func CgoApco13(utc1, utc2, dut1, elong, phi, hm,
 	xp, yp, phpa, tc, rh, wl float64,
-	astrom ASTROM) (ASTROM, float64, error) {
+	astrom ASTROM) (ASTROM, float64, en.ErrNum) {
 
 	var cEo C.double
-	var err error
+	var err en.ErrNum
 	cAstrom := astrGo2C(astrom)
 
 	cI := C.iauApco13(C.double(utc1), C.double(utc2),
@@ -208,11 +211,11 @@ func CgoApco13(utc1, utc2, dut1, elong, phi, hm,
 	switch int(cI) {
 	case 0:
 	case -1:
-		err = errApco13E1
+		err = errApco13.Set(-1)
 	case 1:
-		err = errApco13Warn
+		err = errApco13.Set(1)
 	default:
-		err = errAdmin
+		err = errApco13.Set(0)
 	}
 
 	return astrC2Go(cAstrom), float64(cEo), err
@@ -225,7 +228,7 @@ func CgoApco13(utc1, utc2, dut1, elong, phi, hm,
 // obtain the Earth ephemeris, CIP/CIO and refraction constants.
 func GoApco13(utc1, utc2, dut1, elong, phi, hm,
 	xp, yp, phpa, tc, rh, wl float64,
-	astr ASTROM) (astrom ASTROM, eo float64, err error) {
+	astr ASTROM) (astrom ASTROM, eo float64, err en.ErrNum) {
 
 	var tai1, tai2, tt1, tt2, ut11, ut12 float64
 	var ehpv, ebpv [2][3]float64
@@ -234,14 +237,14 @@ func GoApco13(utc1, utc2, dut1, elong, phi, hm,
 
 	// UTC to other time scales.
 	tai1, tai2, err = GoUtctai(utc1, utc2)
-	if err != nil && !errors.Is(err, errUtctaiWarn) {
-		err = errApco13E1
+	if err != nil && err.Is() < 0 {
+		err = errApco13.Set(-1)
 		return
 	}
 	tt1, tt2, _ = GoTaitt(tai1, tai2)
 	ut11, ut12, err = GoUtcut1(utc1, utc2, dut1)
-	if err != nil && !errors.Is(err, errUtcut1Warn) {
-		err = errApco13E1
+	if err != nil && err.Is() < 0 {
+		err = errApco13.Set(-1)
 		return
 	}
 
