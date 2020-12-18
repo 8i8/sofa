@@ -20,7 +20,7 @@ func TestEpv00(t *testing.T) {
 		fn  func(a, b float64) (c, d [2][3]float64, f error)
 	}{
 		{"cgo", CgoEpv00},
-		//{"go"}, GoEpv00},
+		{"go", GoEpv00},
 	}
 	for _, test := range tests {
 		tname := fname + " " + test.ref
@@ -54,7 +54,7 @@ func BenchmarkEpv00(b *testing.B) {
 		fn  func(a, b float64) (c, d [2][3]float64, f error)
 	}{
 		{"cgo", CgoEpv00},
-		//{"go"}, GoEpv00},
+		{"go", GoEpv00},
 	}
 	for _, test := range tests {
 		b.Run(test.ref, func(b *testing.B) {
