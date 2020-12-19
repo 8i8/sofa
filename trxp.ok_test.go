@@ -38,7 +38,7 @@ func TestTrxp(t *testing.T) {
 		ref string
 		fn  func([3][3]float64, [3]float64) [3]float64
 	}{
-		{"sgo", CgoTrxp},
+		{"cgo", CgoTrxp},
 		{"go", GoTrxp},
 	}
 	for _, test := range tests {
@@ -75,7 +75,7 @@ func BenchmarkTrxp(b *testing.B) {
 		ref string
 		fn  func([3][3]float64, [3]float64) [3]float64
 	}{
-		{"sgo", CgoTrxp},
+		{"cgo", CgoTrxp},
 		{"go", GoTrxp},
 	}
 	for _, test := range tests {

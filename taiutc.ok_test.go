@@ -24,7 +24,7 @@ func TestTaiutc(t *testing.T) {
 
 	tests := []struct {
 		ref string
-		fn  func(a1,a2 float64) (c1,c2 float64, c3 en.ErrNum)
+		fn  func(a1, a2 float64) (c1, c2 float64, c3 en.ErrNum)
 	}{
 		{"cgo", CgoTaiutc},
 		{"go", GoTaiutc},
@@ -44,13 +44,17 @@ func TestTaiutc(t *testing.T) {
 func BenchmarkTaiutc(b *testing.B) {
 	tests := []struct {
 		ref string
-		fn  func(a1,a2 float64) (c1,c2 float64, c3 en.ErrNum)
+		fn  func(a1, a2 float64) (c1, c2 float64, c3 en.ErrNum)
 	}{
 		{"cgo", CgoTaiutc},
 		{"go", GoTaiutc},
 	}
 
 	for _, test := range tests {
-		_, _, _ = test.fn(2453750.5, 0.892482639)
+		b.Run(test.ref, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _, _ = test.fn(2453750.5, 0.892482639)
+			}
+		})
 	}
 }
