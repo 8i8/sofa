@@ -66,8 +66,7 @@ import "C"
 //
 //  Copyright (C) 2020 IAU SOFA Board.  See notes at end.
 //
-//  CgoA2af Decompose radians into degrees, arcminutes, arcseconds,
-//  fraction.
+//  CgoA2af Decompose radians into degrees, arcminutes, arcseconds, fraction.
 func CgoA2af(ndp int, angle float64) (sign byte, idmsf [4]int) {
 	var cSign C.char
 	var cIdmsf [4]C.int
